@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/Cadastro.css}">
+    <link rel="stylesheet" href="../static/css/Cadastro.css">
 </head>
 <body>
         <div class="container mt-5 ">
@@ -17,42 +18,37 @@
                 </div>
                 <div class="card-body">
 
-                    <form th:action="@{/cadastrar/}" method="post" th:object="${user}">
+                    <form th:action="@{/cadastrar/}" method="post" object="usuario">
 
                         <div class="form-group">
                             <label for="nome">Nome do Usuário:</label>
-                            <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}"required>
+                            <input type="text" class="form-control" id="nome" name="nome" required>
                             <span id="nomeError" class="error"></span>
                         </div>
                         <div class="form-group">
                             <label for="email">E-mail:</label>
-                            <input type="email"class="form-control" id="email" name="email" th:field="*{email}"required>
+                            <input type="email"class="form-control" id="email" name="email" required>
                             <span id="emailError" class="error"></span>
                         </div>
                         <div class="form-group">
                             <label for="cpf">CPF:</label>
-                            <input type="text"class="form-control" id="cpf" name="cpf" th:field="*{cpf}"required>
+                            <input type="text"class="form-control" id="cpf" name="cpf" required>
                             <span id="cpfError" class="error"></span>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="telefone">Senha:</label>
-                            <input type="tel" class="form-control" id="telefone" name="telefone" th:field="*{telefone}"required>
                         </div>
 
                         <div class="form-group">
                             <label for="senha">Senha:</label>
-                            <input type="password" class="form-control" id="senha" name="senha" th:field="*{senha}"required>
+                            <input type="password" class="form-control" id="senha" name="senha" required>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="confirmaSenha">Confirme a Senha:</label>
                             <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha" required>
                             <span id="senhaError" class="error"></span>
-                        </div>
+                        </div>-->
 
                         <div class="form-group">
-                            <label for="grupo">Grupo:</label>
-                            <select class="form-control" id="funcao" name="funcao" th:field="*{funcao}">
+                            <label for="role">Grupo:</label>
+                            <select class="form-control" id="role" name="role" >
                                 <option value="admin">Admin</option>
                                 <option value="estoquista">Estoquista</option>
                             </select>
