@@ -3,6 +3,8 @@ package com.KickOofEsports.KickOffEsports.controllers;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

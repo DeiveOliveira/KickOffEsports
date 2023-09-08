@@ -11,56 +11,80 @@
     <link rel="stylesheet" href="../static/css/Cadastro.css">
 </head>
 <body>
-        <div class="container mt-5 ">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="text-center">Cadastro de Usuários</h2>
-                </div>
-                <div class="card-body">
-
-                    <form th:action="${cadastrar}" method="post" th:object="${usuario}">
-
-                        <div class="form-group">
-                            <label for="nome">Nome do Usuário:</label>
-                            <input type="text" class="form-control" id="nome" name="nome" required>
-                            <span id="nomeError" class="error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">E-mail:</label>
-                            <input type="email"class="form-control" id="email" name="email" required>
-                            <span id="emailError" class="error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="cpf">CPF:</label>
-                            <input type="text"class="form-control" id="cpf" name="cpf" required>
-                            <span id="cpfError" class="error"></span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="senha">Senha:</label>
-                            <input type="password" class="form-control" id="senha" name="senha" required>
-                        </div>
-                        <!-- <div class="form-group">
-                            <label for="confirmaSenha">Confirme a Senha:</label>
-                            <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha" required>
-                            <span id="senhaError" class="error"></span>
-                        </div>-->
-
-                        <div class="form-group">
-                            <label for="role">Grupo:</label>
-                            <select class="form-control" id="role" name="role" >
-                                <option value="admin">Admin</option>
-                                <option value="estoquista">Estoquista</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
-                    </form>
-                </div>
-            </div>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h2 class="text-center">Cadastro de Usuários</h2>
         </div>
-        <!-- Inclua as referências aos scripts do Bootstrap e do JavaScript aqui -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="cadastro.js"></script>
+        <div class="card-body">
+            <form id="meuFormulario">
+
+                <div class="form-group">
+                    <label for="nome">Nome do Usuário:</label>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                    <span id="nomeError" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <span id="emailError" class="error"></span>
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF:</label>
+                    <input type="text" class="form-control" id="cpf" name="cpf" required>
+                    <span id="cpfError" class="error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" class="form-control" id="senha" name="senha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Grupo:</label>
+                    <select class="form-control" id="role" name="role">
+                        <option value="ADMIN">Admin</option>
+                        <option value="ESTOQUISTA">Estoquista</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary btn-block" id="btnCadastrar">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Inclua as referências aos scripts do Bootstrap e do JavaScript aqui -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../static/js/cadastro.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#btnCadastrar').click(function() {
+            // Serializa os dados do formulário em um objeto JavaScript
+            var usuario = {
+                nome: $('#nome').val(),
+                email: $('#email').val(),
+                cpf: $('#cpf').val(),
+                senha: $('#senha').val(),
+                role: $('#role').val()
+            };
+
+            // Faz a solicitação AJAX para enviar os dados como JSON
+            $.ajax({
+                type: 'POST',
+                url: '/cadastrar',
+                contentType: 'application/json',
+                data: JSON.stringify(usuario),
+                success: function(data) {
+                    // Manipule a resposta de sucesso aqui
+                    console.log('Cadastro realizado com sucesso:', data);
+                },
+                error: function(error) {
+                    // Manipule os erros aqui
+                    console.error('Erro ao cadastrar:', error);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
