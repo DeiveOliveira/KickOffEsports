@@ -1,0 +1,32 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .background {
+    background-image: url(../img/capa-1.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .card {
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 10px;
+  }
+  
+  .btn-login {
+    width: 100%;
+  }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <!-- Inclua as referências ao Bootstrap aqui -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/Cadastro.css}">
+</head>
+<body>
+        <div class="container mt-5 ">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Cadastro de Usuários</h2>
+                </div>
+                <div class="card-body">
+
+                    <form th:action="@{/cadastrar/}" method="post" th:object="${user}">
+
+                        <div class="form-group">
+                            <label for="nome">Nome do Usuário:</label>
+                            <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}"required>
+                            <span id="nomeError" class="error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email"class="form-control" id="email" name="email" th:field="*{email}"required>
+                            <span id="emailError" class="error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="cpf">CPF:</label>
+                            <input type="text"class="form-control" id="cpf" name="cpf" th:field="*{cpf}"required>
+                            <span id="cpfError" class="error"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="telefone">Senha:</label>
+                            <input type="tel" class="form-control" id="telefone" name="telefone" th:field="*{telefone}"required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="senha">Senha:</label>
+                            <input type="password" class="form-control" id="senha" name="senha" th:field="*{senha}"required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmaSenha">Confirme a Senha:</label>
+                            <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha" required>
+                            <span id="senhaError" class="error"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grupo">Grupo:</label>
+                            <select class="form-control" id="funcao" name="funcao" th:field="*{funcao}">
+                                <option value="admin">Admin</option>
+                                <option value="estoquista">Estoquista</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Inclua as referências aos scripts do Bootstrap e do JavaScript aqui -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="cadastro.js"></script>
+</body>
+</html>

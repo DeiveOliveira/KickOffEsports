@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Usuários</title>
+    <!-- Inclua as referências ao Bootstrap aqui -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/ListaDeUsuarios.css}">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Lista de Usuários</h1>
+
+    <nav class="navbar navbar-light bg-light my-2">
+        <form class="form-inline">
+            <input class="form-control w-40 p-3" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+            <button class="btn btn-outline-success m-2 btn-pesquisar" type="submit">Pesquisar</button>
+            <a th:href="@{/cadastro}" class="btn btn-outline-secondary btn-cadastrar">
+                <i class="fas fa-plus"></i>Novo Usuário
+            </a>
+        </form>
+    </nav>
+        <table class="table">
+            <thead>
+            <tr>
+                <th><i class="icon fas fa-user"></i>Nome</th>
+                <th><i class="icon fas fa-envelope"></i>Email</th>
+                <th><i class="icon fas fa-toggle-on"></i>Status</th>
+                <th><i class="icon fas fa-users"></i>Grupo</th>
+                <th><i class="icon fas fa-pencil-alt"></i> Editar</th>
+     <div class="user-card">
+           </tr>
+            </thead>
+            <tbody>
+            <tr
+                    th:each="listando : ${lista}">
+                <td th:text="${listando.getNome}">Nome</td>
+                <td th:text="${listando.getEmail}">Email</td>
+                <td th:text="${listando.getStatus}">Status</td>
+                <td th:text="${listando.getFuncao}">Grupo</td>
+
+                <td><a th:href="@{'/cadastro' + ${listando.getId}}">Editar</a></td>
+
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Inclua as referências aos scripts do Bootstrap e do JavaScript aqui -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="../static/javascript/ListaDeUsuarios.js"></script>
+</body>
+</html>

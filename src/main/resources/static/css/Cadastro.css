@@ -1,0 +1,26 @@
+body {
+  background-image: url(../img/tagcamisas.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #f8f9fa; /* Cor de backup para quando a imagem não carregar */
+}
+
+.card {
+  max-width: 600px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 1); /* Cor de fundo transparente */
+  box-shadow: 0 0 10px rgb(255, 255, 255);
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+}
+.form-control {
+  border-radius: 5px;
+}
+.card-body label{
+    color: white;
+}
