@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
 
-                    <form th:action="@{/cadastrar/}" method="post" object="usuario">
+                    <form th:action="${cadastrar}" method="post" th:object="${usuario}">
 
                         <div class="form-group">
                             <label for="nome">Nome do Usuário:</label>
