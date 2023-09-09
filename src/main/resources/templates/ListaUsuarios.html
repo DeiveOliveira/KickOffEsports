@@ -38,28 +38,32 @@
                     th:each="listando : ${lista}">
                 <td th:text="${listando.getNome}">Nome</td>
                 <td th:text="${listando.getEmail}">Email</td>
+
                 <td>
                     <button
                             th:if="${listando.getStatus()}"
                             type="button"
                             class="btn btn-success status-button"
-                            data-user-id="${listando.getId()}">
+                            th:data-user-id="${listando.getId()}"
+                            data-status="Ativo"
+                            onclick="atualizarStatus(this);">
                         Ativo
                     </button>
                     <button
                             th:unless="${listando.getStatus()}"
                             type="button"
                             class="btn btn-danger status-button"
-                            data-user-id="${listando.getId()}">
+                            th:data-user-id="${listando.getId()}"
+                            data-status="Inativo"
+                            onclick="atualizarStatus(this);">
                         Inativo
                     </button>
                 </td>
 
+
                 <td th:text="${listando.getRole}">Grupo</td>
 
-                <td><a th:href="@{'/cadastro' + ${listando.getId}}">Editar</a></td>
-
-
+                <td><a th:href="@{cadastro/$(listando.getId)}">Editar</a></td>
             </tr>
             </tbody>
         </table>
@@ -69,5 +73,51 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="../static/javascript/ListaDeUsuarios.js"></script>
+<script>
+    function atualizarStatus(button) {
+    const userId = button.getAttribute("data-user-id");
+    const status = button.getAttribute("data-status");
+
+    // Determine a mensagem com base no status atual
+    let confirmMessage = '';
+
+    if (status === 'Ativo') {
+        confirmMessage = 'Tem certeza de que deseja mudar para Inativo?';
+    } else if (status === 'Inativo') {
+        confirmMessage = 'Tem certeza de que deseja mudar para Ativo?';
+    }
+
+    // Exibe um diálogo de confirmação com a mensagem apropriada
+    const confirmacao = confirm(confirmMessage);
+
+    if (confirmacao) {
+        // O usuário clicou em "Sim", continue com a lógica de atualização
+        $.ajax({
+            type: 'PUT',
+            url: '/atualizarStatus/' + userId,
+            contentType: 'application/json',
+            data: JSON.stringify({ userId: userId }),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/listaDeUsuario';
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+                console.error('Erro ao atualizar:', error);
+            }
+        });
+    } else {
+        // O usuário clicou em "Não", não faça nada
+        alert('Operação cancelada');
+    }
+}
+
+</script>
 </body>
 </html>

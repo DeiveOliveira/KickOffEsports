@@ -31,8 +31,8 @@ public class ListaController {
     }
 
     @PutMapping(value = "/atualizarStatus/{id}")
-    public ResponseEntity<Usuario> atualizarStatus(@PathVariable String id, @RequestBody Usuario usuario){
-        usuario = service.atualizarStatus(id);
+    public ResponseEntity<Usuario> atualizarStatus(@PathVariable String id){
+        Usuario usuario = service.atualizarStatus(id);
         return ResponseEntity.ok().body(usuario);
     }
 
