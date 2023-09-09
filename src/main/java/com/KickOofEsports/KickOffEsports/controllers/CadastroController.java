@@ -34,14 +34,22 @@ public class CadastroController {
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<Usuario> cadastrarUsuario(@RequestBody Usuario usuario) {
-            if (repository.findByEmail(usuario.getEmail()) != null) {
-                return ResponseEntity.badRequest().build();
-            }
-            Usuario usuario1 = service.cadastrar(usuario);
-            URI uri = ServletUriComponentsBuilder
-                    .fromCurrentRequest().path("/{id}")
-                    .buildAndExpand(usuario1.getId()).toUri();
-            return ResponseEntity.created(uri).body(usuario1);
+    public ResponseEntity<?> cadastrarUsuario(@RequestBody Usuario usuario) {
+        if (repository.findByEmail(usuario.getEmail()) != null) {
+            // Email já cadastrado, retorne uma mensagem de erro
+            System.out.println("Email já cadastrado.");
+            return ResponseEntity.badRequest().body("Email já cadastrado.");
         }
+
+        if(repository.findByCpf(usuario.getCpf()) != null){
+            System.out.println("Cpf ja cadastrado.");
+            return ResponseEntity.badRequest().body("Cpf ja cadastrado.");
+        }
+
+        Usuario usuario1 = service.cadastrar(usuario);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(usuario1.getId()).toUri();
+        return ResponseEntity.created(uri).body(usuario1);
+    }
 }

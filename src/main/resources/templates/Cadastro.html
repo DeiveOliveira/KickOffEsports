@@ -50,6 +50,7 @@
                 <button type="button" class="btn btn-primary btn-block" id="btnCadastrar">Cadastrar</button>
             </form>
         </div>
+        <div id="toast-container" class="toast-container position-fixed p-3 top-0 end-0"></div>
     </div>
 </div>
 <!-- Inclua as referências aos scripts do Bootstrap e do JavaScript aqui -->
@@ -57,32 +58,105 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="../static/js/cadastro.js"></script>
 <script>
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g, '');
+        if (cpf == '') return false;
+        // Elimina CPFs inválidos conhecidos
+        if (
+            cpf.length != 11 ||
+            cpf == '00000000000' ||
+            cpf == '11111111111' ||
+            cpf == '22222222222' ||
+            cpf == '33333333333' ||
+            cpf == '44444444444' ||
+            cpf == '55555555555' ||
+            cpf == '66666666666' ||
+            cpf == '77777777777' ||
+            cpf == '88888888888' ||
+            cpf == '99999999999'
+        ) {
+            return false;
+        }
+        // Valida 1o dígito
+        var add = 0;
+        for (var i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
+        var rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(9))) return false;
+        // Valida 2o dígito
+        add = 0;
+        for (var i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
+        rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(10))) return false;
+        return true;
+    }
+
+    function validarEmail(email) {
+        // Expressão regular para validar um endereço de e-mail
+        var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return regex.test(email);
+    }
+
     $(document).ready(function() {
         $('#btnCadastrar').click(function() {
+            // Verifica se todos os campos obrigatórios foram preenchidos
+            var nome = $('#nome').val();
+            var email = $('#email').val();
+            var cpf = $('#cpf').val();
+            var senha = $('#senha').val();
+
+            if (nome === '' || email === '' || cpf === '' || senha === '') {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            // Verifica se o e-mail é válido
+            if (!validarEmail(email)) {
+                alert('E-mail inválido. Por favor, verifique o e-mail informado.');
+                return;
+            }
+
+            // Verifica se o CPF é válido
+            if (!validarCPF(cpf)) {
+                alert('CPF inválido. Por favor, verifique o CPF informado.');
+                return;
+            }
+
             // Serializa os dados do formulário em um objeto JavaScript
             var usuario = {
-                nome: $('#nome').val(),
-                email: $('#email').val(),
-                cpf: $('#cpf').val(),
-                senha: $('#senha').val(),
+                nome: nome,
+                email: email,
+                cpf: cpf,
+                senha: senha,
                 role: $('#role').val()
             };
 
             // Faz a solicitação AJAX para enviar os dados como JSON
             $.ajax({
-                type: 'POST',
-                url: '/cadastrar',
-                contentType: 'application/json',
-                data: JSON.stringify(usuario),
-                success: function(data) {
-                    // Manipule a resposta de sucesso aqui
-                    console.log('Cadastro realizado com sucesso:', data);
-                },
-                error: function(error) {
-                    // Manipule os erros aqui
-                    console.error('Erro ao cadastrar:', error);
-                }
-            });
+            type: 'POST',
+            url: '/cadastrar',
+            contentType: 'application/json',
+            data: JSON.stringify(usuario),
+            success: function(data) {
+                // Manipule a resposta de sucesso aqui
+                alert('Cadastro realizado com sucesso');
+                console.log('Cadastro realizado com sucesso:', data);
+
+                window.location.href = '/listaDeUsuario';
+            },
+            error: function(xhr, status, error) {
+            // Verifique se a resposta do servidor é um erro 400 (Bad Request)
+            if (xhr.status === 400) {
+                var errorMessage = xhr.responseText;
+                alert('Erro ao cadastrar: ' + errorMessage);
+            } else {
+                alert('Erro ao cadastrar: ' + error);
+            }
+            console.error('Erro ao cadastrar:', error);
+        }
+
+        });
         });
     });
 </script>
