@@ -38,8 +38,24 @@
                     th:each="listando : ${lista}">
                 <td th:text="${listando.getNome}">Nome</td>
                 <td th:text="${listando.getEmail}">Email</td>
-                <td th:text="${listando.getStatus}">Status</td>
-                <td th:text="${listando.getFuncao}">Grupo</td>
+                <td>
+                    <button
+                            th:if="${listando.getStatus()}"
+                            type="button"
+                            class="btn btn-success status-button"
+                            data-user-id="${listando.getId()}">
+                        Ativo
+                    </button>
+                    <button
+                            th:unless="${listando.getStatus()}"
+                            type="button"
+                            class="btn btn-danger status-button"
+                            data-user-id="${listando.getId()}">
+                        Inativo
+                    </button>
+                </td>
+
+                <td th:text="${listando.getRole}">Grupo</td>
 
                 <td><a th:href="@{'/cadastro' + ${listando.getId}}">Editar</a></td>
 
