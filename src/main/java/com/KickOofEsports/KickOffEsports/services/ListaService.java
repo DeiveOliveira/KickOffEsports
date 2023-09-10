@@ -7,6 +7,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ListaService {
 
@@ -29,5 +31,10 @@ public class ListaService {
         }else{
             user.setStatus(true);
         }
+    }
+
+    public List<Usuario> pesquisaPorNome(String nome){
+        List<Usuario> list = repository.findByNome(nome);
+        return list;
     }
 }

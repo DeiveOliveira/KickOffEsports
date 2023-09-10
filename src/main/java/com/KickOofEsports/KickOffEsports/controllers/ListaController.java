@@ -22,12 +22,22 @@ public class ListaController {
     ListaService service;
 
     @GetMapping("/listaDeUsuario")
-    public ModelAndView lista(){
-        List<Usuario> lista = this.repository.findAll();
-        ModelAndView listaDeUsuario = new ModelAndView();
-        listaDeUsuario.addObject("lista", lista);
-        listaDeUsuario.setViewName("ListaUsuarios");
-        return listaDeUsuario;
+    public ModelAndView lista(@RequestParam(name = "nome", required = false) String nome) {
+        List<Usuario> lista;
+        ModelAndView modelAndView = new ModelAndView();
+        System.out.println("pesquisou com sucesso por " + nome);
+        if (nome != null && !nome.isEmpty()) {
+            // Realize a busca por nome com base no parâmetro 'nome'
+            lista = repository.findByNome(nome);
+            modelAndView.addObject("lista", lista);
+            modelAndView.setViewName("ListaUsuarios");
+        } else {
+            lista = repository.findAll();
+            modelAndView.addObject("lista", lista);
+            modelAndView.setViewName("ListaUsuarios");
+        }
+
+        return modelAndView;
     }
 
     @PutMapping(value = "/atualizarStatus/{id}")
@@ -35,5 +45,13 @@ public class ListaController {
         Usuario usuario = service.atualizarStatus(id);
         return ResponseEntity.ok().body(usuario);
     }
+    /*
+    @GetMapping(value = "/ListaDeUsuario/{nome}")
+    public ResponseEntity<?> pesquisaPorNome(@PathVariable String nome){
+        System.out.println("pesquisou com sucesso");
+        List<Usuario> lista = service.pesquisaPorNome(nome);
+        return ResponseEntity.ok().body(lista);
+    }
 
+     */
 }

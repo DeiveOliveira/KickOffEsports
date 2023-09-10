@@ -16,63 +16,100 @@
     <nav class="navbar navbar-light bg-light my-2">
         <form class="form-inline">
             <input class="form-control w-40 p-3" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
-            <button class="btn btn-outline-success m-2 btn-pesquisar" type="submit">Pesquisar</button>
+            <button
+                    class="btn btn-outline-success m-2 btn-pesquisar"
+                    type="submit"
+                    onclick="pesquisarPorNome(event, this);">
+                Pesquisar</button>
+
             <a th:href="@{/cadastro}" class="btn btn-outline-secondary btn-cadastrar">
                 <i class="fas fa-plus"></i>Novo Usuário
             </a>
         </form>
     </nav>
-        <table class="table">
-            <thead>
-            <tr>
-                <th><i class="icon fas fa-user"></i>Nome</th>
-                <th><i class="icon fas fa-envelope"></i>Email</th>
-                <th><i class="icon fas fa-toggle-on"></i>Status</th>
-                <th><i class="icon fas fa-users"></i>Grupo</th>
-                <th><i class="icon fas fa-pencil-alt"></i> Editar</th>
-     <div class="user-card">
-           </tr>
-            </thead>
-            <tbody>
-            <tr
-                    th:each="listando : ${lista}">
-                <td th:text="${listando.getNome}">Nome</td>
-                <td th:text="${listando.getEmail}">Email</td>
-
-                <td>
-                    <button
-                            th:if="${listando.getStatus()}"
-                            type="button"
-                            class="btn btn-success status-button"
-                            th:data-user-id="${listando.getId()}"
-                            data-status="Ativo"
-                            onclick="atualizarStatus(this);">
-                        Ativo
-                    </button>
-                    <button
-                            th:unless="${listando.getStatus()}"
-                            type="button"
-                            class="btn btn-danger status-button"
-                            th:data-user-id="${listando.getId()}"
-                            data-status="Inativo"
-                            onclick="atualizarStatus(this);">
-                        Inativo
-                    </button>
-                </td>
-
-
-                <td th:text="${listando.getRole}">Grupo</td>
-
-                <td><a th:href="@{cadastro/$(listando.getId)}">Editar</a></td>
-            </tr>
-            </tbody>
-        </table>
+    <table id="user-table" class="table">
+        <thead>
+        <tr>
+            <th><i class="icon fas fa-user"></i>Nome</th>
+            <th><i class="icon fas fa-envelope"></i>Email</th>
+            <th><i class="icon fas fa-toggle-on"></i>Status</th>
+            <th><i class="icon fas fa-users"></i>Grupo</th>
+            <th><i class="icon fas fa-pencil-alt"></i> Editar</th>
+        </tr>
+        </thead>
+        <tbody id="user-list">
+        <tr th:each="listando : ${lista}">
+            <td th:text="${listando.getNome}">Nome</td>
+            <td th:text="${listando.getEmail}">Email</td>
+            <td>
+                <button
+                        th:if="${listando.getStatus()}"
+                        type="button"
+                        class="btn btn-success status-button"
+                        th:data-user-id="${listando.getId()}"
+                        data-status="Ativo"
+                        onclick="atualizarStatus(this);">
+                    Ativo
+                </button>
+                <button
+                        th:unless="${listando.getStatus()}"
+                        type="button"
+                        class="btn btn-danger status-button"
+                        th:data-user-id="${listando.getId()}"
+                        data-status="Inativo"
+                        onclick="atualizarStatus(this);">
+                    Inativo
+                </button>
+            </td>
+            <td th:text="${listando.getRole}">Grupo</td>
+            <td><a th:href="@{cadastro/$(listando.getId)}">Editar</a></td>
+        </tr>
+        </tbody>
+    </table>
     </div>
 </div>
 <!-- Inclua as referências aos scripts do Bootstrap e do JavaScript aqui -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="../static/javascript/ListaDeUsuarios.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const userList = document.getElementById("userList");
+    const users = [
+            { id: 1, nome: "Usuário 1", email: "usuario1@example.com", status: "Ativo", grupo: "Grupo A", editar: "Editar" },
+        { id: 2, nome: "Usuário 2", email: "usuario2@example.com", status: "Ativo", grupo: "Grupo B", editar: "Editar" },
+        // Adicione mais objetos de usuário conforme necessário
+    ];
+
+    users.forEach(user => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${user.nome}</td>
+            <td>${user.email}</td>
+            <td>
+                <button id="btnAtualizar_${user.id}"
+                        type="button"
+                        class="btn btn-success status-button"
+                        data-user-id="${user.id}"
+                        onclick="atualizarStatus();">
+                    Ativo
+                </button>
+                <button id="btnInativo_${user.id}"
+                        type="button"
+                        class="btn btn-danger status-button"
+                        data-user-id="${user.id}"
+                        onclick="atualizarStatus();">
+                    Inativo
+                </button>
+            </td>
+            <td>${user.grupo}</td>
+            <td>${user.editar}</td>
+        `;
+        userList.appendChild(row);
+    });
+});
+
+
+</script>
 <script>
     function atualizarStatus(button) {
     const userId = button.getAttribute("data-user-id");
@@ -117,6 +154,35 @@
         alert('Operação cancelada');
     }
 }
+</script>
+<script>
+    function pesquisarPorNome(event, button) {
+    event.preventDefault();
+    const inputElement = document.querySelector('.form-control');
+    const pesquisa = inputElement.value;
+
+    $.ajax({
+        type: 'GET',
+        url: '/listaDeUsuario?nome=' + pesquisa, // Adicione o parâmetro 'nome' na URL
+        contentType: 'application/json',
+        success: function (data) {
+            console.log('Pesquisou com sucesso:', data);
+            window.location.href = '/listaDeUsuario?nome=' + pesquisa;
+            const userList = document.getElementById('user-list');
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                var errorMessage = xhr.responseText;
+                alert('Erro ao pesquisar: ' + errorMessage);
+            } else {
+                alert('Erro ao pesquisar: ' + error);
+            }
+            console.error('Erro ao pesquisar:', error);
+        }
+    });
+}
+
+
 
 </script>
 </body>
