@@ -62,7 +62,7 @@
                 </button>
             </td>
             <td th:text="${listando.getRole}">Grupo</td>
-            <td><a th:href="@{cadastro/$(listando.getId)}">Editar</a></td>
+            <td><a th:href="@{/editar/{id}(id=${listando.id})}">Editar</a></td>
         </tr>
         </tbody>
     </table>

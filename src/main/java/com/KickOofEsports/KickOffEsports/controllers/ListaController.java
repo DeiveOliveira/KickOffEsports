@@ -45,13 +45,5 @@ public class ListaController {
         Usuario usuario = service.atualizarStatus(id);
         return ResponseEntity.ok().body(usuario);
     }
-    /*
-    @GetMapping(value = "/ListaDeUsuario/{nome}")
-    public ResponseEntity<?> pesquisaPorNome(@PathVariable String nome){
-        System.out.println("pesquisou com sucesso");
-        List<Usuario> lista = service.pesquisaPorNome(nome);
-        return ResponseEntity.ok().body(lista);
-    }
 
-     */
 }
