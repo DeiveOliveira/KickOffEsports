@@ -20,18 +20,22 @@
             <form id="meuFormulario">
 
                 <div class="form-group">
+                    <input type="hidden" id="id" name="id" th:if="${usuario}" th:value="${usuario.id}">
+                </div>
+
+                <div class="form-group">
                     <label for="nome">Nome do Usuário:</label>
-                    <input type="text" class="form-control" id="nome" name="nome" required>
+                    <input type="text" class="form-control" id="nome" name="nome" required th:value="${usuario?.getNome()}">
                     <span id="nomeError" class="error"></span>
                 </div>
                 <div class="form-group">
                     <label for="email">E-mail:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email" required th:value="${usuario?.getEmail()}">
                     <span id="emailError" class="error"></span>
                 </div>
                 <div class="form-group">
                     <label for="cpf">CPF:</label>
-                    <input type="text" class="form-control" id="cpf" name="cpf" required>
+                    <input type="text" class="form-control" id="cpf" name="cpf" required th:value="${usuario?.getCpf()}">
                     <span id="cpfError" class="error"></span>
                 </div>
 
@@ -42,7 +46,7 @@
 
                 <div class="form-group">
                     <label for="role">Grupo:</label>
-                    <select class="form-control" id="role" name="role">
+                    <select class="form-control" id="role" name="role" th:value="${usuario?.getRole()}">
                         <option value="ADMIN">Admin</option>
                         <option value="ESTOQUISTA">Estoquista</option>
                     </select>
@@ -73,33 +77,32 @@
             cpf == '77777777777' ||
             cpf == '88888888888' ||
             cpf == '99999999999'
-        ) {
+        )
+        {
             return false;
         }
-        // Valida 1o dígito
+
         var add = 0;
         for (var i = 0; i < 9; i++) add += parseInt(cpf.charAt(i)) * (10 - i);
         var rev = 11 - (add % 11);
         if (rev == 10 || rev == 11) rev = 0;
         if (rev != parseInt(cpf.charAt(9))) return false;
-        // Valida 2o dígito
         add = 0;
         for (var i = 0; i < 10; i++) add += parseInt(cpf.charAt(i)) * (11 - i);
         rev = 11 - (add % 11);
         if (rev == 10 || rev == 11) rev = 0;
         if (rev != parseInt(cpf.charAt(10))) return false;
         return true;
+
     }
 
     function validarEmail(email) {
-        // Expressão regular para validar um endereço de e-mail
         var regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         return regex.test(email);
     }
 
     $(document).ready(function() {
         $('#btnCadastrar').click(function() {
-            // Verifica se todos os campos obrigatórios foram preenchidos
             var nome = $('#nome').val();
             var email = $('#email').val();
             var cpf = $('#cpf').val();
@@ -110,19 +113,16 @@
                 return;
             }
 
-            // Verifica se o e-mail é válido
             if (!validarEmail(email)) {
                 alert('E-mail inválido. Por favor, verifique o e-mail informado.');
                 return;
             }
 
-            // Verifica se o CPF é válido
             if (!validarCPF(cpf)) {
                 alert('CPF inválido. Por favor, verifique o CPF informado.');
                 return;
             }
 
-            // Serializa os dados do formulário em um objeto JavaScript
             var usuario = {
                 nome: nome,
                 email: email,
@@ -131,28 +131,45 @@
                 role: $('#role').val()
             };
 
-            // Faz a solicitação AJAX para enviar os dados como JSON
+            if (window.location.pathname.startsWith('/editar/')) {
+
+            var urlAtual = window.location.href;
+            var partesDaUrl = urlAtual.split('/');
+            var idUsuario = partesDaUrl[partesDaUrl.length - 1];
+
+            console.log('ID do usuário:', idUsuario);
+
+            url = '/editarUsuario/' + idUsuario;
+            type = 'PUT'
+            acao = 'Atualizado'
+        } else {
+
+            url = '/cadastrar';
+            type = 'POST'
+            acao = 'Cadastrado';
+
+        }
+
             $.ajax({
-            type: 'POST',
-            url: '/cadastrar',
+            type: type,
+            url: url,
             contentType: 'application/json',
             data: JSON.stringify(usuario),
             success: function(data) {
-                // Manipule a resposta de sucesso aqui
-                alert('Cadastro realizado com sucesso');
-                console.log('Cadastro realizado com sucesso:', data);
+
+                alert(acao + ' com sucesso');
+                console.log(acao + ' com sucesso:', data);
 
                 window.location.href = '/listaDeUsuario';
             },
             error: function(xhr, status, error) {
-            // Verifique se a resposta do servidor é um erro 400 (Bad Request)
             if (xhr.status === 400) {
                 var errorMessage = xhr.responseText;
-                alert('Erro ao cadastrar: ' + errorMessage);
+                alert('Erro : ' + errorMessage);
             } else {
-                alert('Erro ao cadastrar: ' + error);
+                alert('Erro : ' + error);
             }
-            console.error('Erro ao cadastrar:', error);
+            console.error('Erro :', error);
         }
 
         });
