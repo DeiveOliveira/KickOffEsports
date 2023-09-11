@@ -4,6 +4,7 @@ body {
     color: #ffffff;
   }
 
+
   .container {
     margin-top: 50px;
   }
@@ -21,9 +22,7 @@ body {
   /* Estilo do título da página */
   h1 {
     text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #000; /* Título em branco para contrastar com a imagem */
+    color: #000;
   }
 
   /* Estilo do botão */
@@ -51,11 +50,6 @@ body {
     font-size: 18px;
     margin-right: 5px;
   }
-
-  .btn-cadastrar {
-    background-color: #00000083;
-  }
-
 
 .switch__container {
   margin: 30px auto;

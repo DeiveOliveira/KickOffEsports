@@ -8,21 +8,22 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/ListaDeUsuarios.css}">
+    <link rel="stylesheet" href="../static/css/ListaDeUsuarios.css">
 </head>
 <body>
-<div class="container">
-    <h1 class="my-4">Lista de Usuários</h1>
+<div class="container mt-5">
+    <h1>Lista de Usuários</h1>
 
     <nav class="navbar navbar-light bg-light my-2">
-        <form class="form-inline">
-            <input class="form-control w-40 p-3" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+        <form class="input-group mr-2">
+            <input class="form-control m-2" type="search" id="inputPesquisa" placeholder="Pesquisar" aria-label="Pesquisar">
             <button
-                    class="btn btn-outline-success m-2 btn-pesquisar"
+                    class="btn btn-outline-secondary m-2 btn-pesquisar"
                     type="submit"
                     onclick="pesquisarPorNome(event, this);">
                 Pesquisar</button>
 
-            <a th:href="@{/cadastro}" class="btn btn-outline-secondary btn-cadastrar">
+            <a th:href="@{/cadastro}" class="btn btn-success m-2 btn-cadastrar">
                 <i class="fas fa-plus"></i>Novo Usuário
             </a>
         </form>

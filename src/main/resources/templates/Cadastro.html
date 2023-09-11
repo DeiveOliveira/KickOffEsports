@@ -45,6 +45,12 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="confimarSenha">Confirmar Senha:</label>
+                    <input type="password" class="form-control" id="confimarSenha" name="confimarSenha" required>
+                    <span id="senhaErro" style="color: red;"></span>
+                </div>
+
+                <div class="form-group">
                     <label for="role">Grupo:</label>
                     <select class="form-control" id="role" name="role" th:value="${usuario?.getRole()}">
                         <option value="ADMIN">Admin</option>
@@ -175,6 +181,17 @@
         });
         });
     });
+
+    let senha = document.querySelector("#senha")
+    let confimarSenha = document.querySelector("#confimarSenha")
+
+    confimarSenha.addEventListener('input', () =>{
+        if(senha.value != confimarSenha.value){
+            alert('As senhas não são iguais')
+            returns
+        }
+    })
+
 </script>
 </body>
 </html>
