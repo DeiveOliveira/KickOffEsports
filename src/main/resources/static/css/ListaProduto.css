@@ -1,0 +1,32 @@
+
+body {
+    background-image: url(../img/camisasdetime.jpg); /* Substitua com o caminho para sua imagem de fundo */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #fff; 
+}
+
+h1 {
+    text-align: center;
+}
+
+#btnCadastro {
+    width: 15%;
+}
+
+body, button, input, select{
+    background-color: black;
+    color: black;
+}
+
+.table  {
+    background-color: rgba(255, 255, 255, 0.7) !important; /* Fundo mais transparente */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Estilo das linhas da tabela */
+  .table tr:hover {
+    background-color: rgba(248, 249, 250, 0.7); /* Fundo mais transparente para linhas ao passar o mouse */
+  }
