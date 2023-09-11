@@ -42,12 +42,13 @@
                 <div class="form-group">
                     <label for="senha">Senha:</label>
                     <input type="password" class="form-control" id="senha" name="senha" required>
+                    <span id="senhaError" class="error"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="confimarSenha">Confirmar Senha:</label>
-                    <input type="password" class="form-control" id="confimarSenha" name="confimarSenha" required>
-                    <span id="senhaErro" style="color: red;"></span>
+                    <label for="confirmarSenha">Confirmar Senha:</label>
+                    <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
+                    <span id="confirmarSenhaError" class="error"></span>
                 </div>
 
                 <div class="form-group">
@@ -107,14 +108,25 @@
         return regex.test(email);
     }
 
+    function validarSenha(senha, confirmarSenha){
+    if(senha != confirmarSenha){
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
     $(document).ready(function() {
         $('#btnCadastrar').click(function() {
             var nome = $('#nome').val();
             var email = $('#email').val();
             var cpf = $('#cpf').val();
             var senha = $('#senha').val();
+            var confirmarSenha = $('#confirmarSenha').val();
 
-            if (nome === '' || email === '' || cpf === '' || senha === '') {
+
+            if (nome === '' || email === '' || cpf === '' || senha === '' || confirmarSenha === '') {
                 alert('Por favor, preencha todos os campos.');
                 return;
             }
@@ -126,6 +138,11 @@
 
             if (!validarCPF(cpf)) {
                 alert('CPF inválido. Por favor, verifique o CPF informado.');
+                return;
+            }
+
+            if (!validarSenha(senha, confirmarSenha)) {
+                alert('As senhas estão diferentes!');
                 return;
             }
 
@@ -181,16 +198,6 @@
         });
         });
     });
-
-    let senha = document.querySelector("#senha")
-    let confimarSenha = document.querySelector("#confimarSenha")
-
-    confimarSenha.addEventListener('input', () =>{
-        if(senha.value != confimarSenha.value){
-            alert('As senhas não são iguais')
-            returns
-        }
-    })
 
 </script>
 </body>
