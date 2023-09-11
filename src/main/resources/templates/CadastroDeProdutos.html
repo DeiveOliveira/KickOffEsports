@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Produto</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/CadastroDeProdutos.css}">
+    <link rel="stylesheet" href="../static/css/CadastroDeProdutos.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Formulário de Produto</h2>
+    <form id="productForm">
+        <div class="form-group">
+            <label for="productName">Nome do Produto (até 200 caracteres):</label>
+            <input type="text" class="form-control" id="productName" maxlength="200" required>
+        </div>
+        <div class="form-group">
+            <label for="productRating">Avaliação:</label>
+            <select class="form-control" id="productRating" required>
+                <option value="1">1</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2</option>
+                <option value="2.5">2.5</option>
+                <option value="3">3</option>
+                <option value="3.5">3.5</option>
+                <option value="4">4</option>
+                <option value="4.5">4.5</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="productDescription">Descrição Detalhada (até 2000 caracteres):</label>
+            <textarea class="form-control" id="productDescription" rows="5" maxlength="2000" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="productPrice">Preço do Produto (2 casas decimais):</label>
+            <input type="number" step="0.01" class="form-control" id="productPrice" required>
+        </div>
+        <div class="form-group">
+            <label for="productStock">Quantidade em Estoque (valor inteiro):</label>
+            <input type="number" step="1" class="form-control" id="productStock" required>
+        </div>
+        <div class="form-group">
+            <label for="productImages">Adicionar Imagens:</label>
+            <input type="file" class="form-control-file" id="productImages" multiple>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="reset" class="btn btn-secondary">Cancelar</button>
+    </form>
+</div>
+
+<!-- Adicione os links para os arquivos JavaScript do Bootstrap e seu próprio script JavaScript -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+body {
+  background-image: url(../img/campo.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #f8f9fa; /* Cor de backup para quando a imagem não carregar */
+  color: white;
+
+}
