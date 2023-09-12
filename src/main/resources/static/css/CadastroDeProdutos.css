@@ -1,9 +1,21 @@
 body {
-  background-image: url(../img/campo.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+  background-image: url(../img/produto.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-color: #f8f9fa; /* Cor de backup para quando a imagem não carregar */
   color: white;
 
+}
+
+h1{
+  text-align: center;
+  color: black;
+}
+
+label{
+  color:#0f1011 ;
+}
+.btn{
+  justify-content: center;
 }

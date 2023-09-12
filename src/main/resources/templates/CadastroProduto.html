@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulário de Produto</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    <link rel="stylesheet" th:href="@{/css/CadastroDeProdutos.css}">
+    <link rel="stylesheet" href="../static/css/CadastroDeProdutos.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Formulário de Produto</h1>
+        <form>
+            <div class="form-row">
+                <div class="form-group col-md-9">
+                    <label for="nomeProduto">Nome do Produto</label>
+                    <input type="text" class="form-control" id="nomeProduto" maxlength="200">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="avaliacao">Avaliação</label>
+                    <input type="number" class="form-control" id="avaliacao" min="1" max="5" step="0.5">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="descricao">Descrição Detalhada</label>
+                <textarea class="form-control" id="descricao" rows="3" maxlength="2000"></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="preco">Preço do Produto</label>
+                    <input type="number" class="form-control" id="preco" step=".01">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="estoque">Quantidade em Estoque</label>
+                    <input type="number" class="form-control" id="estoque">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="imagem">Upload de Imagem</label>
+                <input type="file" class="form-control-file" id="imagem">
+                
+            </div>
+            <!-- Carousel -->
+            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" id="carousel-inner">
+                    <!-- Itens do carrossel serão adicionados aqui -->
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Próximo</span>
+                </a>
+            </div>
+            <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg mr-3">Salvar</button>
+            <button type="reset" class="btn btn-secondary btn-lg">Cancelar</button>
+        </div>
+        </form>
+    </div>
+
+    <!-- Adicione o JavaScript do Bootstrap no final do corpo do documento -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var images = document.getElementById('imagem').files;
+            var carouselInner = document.getElementById('carousel-inner');
+            for (var i = 0; i < images.length; i++) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var div = document.createElement('div');
+                    div.className = 'carousel-item';
+                    if (carouselInner.childElementCount === 0) {
+                        div.className += ' active';
+                    }
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'd-block w-100';
+                    div.appendChild(img);
+                    carouselInner.appendChild(div);
+                }
+                reader.readAsDataURL(images[i]);
+            }
+        });
+        </script>
+    
+</body>
+</html>
