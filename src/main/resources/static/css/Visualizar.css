@@ -1,0 +1,60 @@
+body {
+    background-image: url(../img/bolas.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #f8f9fa;
+
+    margin-top: 200px;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+.stars-highlight {
+    font-weight: bold;
+}
+
+.text-warning {
+    color: yellow;
+}
+
+.price-highlight {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #ff5733; /* ou qualquer cor de destaque desejada */
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.carousel-inner {
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.carousel-img {
+    width: 100%;
+    height: auto;
+}
+
+h2 {
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+p {
+    color: #666;
+    margin-bottom: 10px;
+}
