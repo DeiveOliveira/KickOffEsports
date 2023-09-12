@@ -26,9 +26,8 @@ public class Produto implements Serializable {
     private Double preco;
     private Integer quantidade;
 
-    @OneToMany
-    @JoinColumn(name = "img_id")
-    private Set<ListaDeImagens> img = new HashSet<>();
+    @OneToMany(mappedBy = "produto")
+    private Set<Imagens> img = new HashSet<>();
 
     public Produto(String nome, Double avaliacao, String descricao, Double preco, Integer quantidade) {
         this.nome = nome;

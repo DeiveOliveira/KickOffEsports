@@ -1,6 +1,6 @@
 package com.KickOofEsports.KickOffEsports.config;
 
-import com.KickOofEsports.KickOffEsports.entities.ListaDeImagens;
+import com.KickOofEsports.KickOffEsports.entities.Imagens;
 import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ListaDeImagensRepository;
@@ -48,11 +48,13 @@ public class TestConfig implements CommandLineRunner {
         produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 
 
-        ListaDeImagens l1 = new ListaDeImagens(p1, "5555");
-        ListaDeImagens l2 = new ListaDeImagens(p1, "555500");
-        ListaDeImagens l3 = new ListaDeImagens(p1, "5555000");
+        Imagens l1 = new Imagens(p1, "5555");
+        Imagens l2 = new Imagens(p1, "55550sdafjois0");
+        Imagens l3 = new Imagens(p2, "5555000000");
+        Imagens l4 = new Imagens(p3, "5dshudhsds555");
+        Imagens l5 = new Imagens(p2, "5555sdasasdasds");
 
-        listaDeImagens.saveAll(Arrays.asList(l1, l2, l3));
+        listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5));
 
 
     }

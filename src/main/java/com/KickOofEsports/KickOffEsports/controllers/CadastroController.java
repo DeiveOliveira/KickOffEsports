@@ -1,5 +1,6 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
+import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
@@ -20,6 +21,8 @@ import java.net.URI;
 @Controller
 @RequestMapping
 public class CadastroController {
+
+    //Ações do cadastrar Usuário
 
     @Autowired
     UsuariosRepository repository;

@@ -1,9 +1,9 @@
 package com.KickOofEsports.KickOffEsports.services;
 
+import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
-import com.KickOofEsports.KickOffEsports.entities.enums.UserRole;
+import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,4 +22,6 @@ public class CadastrarService {
         Usuario usuario = new Usuario(user.getNome(), user.getEmail(), user.getCpf(), user.getSenha(), user.getRole().toString());
         return repository.save(usuario);
     }
+
+
 }

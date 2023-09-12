@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Formulário de Produto</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -10,29 +10,32 @@
 <body>
     <div class="container">
         <h1>Formulário de Produto</h1>
-        <form>
+        <form action="@{produto}" method="post" th:object="produto" anctype="multipart/formt-data">
             <div class="form-row">
+                <div class="form-group">
+                    <input type="hidden" id="id" name="id" th:if="${produto}" th:value="${produto.id}">
+                </div>
                 <div class="form-group col-md-9">
                     <label for="nomeProduto">Nome do Produto</label>
-                    <input type="text" class="form-control" id="nomeProduto" maxlength="200">
+                    <input type="text" class="form-control" id="nomeProduto" required th:value="${produto?.getNome()}" maxlength="200">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="avaliacao">Avaliação</label>
-                    <input type="number" class="form-control" id="avaliacao" min="1" max="5" step="0.5">
+                    <input type="number" class="form-control" id="avaliacao" required th:value="${produto?.getAvaliacao()}" min="1" max="5" step="0.5">
                 </div>
             </div>
             <div class="form-group">
                 <label for="descricao">Descrição Detalhada</label>
-                <textarea class="form-control" id="descricao" rows="3" maxlength="2000"></textarea>
+                <textarea class="form-control" id="descricao" required th:value="${produto?.getDescricao()}" rows="3" maxlength="2000"></textarea>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="preco">Preço do Produto</label>
-                    <input type="number" class="form-control" id="preco" step=".01">
+                    <input type="number" class="form-control" id="preco" required th:value="${produto?.getPreco()}" step=".01">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="estoque">Quantidade em Estoque</label>
-                    <input type="number" class="form-control" id="estoque">
+                    <input type="number" class="form-control" id="estoque" required th:value="${produto?.getEstoque()}">
                 </div>
             </div>
             <div class="form-group">
