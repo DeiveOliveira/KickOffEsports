@@ -1,7 +1,10 @@
 package com.KickOofEsports.KickOffEsports.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -12,11 +15,12 @@ import lombok.*;
 public class Imagens {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.AUTO)
-   private Long id;
+   @GeneratedValue(strategy = GenerationType.UUID)
+   private UUID id;
 
    private String url;
 
+   @JsonBackReference
    @ManyToOne
    @JoinColumn(name = "produto_id", nullable = false)
    private Produto produto;

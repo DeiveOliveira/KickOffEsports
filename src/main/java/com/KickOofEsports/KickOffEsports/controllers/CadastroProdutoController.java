@@ -5,6 +5,7 @@ import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastroProdutoService;
 import com.KickOofEsports.KickOffEsports.utils.UploadImagens;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.beans.Transient;
 import java.net.URI;
+import java.util.Set;
 
 @Controller
 public class CadastroProdutoController {
@@ -31,14 +34,14 @@ public class CadastroProdutoController {
         return cadastroProduto;
     }
 
-   /* @PostMapping("/cadastrarProduto")
-    public ResponseEntity<?> cadastrarProduto(@RequestBody Produto produto){
+    @PostMapping("/cadastrarProduto")
+    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto){
         Produto produto1 = service.cadastrarProduto(produto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(produto1.getId()).toUri();
         return ResponseEntity.created(uri).body(produto1);
-    }*/
+    }
 
     @PostMapping("/produto")
     public ModelAndView cadastroProduto(@ModelAttribute Produto produto, @ModelAttribute Imagens img, @RequestParam("file")MultipartFile imagem){

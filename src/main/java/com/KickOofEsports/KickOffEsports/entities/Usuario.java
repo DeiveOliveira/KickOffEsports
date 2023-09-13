@@ -33,6 +33,7 @@ public class Usuario implements Serializable {
         this.senha = senha;
         this.role = UserRole.valueOf(role.toUpperCase());
         this.status = true;
+
     }
 
 }

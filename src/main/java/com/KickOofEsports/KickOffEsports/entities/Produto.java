@@ -1,10 +1,16 @@
 package com.KickOofEsports.KickOffEsports.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Table(name = "produtos")
@@ -26,8 +32,10 @@ public class Produto implements Serializable {
     private Double preco;
     private Integer quantidade;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "produto")
-    private Set<Imagens> img = new HashSet<>();
+    @Fetch(value = FetchMode.JOIN)
+    private List<Imagens> img = new ArrayList<>();
 
     public Produto(String nome, Double avaliacao, String descricao, Double preco, Integer quantidade) {
         this.nome = nome;
@@ -36,4 +44,6 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.quantidade = quantidade;
     }
+
+
 }
