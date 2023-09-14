@@ -48,9 +48,9 @@
     </div>
     <div class="col-md-6">
       <!-- Informações do Produto -->
-      <h2 class="display-4 text-secondary">Camisa teste</h2>
-      <p class="stars-highlight">Avaliação: <span class="text-warning">★ 5</span></p>
-      <p><span class="text-primary h-50 d-inline-block" style="width: 100px; background-color: rgba(0,0,255,.1)">R$ 150,00</span></p>
+      <h2 class="display-4 text-secondary" th:text="${produto.nome}"></h2>
+      <p class="stars-highlight">Avaliação: <span class="text-warning">★</span><span class="text-warning" th:text="${produto.avaliacao}"></span></p>
+      <p class="text-primary h-50 d-inline-block">R$<span class="text-primary h-50 d-inline-block" th:text="${produto.preco}"></span></p>
       <button class="btn btn-primary btn-lg d-flex justify-content-center">Comprar</button>
     </div>
   </div>
