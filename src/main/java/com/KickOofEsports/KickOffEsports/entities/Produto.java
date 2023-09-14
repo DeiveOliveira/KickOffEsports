@@ -31,6 +31,7 @@ public class Produto implements Serializable {
     private String descricao;
     private Double preco;
     private Integer quantidade;
+    private Boolean status;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "produto")
@@ -43,6 +44,7 @@ public class Produto implements Serializable {
         this.descricao = descricao;
         this.preco = preco;
         this.quantidade = quantidade;
+        this.status = true;
     }
 
 

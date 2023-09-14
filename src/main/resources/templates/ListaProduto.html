@@ -4,121 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Produtos</title>
-    <!-- Adicione o link para o Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Inclua o link para o seu arquivo CSS personalizado -->
     <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
-    <link rel="stylesheet" href="../static/css/ListaProduto.css">
-
 </head>
 <body>
-
 <div class="container mt-5">
     <h1>Lista de Produtos</h1>
-
-
-     <!-- Botões de Ação -->
     <div class="d-flex mb-3">
-        <!-- Botão de Pesquisa -->
         <div class="input-group mr-2">
-            <input type="text" class="form-control" id="pesquisaProduto" placeholder="Pesquisar por nome do produto">
+            <input type="text" class="form-control" id="pesquisarProduto" placeholder="Procurar">
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary ml-2" type="button" id="btnPesquisar">Pesquisar</button>
+                <button class="btn btn-outline-secondary ml-2"
+                        type="submit"
+                        id="btnPesquisar"
+                        onclick="pesquisarPorDescricao(event, this);">
+                    Pesquisar
+                </button>
             </div>
         </div>
-
-        <!-- Botão de Cadastro -->
         <a th:href="@{/cadastro}" class="btn btn-success" id="btnCadastro">
-            <i class="fas fa-plus"></i>ADD Produto
+            <i class="fas fa-plus"></i> Adicionar Produto
         </a>
-        
     </div>
-
-    <!-- Tabela de Produtos -->
     <table class="table">
         <thead>
-            <tr>
-                <th><i class="fas fa-barcode"></i> Código</th>
-                <th><i class="fas fa-tags"></i> Nome</th>
-                <th><i class="fas fa-cubes"></i> Estoque</th>
-                <th><i class="fas fa-dollar-sign"></i> Valor</th>
-                <th><i class="fas fa-check-circle"></i> Status</th>
-                <th><i class="fas fa-info-circle"></i> Detalhes</th>
-            </tr>
+        <tr>
+            <th><i class="fas fa-barcode"></i> Código</th>
+            <th><i class="fas fa-tags"></i> Nome</th>
+            <th><i class="fas fa-cubes"></i> Estoque</th>
+            <th><i class="fas fa-info-circle"></i> Detalhes</th>
+            <th><i class="fas fa-dollar-sign"></i> Valor</th>
+            <th><i class="fas fa-info-circle"></i> Avaliação</th>
+            <th><i class="fas fa-check-circle"></i> Status</th>
+            <th><i class="fas fa-edit"></i> Editar</th> <!-- Adicionei o ícone de edição -->
+        </tr>
         </thead>
-        <tbody>
-            <!-- Iteração sobre a lista de produtos -->
-            <tr th:each="produto : ${pagedProducts}">
-                <td th:text="${produto.codigo}"></td>
-                <td th:text="${produto.nome}"></td>
-                <td th:text="${produto.quantidade}"></td>
-                <td th:text="${produto.valor}"></td>
-                <td th:text="${produto.status}"></td>
-            </tr>
+        <tbody id="produtosList"> <!-- Adicionei um ID para a tabela -->
+        <!-- Iteração sobre a lista de produtos do banco de dados -->
+        <tr th:each="produto : ${lista}">
+            <td th:text="${produto.id}"></td>
+            <td th:text="${produto.nome}"></td>
+            <td th:text="${produto.quantidade}"></td>
+            <td th:text="${produto.descricao}"></td>
+            <td th:text="${produto.preco}"></td>
+            <td th:text="${produto.avaliacao}"></td>
+            <td>
+                <button th:if="${produto.getStatus()}"
+                        type="submit"
+                        class="btn btn-success status-button"
+                        th:data-produto-id="${produto.id}"
+                        data-status="Ativo"
+                        onclick="atualizarStatusProduto(this);">
+                    Ativo
+                </button>
+                <button th:unless="${produto.getStatus()}"
+                        type="submit"
+                        class="btn btn-danger status-button"
+                        th:data-produto-id="${produto.id}"
+                        data-status="Inativo"
+                        onclick="atualizarStatusProduto(this);">
+                    Inativo
+                </button>
+            </td>
+            <td><a th:href="@{/editarProduto/{id}(id=${produto.id})}">Editar</a></td>
+        </tr>
         </tbody>
     </table>
-
-    <!-- Paginação -->
-    <nav aria-label="Navegação de página">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Anterior">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Anterior</span>
-                </a>
-            </li>
-            <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == page} ? 'page-item active' : 'page-item'">
-                <a class="page-link" th:href="@{'/?page=' + pageNumber}" th:text="${pageNumber}"></a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Próximo">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Próximo</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
 </div>
-
-<!-- Script para lidar com a pesquisa -->
-<script>
-    $(document).ready(function() {
-        const produtos = /* Sua lista de produtos */
-        
-        function atualizarTabela(produtosFiltrados) {
-            const tabelaProdutos = document.querySelector('tbody');
-            tabelaProdutos.innerHTML = '';
-
-            for (const produto of produtosFiltrados) {
-                const row = tabelaProdutos.insertRow();
-                row.innerHTML = `
-                    <td>${produto.codigo}</td>
-                    <td>${produto.nome}</td>
-                    <td>${produto.quantidade}</td>
-                    <td>${produto.valor}</td>
-                    <td>${produto.status}</td>
-                `;
-            }
-        }
-
-        // Manipulador de clique para o botão de pesquisa
-        $('#btnPesquisar').on('click', function() {
-            const termoPesquisa = $('#pesquisaProduto').val().toLowerCase();
-            const produtosFiltrados = produtos.filter(function(produto) {
-                return produto.nome.toLowerCase().includes(termoPesquisa);
-            });
-            atualizarTabela(produtosFiltrados);
-        });
-
-        // Exiba todos os produtos ao carregar a página
-        atualizarTabela(produtos);
-    });
-</script>
-
-<!-- Adicione o link para o Bootstrap JS e o jQuery (opcional) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function atualizarStatusProduto(button) {
+    const produtosId = button.getAttribute("data-produto-id");
+    const status = button.getAttribute("data-status");
+
+    console.log("Produtos ID:", produtosId);
+    console.log("Status:", status);
+
+    let confirmMessage = '';
+
+    if (status === 'Ativo') {
+        confirmMessage = 'Tem certeza de que deseja mudar para Inativo?';
+    } else if (status === 'Inativo') {
+        confirmMessage = 'Tem certeza de que deseja mudar para Ativo?';
+    }
+
+    const confirmacao = confirm(confirmMessage);
+
+    if (confirmacao) {
+        $.ajax({
+            type: 'PUT',
+            url: '/atualizarStatusProduto/' + produtosId,
+            contentType: 'application/json',
+            data: JSON.stringify({ produtoId: produtosId }),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/listaDeProduto';
+            },
+            error: function(xhr, status, error) {
+                console.log('Erro na chamada AJAX:', error);
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+            }
+        });
+    } else {
+        alert('Operação cancelada');
+    }
+}
+</script>
+<script>
+    function pesquisarPorDescricao(event, button) {
+    event.preventDefault();
+    const inputElement = document.querySelector('.form-control');
+    const pesquisa = inputElement.value;
+
+    $.ajax({
+        type: 'GET',
+        url: '/listaDeProduto?descricao=' + pesquisa, // Adicione o parâmetro 'nome' na URL
+        contentType: 'application/json',
+        success: function (data) {
+            console.log('Pesquisou com sucesso:', data);
+            window.location.href = '/listaDeProduto?descricao=' + pesquisa;
+            const userList = document.getElementById('produtosList');
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                var errorMessage = xhr.responseText;
+                alert('Erro ao pesquisar: ' + errorMessage);
+            } else {
+                alert('Erro ao pesquisar: ' + error);
+            }
+            console.error('Erro ao pesquisar:', error);
+        }
+    });
+}
+</script>
 
 </body>
 </html>

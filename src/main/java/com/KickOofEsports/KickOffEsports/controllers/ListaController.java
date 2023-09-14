@@ -27,15 +27,12 @@ public class ListaController {
         ModelAndView modelAndView = new ModelAndView();
         System.out.println("pesquisou com sucesso por " + nome);
         if (nome != null && !nome.isEmpty()) {
-            // Realize a busca por nome com base no parâmetro 'nome'
             lista = repository.findByNome(nome);
-            modelAndView.addObject("lista", lista);
-            modelAndView.setViewName("ListaUsuarios");
         } else {
             lista = repository.findAll();
-            modelAndView.addObject("lista", lista);
-            modelAndView.setViewName("ListaUsuarios");
         }
+        modelAndView.addObject("lista", lista);
+        modelAndView.setViewName("ListaUsuarios");
 
         return modelAndView;
     }
