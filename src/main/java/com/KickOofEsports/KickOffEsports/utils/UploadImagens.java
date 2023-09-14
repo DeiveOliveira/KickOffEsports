@@ -8,17 +8,17 @@ import java.io.FileOutputStream;
 
 public class UploadImagens {
 
-    public static boolean fazerUploadImagens(MultipartFile imagem) {
+    public static boolean fazerUploadImagens(MultipartFile file) {
 
             boolean sucessoUpload = false;
-        if (!imagem.isEmpty()) {
+        if (file != null && !file.isEmpty()) {
 
-            String nomeArquivo = imagem.getOriginalFilename();
+            String nomeArquivo = file.getOriginalFilename();
 
             try {
                 //Criando diretorio para armazenar imagens do produto
 
-                String pastaUploadImagens = "KickOffEsports\\src\\main\\resources\\static\\img\\imagensProdutos";
+                String pastaUploadImagens = "src/main/resources/static/img/imagensProdutos";
                 File dir = new File(pastaUploadImagens);
 
                 if (!dir.exists()) {
@@ -30,7 +30,7 @@ public class UploadImagens {
 
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
 
-                stream.write(imagem.getBytes());
+                stream.write(file.getBytes());
                 stream.close();
 
                 System.out.println("Feito o upload");

@@ -7,10 +7,12 @@ import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Service
 public class CadastroProdutoService {
@@ -22,22 +24,32 @@ public class CadastroProdutoService {
     ProdutoRepository produtoRepository;
 
     @Transactional
-    public Produto cadastrarProduto(Produto produto){
+    public Produto cadastrarProduto(Produto produto, @RequestParam("file") MultipartFile imagem){
+        Imagens img = new Imagens();
         Produto pro = new Produto(produto.getNome(), produto.getAvaliacao(),
                 produto.getDescricao(), produto.getPreco(), produto.getQuantidade());
         pro = produtoRepository.save(pro);
-        for (Imagens imagem : produto.getImg()) {
-            imagem.setProduto(pro);
-            Imagens imagemSalva = listaDeImagensRepository.save(imagem);
+        try {
+            if (imagem != null && !imagem.isEmpty()){
+                byte[] bytes = imagem.getBytes();
+                String fileName = System.currentTimeMillis() + "_" + imagem.getOriginalFilename();
+
+                Path caminho = Paths.get("../src/main/resources/static/img/imagensProdutos/" +
+                       fileName );
+                Files.write(caminho, bytes);
+
+                img.setUrl(fileName);
+
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Imagens i : produto.getImg()) {
+            i.setProduto(pro);
+            Imagens imagemSalva = listaDeImagensRepository.save(i);
             pro.getImg().add(imagemSalva);
         }
         return pro;
     }
-
-
-
-
-
-
-
 }

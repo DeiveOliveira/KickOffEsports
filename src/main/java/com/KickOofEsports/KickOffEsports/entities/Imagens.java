@@ -16,8 +16,8 @@ public class Imagens {
 
    @Id
    @GeneratedValue(strategy = GenerationType.UUID)
-   private UUID id;
 
+   private UUID id;
    private String url;
 
    @JsonBackReference

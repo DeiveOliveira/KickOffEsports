@@ -34,8 +34,9 @@ public class Produto implements Serializable {
     private Boolean status;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "produto")
+    @OneToMany(mappedBy = "produto", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Fetch(value = FetchMode.JOIN)
+    @Setter(value = AccessLevel.NONE) //Desabilitando o seter do LOMBOK
     private List<Imagens> img = new ArrayList<>();
 
     public Produto(String nome, Double avaliacao, String descricao, Double preco, Integer quantidade) {
@@ -45,6 +46,13 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.quantidade = quantidade;
         this.status = true;
+    }
+
+    public void setImagens(List<Imagens> ListaImagens){
+        for(Imagens mg: ListaImagens){
+            mg.setProduto(this);
+        }
+        this.img = ListaImagens;
     }
 
 
