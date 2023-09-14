@@ -38,7 +38,8 @@
             <th><i class="fas fa-dollar-sign"></i> Valor</th>
             <th><i class="fas fa-info-circle"></i> Avaliação</th>
             <th><i class="fas fa-check-circle"></i> Status</th>
-            <th><i class="fas fa-edit"></i> Editar</th> <!-- Adicionei o ícone de edição -->
+            <th><i class="fas fa-edit"></i> Editar</th>
+            <th><i class="fas fa-link"></i> Visualizar</th>
         </tr>
         </thead>
         <tbody id="produtosList"> <!-- Adicionei um ID para a tabela -->
@@ -69,6 +70,8 @@
                 </button>
             </td>
             <td><a th:href="@{/editarProduto/{id}(id=${produto.id})}">Editar</a></td>
+            <td><a th:href="@{/visualizar/{id}(id=${produto.id})}">Visualizar</a></td>
+
         </tr>
         </tbody>
     </table>
