@@ -1,3 +1,4 @@
+/*
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
@@ -36,3 +37,4 @@ public class AutenticacaoController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
+*/

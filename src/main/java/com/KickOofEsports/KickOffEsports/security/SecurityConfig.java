@@ -1,4 +1,4 @@
-package com.KickOofEsports.KickOffEsports.security;
+/*package com.KickOofEsports.KickOffEsports.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -62,3 +62,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+*/
