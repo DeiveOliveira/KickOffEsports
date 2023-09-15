@@ -19,3 +19,10 @@ label{
 .btn{
   justify-content: center;
 }
+
+.subContainer{
+  background-color: rgba(253, 253, 253, 0.2) !important; /* Fundo mais transparente */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  
+}

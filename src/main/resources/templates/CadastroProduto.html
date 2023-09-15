@@ -12,9 +12,10 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mt-5">
         <h1>Formulário de Produto</h1>
         <form id="formularioProduto" enctype="multipart/form-data">
+            <div class="subContainer">
             <div class="form-row">
                 <div class="form-group">
                     <input type="hidden" id="id" name="id" th:if="${produto}" th:value="${produto.id}">
@@ -42,7 +43,7 @@
                     <input type="number" class="form-control" id="estoque" required th:value="${produto?.getQuantidade()}">
                 </div>
             </div>
-
+        </div>
             <div class="form-group">
                 <label for="imagem">Upload de Imagem</label>
                 <input type="file" class="form-control-file" name="file" id="file">
@@ -88,7 +89,7 @@
 
                     console.log('ID do produto:', idProduto);
 
-                    url = '/editarProduto/' + idProduto;
+                    url = '/produtoEditado/' + idProduto;
                     type = 'PUT'
                     acao = 'Atualizado'
                 }

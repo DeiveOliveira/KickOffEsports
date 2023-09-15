@@ -20,7 +20,7 @@ public class EditarProdutoController {
     @Autowired
     EditarProdutoService service;
 
-    @GetMapping(value = "/editarP/{id}")
+    @GetMapping(value = "/editarProduto/{id}")
     public ModelAndView editar(@PathVariable String id){
         Optional<Produto> produto = service.procurarPorId(id);
         ModelAndView editar = new ModelAndView();
@@ -30,7 +30,7 @@ public class EditarProdutoController {
         return editar;
     }
 
-    @PutMapping(value = "editarProduto/{id}")
+    @PutMapping(value = "produtoEditado/{id}")
     public ResponseEntity<?> editar(@PathVariable String id, @RequestBody Produto produto){
         try{
             produto = service.atualizar(id, produto);
