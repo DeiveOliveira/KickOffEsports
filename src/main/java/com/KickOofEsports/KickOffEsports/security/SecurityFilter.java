@@ -1,4 +1,4 @@
-/*
+
 package com.KickOofEsports.KickOffEsports.security;
 
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
@@ -51,4 +51,3 @@ public class SecurityFilter extends OncePerRequestFilter {
         return authHeader.replace("Bearer", "");
     }
 }
-*/

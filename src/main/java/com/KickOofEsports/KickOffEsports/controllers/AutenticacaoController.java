@@ -1,4 +1,4 @@
-/*
+
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
@@ -30,11 +30,8 @@ public class AutenticacaoController {
     public ResponseEntity login (@RequestBody @Valid AutenticacaoDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        System.out.println("tentou longar");
-
         var token = tokenService.generacaoToken((Usuario) auth.getPrincipal());
-
+        System.out.println("o token que chegou no response: " + token);
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
-*/

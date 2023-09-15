@@ -42,8 +42,7 @@
             <th><i class="fas fa-link"></i> Visualizar</th>
         </tr>
         </thead>
-        <tbody id="produtosList"> <!-- Adicionei um ID para a tabela -->
-        <!-- Iteração sobre a lista de produtos do banco de dados -->
+        <tbody id="produtosList">
         <tr th:each="produto : ${lista}">
             <td th:text="${produto.id}"></td>
             <td th:text="${produto.nome}"></td>

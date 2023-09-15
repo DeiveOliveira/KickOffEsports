@@ -26,7 +26,7 @@ public class TokenService {
                     .withSubject(usuario.getEmail())
                     .withExpiresAt(genTempoExpiracao())
                     .sign(algorithm);
-            System.out.println("gerou o token com sucesso");
+            System.out.println("gerou o token com sucesso" + token);
             return token;
         }catch (JWTCreationException exception){
             throw new RuntimeException("Erro na criação do token", exception);

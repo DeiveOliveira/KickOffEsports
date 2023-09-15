@@ -74,6 +74,14 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+
+        localStorage.setItem('token', token);
+    }
+
     const userList = document.getElementById("userList");
     const users = [
             { id: 1, nome: "Usuário 1", email: "usuario1@example.com", status: "Ativo", grupo: "Grupo A", editar: "Editar" },

@@ -9,11 +9,10 @@ import java.util.Optional;
 
 @Service
 public class VisualizarService {
-
     @Autowired
     ProdutoRepository repository;
-
     public Optional<Produto> procurarPorId(String id){
+
         return Optional.of(repository.getReferenceById(id));
     }
 }

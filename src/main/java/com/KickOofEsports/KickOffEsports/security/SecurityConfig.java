@@ -1,4 +1,4 @@
-/*package com.KickOofEsports.KickOffEsports.security;
+package com.KickOofEsports.KickOffEsports.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -40,13 +40,15 @@ public class SecurityConfig {
                                 mvcMatherBuilder.pattern("/cadastrar"),
                                 mvcMatherBuilder.pattern("/editar/**"),
                                 mvcMatherBuilder.pattern("/editarUsuario/**")).hasRole("ADMIN")
+                        .requestMatchers(mvcMatherBuilder.pattern("/listaDeUsuario")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLoginConfigurer -> {
                     formLoginConfigurer
                             .loginPage("/login")
                             .loginProcessingUrl("/auth/logar")
-                            .successForwardUrl("/listaDeUsuario");
+                            .defaultSuccessUrl("/listaDeUsuario")
+                            .permitAll();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -62,4 +64,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-*/
