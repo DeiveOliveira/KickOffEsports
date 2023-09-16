@@ -60,7 +60,7 @@
       success: function(data) {
         localStorage.setItem('token', data.token);
         alert('Seu token é: ' + data.token);
-        window.location.href = '/listaDeUsuario?token=' + data.token;
+        window.location.href = '/telaPrincipal?token=' + data.token;
       },
 
       error: function(xhr, status, error) {
