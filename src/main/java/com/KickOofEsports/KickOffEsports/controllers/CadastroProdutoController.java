@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -31,13 +32,14 @@ public class CadastroProdutoController {
     }
 
     @PostMapping("/cadastrarProduto")
-    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto, MultipartFile file){
-        Produto produto1 = service.cadastrarProduto(produto, file);
+    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto, @RequestParam("files") List<MultipartFile> imagens) {
+        Produto produto1 = service.cadastrarProduto(produto, imagens);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(produto1.getId()).toUri();
         return ResponseEntity.created(uri).body(produto1);
     }
+
 
 //    @PostMapping("/produto")
 //    public ModelAndView cadastroProduto(@ModelAttribute Produto produto, @ModelAttribute Imagens img, @RequestParam("file")MultipartFile imagem){
