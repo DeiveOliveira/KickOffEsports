@@ -16,43 +16,69 @@
         <h1>Formulário de Produto</h1>
         <form id="formularioProduto" enctype="multipart/form-data">
             <div class="subContainer">
-            <div class="form-row">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="hidden" id="id" name="id" th:if="${produto}" th:value="${produto.id}">
+                    </div>
+                    <div class="form-group col-md-9">
+                        <label for="nome">Nome do Produto</label>
+                        <input type="text" class="form-control" id="nome" maxlength="200" required
+                            th:value="${produto?.getNome()}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="avaliacao">Avaliação</label>
+                        <input type="number" class="form-control" id="avaliacao" min="1" max="5" step="0.5" required
+                            th:value="${produto?.getAvaliacao()}">
+                    </div>
+                </div>
                 <div class="form-group">
-                    <input type="hidden" id="id" name="id" th:if="${produto}" th:value="${produto.id}">
-                </div>
-                <div class="form-group col-md-9">
-                    <label for="nome">Nome do Produto</label>
-                    <input type="text" class="form-control" id="nome" maxlength="200" required th:value="${produto?.getNome()}" >
-                </div>
-                <div class="form-group col-md-3">
-                    <label for="avaliacao">Avaliação</label>
-                    <input type="number" class="form-control" id="avaliacao" min="1" max="5" step="0.5" required th:value="${produto?.getAvaliacao()}">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="descricao">Descrição Detalhada</label>
+                    <label for="descricao">Descrição Detalhada</label>
 
-                <input class="form-control" id="descricao" rows="3" maxlength="2000" required th:value="${produto?.getDescricao()}">
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="preco">Preço do Produto</label>
-                    <input type="number" class="form-control" id="preco" step=".01" required th:value="${produto?.getPreco()}">
+                    <input class="form-control" id="descricao" rows="3" maxlength="2000" required
+                        th:value="${produto?.getDescricao()}">
                 </div>
-                <div class="form-group col-md-6">
-                    <label for="estoque">Quantidade em Estoque</label>
-                    <input type="number" class="form-control" id="estoque" required th:value="${produto?.getQuantidade()}">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="preco">Preço do Produto</label>
+                        <input type="number" class="form-control" id="preco" step=".01" required
+                            th:value="${produto?.getPreco()}">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="estoque">Quantidade em Estoque</label>
+                        <input type="number" class="form-control" id="estoque" required
+                            th:value="${produto?.getQuantidade()}">
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <div class="container col-8 d-flex align-items-center justify-content-center">
+                <div class="row">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                      <ol class="carousel-indicators" id="carouselIndicators"></ol>
+                      <div class="carousel-inner" id="carouselInner">
+                        <!-- As imagens selecionadas serão adicionadas aqui dinamicamente -->
+                      </div>
+                      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                      </a>
+                      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Próximo</span>
+                      </a>
+                    </div>
+                  
+                  <!-- Outros elementos ou colunas conforme necessário -->
+                </div>
+              </div>
             <div class="form-group">
                 <label for="file">Upload de Imagem</label>
-                <input type="file" class="form-control-file" name="file" id="file">
+                <input type="file" class="form-control-file" name="file" id="file" multiple accept="image/*">
             </div>
 
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary btn-lg mr-3" id="btnSalvar">Salvar</button>
-                <button  type="reset" class="btn btn-secondary btn-lg">Cancelar</button>
+                <button type="reset" class="btn btn-secondary btn-lg">Cancelar</button>
             </div>
         </form>
     </div>
@@ -61,6 +87,45 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <script>
+
+        document.getElementById('file').addEventListener('change', function () {
+            const carouselIndicators = document.getElementById('carouselIndicators');
+            const carouselInner = document.getElementById('carouselInner');
+            const imagensSelecionadas = this.files;
+
+            // Crie um novo índice para o próximo slide
+            const proximoSlideIndex = carouselInner.children.length;
+
+            // Criar um indicador para a nova imagem
+            const indicator = document.createElement('li');
+            indicator.setAttribute('data-target', '#carouselExampleIndicators');
+            indicator.setAttribute('data-slide-to', proximoSlideIndex.toString());
+            if (proximoSlideIndex === 0) {
+                indicator.classList.add('active');
+            }
+            carouselIndicators.appendChild(indicator);
+
+            // Criar um item de carrossel para a nova imagem
+            const carouselItem = document.createElement('div');
+            carouselItem.classList.add('carousel-item');
+            if (proximoSlideIndex === 0) {
+                carouselItem.classList.add('active');
+            }
+            const img = document.createElement('img');
+
+            img.classList.add('d-block', 'w-100', 'imagem-carrossel'); // Adicione a classe "imagem-carrossel" aqui
+            img.src = URL.createObjectURL(imagensSelecionadas[0]); // Use a primeira imagem do conjunto
+
+            // Adicione a imagem ao slide do carrossel
+            carouselItem.appendChild(img);
+            carouselInner.appendChild(carouselItem);
+
+            // Limpar o valor do input para permitir que o mesmo arquivo seja selecionado novamente
+            this.value = '';
+        });
+
+
+
         $(document).ready(function () {
             $('#btnSalvar').click(function () {
                 var nome = $('#nome').val();
@@ -69,7 +134,7 @@
                 var preco = $('#preco').val();
                 var quantidade = $('#estoque').val();
                 var imagem = $('#file')[0].files[0];
-;
+                ;
 
                 if (nome === '' || avaliacao === '' || descricao === '' || preco === '' || quantidade === '' || !imagem) {
                     alert('Por favor, preencha todos os campos e adicione ao menos uma imagem.');
@@ -101,29 +166,30 @@
                 }
 
                 $.ajax({
-                    type:type,
-                    url:url,
-                    contentType:'application/json',
+                    type: type,
+                    url: url,
+                    contentType: 'application/json',
                     data: JSON.stringify(produto),
-                    success: function(data){
-                        
+                    success: function (data) {
+
                         alert(acao + 'com sucesso');
                         console.log(acao + 'com sucesso: ', data);
-                        
+
                         window.location.href = '/listaDeProduto';
                     },
-                    error: function(xhr, status, error){
+                    error: function (xhr, status, error) {
                         if (xhr.status === 400) {
                             var errorMessage = xhr.responseText;
                             alert('Erro: ' + errorMessage);
-                        }else{
+                        } else {
                             alert('Erro : ' + error);
                         }
                         console.error('Erro :', error);
-                    } 
+                    }
                 });
             });
-    });
+        });
+
 
     </script>
 </body>
