@@ -1,0 +1,12 @@
+body{
+    background-image: url(../img/fundo.jpg)
+}
+
+.container{
+    padding: 20px;
+}
+
+.logo {
+    max-width: 150px; /* Define a largura máxima da imagem */
+}
+
