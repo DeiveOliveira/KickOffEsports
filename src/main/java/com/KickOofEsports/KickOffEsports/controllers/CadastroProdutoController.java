@@ -1,8 +1,10 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Produto;
+import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastroProdutoService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,9 +27,15 @@ public class CadastroProdutoController {
     ProdutoRepository repository;
 
     @GetMapping("/produto")
-    public ModelAndView cadastroProduto() {
+    public ModelAndView cadastroProduto(HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
         ModelAndView cadastroProduto = new ModelAndView();
-        cadastroProduto.setViewName("CadastroProduto");
+        if(usuario != null){
+            cadastroProduto.setViewName("CadastroProduto");
+        }
+        else{
+            cadastroProduto.setViewName("Login");
+        }
         return cadastroProduto;
     }
 

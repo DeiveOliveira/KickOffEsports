@@ -53,14 +53,13 @@
     };
 
     $.ajax({
-      url: '/auth/login',
+      url: '/logar',
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(usuario),
       success: function(data) {
-        localStorage.setItem('token', data.token);
-        alert('Seu token é: ' + data.token);
-        window.location.href = '/telaPrincipal?token=' + data.token;
+        alert('Longado com sucesso');
+        window.location.href = "/telaPrincipal";
       },
 
       error: function(xhr, status, error) {

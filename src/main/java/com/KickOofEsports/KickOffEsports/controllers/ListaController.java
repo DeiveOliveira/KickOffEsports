@@ -3,6 +3,7 @@ package com.KickOofEsports.KickOffEsports.controllers;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.ListaService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,17 +23,27 @@ public class ListaController {
     ListaService service;
 
     @GetMapping("/listaDeUsuario")
-    public ModelAndView lista(@RequestParam(name = "nome", required = false) String nome) {
+    public ModelAndView lista(@RequestParam(name = "nome", required = false) String nome, HttpSession session) {
         List<Usuario> lista;
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("pesquisou com sucesso por " + nome);
-        if (nome != null && !nome.isEmpty()) {
-            lista = repository.findByNome(nome);
-        } else {
-            lista = repository.findAll();
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuario == null){
+            modelAndView.setViewName("Login");
         }
-        modelAndView.addObject("lista", lista);
-        modelAndView.setViewName("ListaUsuarios");
+        else if (usuario.getRole().equals("ADMIN")) {
+            System.out.println("pesquisou com sucesso por " + nome);
+            if (nome != null && !nome.isEmpty()) {
+                lista = repository.findByNome(nome);
+            } else {
+                lista = repository.findAll();
+            }
+            modelAndView.addObject("lista", lista);
+            modelAndView.setViewName("ListaUsuarios");
+        }
+        else {
+            modelAndView.setViewName("telaPrincipal");
+        }
+
 
         return modelAndView;
     }

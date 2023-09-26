@@ -31,7 +31,7 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Usuario u1 = new Usuario("Augusto", "augusto@gmail.com", "13577155019", "12345", "ADMIN");
+        Usuario u1 = new Usuario("Augusto", "augusto@gmail.com", "13577155019", "12345", "ESTOQUISTA");
         Usuario u2 = new Usuario("Brenno", "brenno@gmail.com", "53114093043", "12345", "ADMIN");
         Usuario u3 = new Usuario("Deive", "deive@gmail.com", "21439151016", "12345",  "ADMIN");
 

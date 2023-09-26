@@ -3,6 +3,7 @@ package com.KickOofEsports.KickOffEsports.controllers;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,9 +28,18 @@ public class CadastroController {
     CadastrarService service;
 
     @GetMapping("/cadastro")
-    public ModelAndView cadastro() {
+    public ModelAndView cadastro(HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
         ModelAndView cadastro = new ModelAndView();
-        cadastro.setViewName("Cadastro");
+        if (usuario == null){
+            cadastro.setViewName("Login");
+        }
+        else if (usuario.getRole().equals("ADMIN")) {
+            cadastro.setViewName("Cadastro");
+        }
+        else {
+            cadastro.setViewName("telaPrincipal");
+        }
         return cadastro;
     }
 

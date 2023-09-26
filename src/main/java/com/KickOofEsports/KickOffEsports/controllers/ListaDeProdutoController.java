@@ -4,6 +4,7 @@ import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.services.ListaDeProdutoService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,18 +26,22 @@ public class ListaDeProdutoController {
     ListaDeProdutoService service;
 
     @GetMapping("/listaDeProduto")
-    public ModelAndView lista(@RequestParam(name = "descricao", required = false) String descricao) {
+    public ModelAndView lista(@RequestParam(name = "descricao", required = false) String descricao, HttpSession session) {
         List<Produto> lista;
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("pesquisou com sucesso por " + descricao);
-        if (descricao != null && !descricao.isEmpty()) {
-            lista = repository.findByDescricaoContaining(descricao);
-        } else {
-            lista = repository.findAll();
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        if(usuario != null){
+            System.out.println("pesquisou com sucesso por " + descricao);
+            if (descricao != null && !descricao.isEmpty()) {
+                lista = repository.findByDescricaoContaining(descricao);
+            } else {
+                lista = repository.findAll();
+            }
+            modelAndView.addObject("lista", lista);
+            modelAndView.setViewName("ListaProduto");        }
+        else{
+            modelAndView.setViewName("Login");
         }
-        modelAndView.addObject("lista", lista);
-        modelAndView.setViewName("ListaProduto");
-
         return modelAndView;
     }
 
