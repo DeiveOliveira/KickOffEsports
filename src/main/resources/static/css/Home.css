@@ -10,3 +10,10 @@ body{
     max-width: 150px; /* Define a largura máxima da imagem */
 }
 
+.meu-card{
+    margin-bottom: 1rem;
+}
+
+.card-text{
+    color: blue;
+}
