@@ -22,7 +22,8 @@
                 </div>
             </div>
             <!-- Adicione o botão "Sair" com a função de redirecionar para "/login" -->
-            <button class="btn btn-danger btn-lg position-absolute top-0 end-0 m-3" onclick="redirecionarParaLogin()">Sair</button>
+            <button class="btn btn-danger btn-lg position-absolute top-0 end-0 m-3" onclick="redirecionarParaLogin()"
+                    type="button" id="btnLogout">Sair</button>
         </div>
     </div>
 </div>
@@ -33,19 +34,40 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <script>
-    var urlParams = new URLSearchParams(window.location.search);
-    var token = urlParams.get('token');
+    function redirecionarParaLogin(button) {
 
-    // Verifique se o token está presente na URL
-    if (token) {
-        // Armazene o token no localStorage
-        localStorage.setItem('token', token);
-    }
+    let confirmMessage = 'Tem certeza de que deseja sair da conta';
 
-    // Função para redirecionar para a tela de login
-    function redirecionarParaLogin() {
-        window.location.href = '/login'; // Redireciona para a rota "/login"
+    // Exibe um diálogo de confirmação com a mensagem apropriada
+    const confirmacao = confirm(confirmMessage);
+
+    if (confirmacao) {
+        // O usuário clicou em "Sim", continue com a lógica de atualização
+        $.ajax({
+            type: 'POST',
+            url: '/logout', // Corrigido
+            contentType: 'application/json',
+            data: JSON.stringify({}),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/login';
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+                console.error('Erro ao atualizar:', error);
+            }
+        });
+    } else {
+        // O usuário clicou em "Não", não faça nada
+        alert('Operação cancelada');
     }
+}
 </script>
 </body>
 </html>

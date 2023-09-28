@@ -18,8 +18,11 @@ public class LoginController {
     LoginService service;
 
     @GetMapping("/login")
-    public String login(){
-
+    public String login(HttpSession session){
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        if (usuario != null){
+            return "telaPrincipal";
+        }
         return "Login";
     }
 
