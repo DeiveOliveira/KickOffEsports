@@ -1,9 +1,9 @@
 body {
-  background-image: url(../img/teste.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+  background-image: url(../img/teste.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-color: #f8f9fa; /* Cor de backup para quando a imagem não carregar */
+  background-color: #f8f9fa;
 }
 
 .card {
@@ -11,7 +11,7 @@ body {
   margin: 0 auto;
   border: none;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 1); /* Cor de fundo transparente */
+  background-color: rgba(0, 0, 0, 1);
   box-shadow: 0 0 10px rgb(255, 255, 255);
 }
 
