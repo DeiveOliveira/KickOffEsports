@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const users = [
             { id: 1, nome: "Usuário 1", email: "usuario1@example.com", status: "Ativo", grupo: "Grupo A", editar: "Editar" },
         { id: 2, nome: "Usuário 2", email: "usuario2@example.com", status: "Ativo", grupo: "Grupo B", editar: "Editar" },
-        // Adicione mais objetos de usuário conforme necessário
+
     ];
 
     users.forEach(user => {

@@ -1,6 +1,6 @@
 
 body {
-    background-image: url(../img/camisasdetime.jpg); /* Substitua com o caminho para sua imagem de fundo */
+    background-image: url(../img/camisasdetime.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -21,12 +21,12 @@ body, button, input, select{
 }
 
 .table  {
-    background-color: rgba(255, 255, 255, 0.7) !important; /* Fundo mais transparente */
+    background-color: rgba(255, 255, 255, 0.7) !important;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   }
 
-  /* Estilo das linhas da tabela */
+
   .table tr:hover {
-    background-color: rgba(248, 249, 250, 0.7); /* Fundo mais transparente para linhas ao passar o mouse */
+    background-color: rgba(248, 249, 250, 0.7);
   }

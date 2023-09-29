@@ -1,7 +1,7 @@
 /* Estilos globais */
 
 body {
-    background-image: url(../img/fundo.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+    background-image: url(../img/fundo.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -11,14 +11,13 @@ body {
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.8); /* Adicione transparência ao valor RGB do branco */
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-top: 50px;
 }
 
-/* Estilos para informações do produto */
 
 .stars-highlight {
     font-weight: bold;
@@ -44,7 +43,7 @@ body {
     background-color: green;
 }
 
-/* Estilos para o carrossel de imagens */
+
 
 .carousel-inner img {
     object-fit: cover;
@@ -52,7 +51,7 @@ body {
     width: 100%;
 }
 
-/* Outros estilos */
+
 
 h2 {
     color: #000000;

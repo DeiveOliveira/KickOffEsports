@@ -1,9 +1,9 @@
 body {
-  background-image: url(../img/produto.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+  background-image: url(../img/produto.jpg);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-color: #f8f9fa; /* Cor de backup para quando a imagem não carregar */
+  background-color: #f8f9fa;
   color: white;
 
 }
@@ -21,15 +21,15 @@ label{
 }
 
 .subContainer{
-  background-color: rgba(253, 253, 253, 0.2) !important; /* Fundo mais transparente */
+  background-color: rgba(253, 253, 253, 0.2) !important;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   
 }
 
 .carousel-item {
-  width: 413px; /* Largura fixa desejada para os slides */
-  height: 413px; /* Altura fixa desejada para os slides */
+  width: 413px;
+  height: 413px;
   overflow: hidden;
 }
 
