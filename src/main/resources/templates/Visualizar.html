@@ -10,8 +10,6 @@
   <link rel="stylesheet" th:href="@{/css/Visualizar.css}">
   <link rel="stylesheet" href="../static/css/Visualizar.css">
 
-</head>
-
 <body>
   <div class="container">
     <div class="row">
@@ -34,64 +32,76 @@
 
       <div class="col-md-6">
         <!-- Informações do Produto -->
-        <h2 class="display-4 text-secondary" th:text="${produto.nome}"></h2>
+        <h2 class="display-4" th:text="${produto.nome}"></h2>
+
+        <h4 class="descricao" th:text="${produto.descricao}"></h4>
+
         <p class="stars-highlight">Avaliação: <span class="text-warning">★</span><span class="text-warning"
             th:text="${produto.avaliacao}"></span></p>
+
         <p class="text-primary h-50 d-inline-block">R$<span class="text-primary h-50 d-inline-block"
             th:text="${produto.preco}"></span></p>
-        <button class="btn btn-primary btn-lg d-flex justify-content-center">Comprar</button>
-      </div>
-    </div>
-    <!-- Descrição do Produto -->
-    <br>
-    <div class="row">
 
-      <div class="col-md-12">
-        <h3>Descrição do Produto</h3>
-        <p th:text="${produto.descricao}"></p>
+            <div class="d-flex flex-column mt-3 align-items-center">
+              <button class="btn btn-primary btn-lg mb-2">Comprar</button>
+              <button class="btn btn-primary btn-lg">Adicionar ao Carrinho</button>
+          </div>
+
       </div>
     </div>
+
   </div>
 
   <!-- Scripts do Bootstrap e JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
   <script>
     $(document).ready(function () {
-
       var produtoId = obterProdutoIdDaUrl();
 
       $.ajax({
-        url: '/api/produtos' + produtoId,
+        url: '/api/produtos/' + produtoId,
         method: 'GET',
         dataType: 'json',
         success: function (produto) {
-          // Limpe os indicadores e os slides atuais
-          $('#carouselIndicators').empty();
-          $('#carouselInner').empty();
+          const carouselIndicators = document.getElementById('carouselIndicators');
+          const carouselInner = document.getElementById('carouselInner');
+          const imagens = produto.img;
 
-          // Preencha o carrossel com as imagens recebidas
-          img.forEach(function (img, index) {
+          carouselIndicators.innerHTML = '';
+          carouselInner.innerHTML = '';
+
+          for (let i = 0; i < imagens.length; i++) {
             // Crie um indicador para a imagem
-            var indicatorHtml = `
-              <li data-bs-target="#carouselExample" data-bs-slide-to="${index}"${index === 0 ? ' class="active"' : ''}></li>
-            `;
-            $('#carouselIndicators').append(indicatorHtml);
+            const indicator = document.createElement('li');
+            indicator.setAttribute('data-target', '#carouselExample'); 
+            indicator.setAttribute('data-slide-to', i.toString());
+            if (i === 0) {
+              indicator.classList.add('active');
+            }
+            carouselIndicators.appendChild(indicator);
 
-            // Crie um slide para a imagem
-            var slideHtml = `
-              <div class="carousel-item${index === 0 ? ' active' : ''}">
-                <img src="${produto.img[0].url}" class="d-block w-100 carousel-img" alt="Imagem ${index + 1}">
-              </div>
-            `;
-            $('#carouselInner').append(slideHtml);
-          });
+            // Crie um item de carrossel para a imagem
+            const carouselItem = document.createElement('div');
+            carouselItem.classList.add('carousel-item');
+            if (i === 0) {
+              carouselItem.classList.add('active');
+            }
+            const img = document.createElement('img');
+            img.classList.add('d-block', 'w-100', 'imagem-carrossel');
+            img.src = imagens[i].url; // Ajuste isso conforme necessário
+
+            // Adicione a imagem ao slide do carrossel
+            carouselItem.appendChild(img);
+            carouselInner.appendChild(carouselItem);
+          }
         },
         error: function (error) {
           console.error('Erro ao buscar imagens:', error);
         }
       });
     });
+
 
     function obterProdutoIdDaUrl() {
       // Obtém a parte da URL após a última barra (presumindo que o ID do produto está no final da URL)
@@ -105,6 +115,8 @@
         return null;
       }
     }
+
+    
   </script>
 </body>
 

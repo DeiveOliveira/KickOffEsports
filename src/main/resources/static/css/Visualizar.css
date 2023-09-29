@@ -1,14 +1,25 @@
+/* Estilos globais */
+
 body {
-    background-image: url(../img/bolas.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
+    background-image: url(../img/fundo.jpg); /* Substitua 'background.jpg' pelo caminho da sua imagem de fundo */
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-color: #f8f9fa;
-
-    margin-top: 200px;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    margin-top: 0;
 }
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Adicione transparência ao valor RGB do branco */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+/* Estilos para informações do produto */
+
 .stars-highlight {
     font-weight: bold;
 }
@@ -17,31 +28,10 @@ body {
     color: yellow;
 }
 
-.price-highlight {
+.text-primary {
     font-weight: bold;
     font-size: 1.2em;
-    color: #ff5733; /* ou qualquer cor de destaque desejada */
-}
-
-.container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.carousel-inner {
-    max-height: 300px;
-    overflow: hidden;
-}
-
-.carousel-img {
-    width: 100%;
-    height: auto;
-}
-
-h2 {
-    color: #333;
+    color: green !important;
 }
 
 .btn-primary {
@@ -51,10 +41,28 @@ h2 {
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: green;
+}
+
+/* Estilos para o carrossel de imagens */
+
+.carousel-inner img {
+    object-fit: cover;
+    max-height: 100%;
+    width: 100%;
+}
+
+/* Outros estilos */
+
+h2 {
+    color: #000000;
 }
 
 p {
-    color: #666;
+    color: #474747;
     margin-bottom: 10px;
+}
+
+.descricao {
+    color: #474747;
 }
