@@ -46,42 +46,46 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script>
-$(document).ready(function () {
-    $.ajax({
-        url: '/api/produtos',
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            if (Array.isArray(data)) {
-                data.forEach(function (produto) {
-                    if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('descricao') && produto.hasOwnProperty('preco')) {
-                        var cardHtml = `
-                            <div class="col-md-4 meu-card">
-                                <div class="card">
-                                    <img src="${produto.img[0].url}" class="card-img-top" alt="Imagem do Produto">
-                                    <div class="card-body" style="display: flex; flex-direction: column; height: 170px;">
-                                        <h4 class="card-title">${produto.nome}</h4>
-                                        <h5 class="card-text">R$ ${produto.preco.toFixed(2)}</h5>
-                                        <button class="btn btn-primary w-100" style="margin-top: auto;">Comprar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                        $('#productCards').append(cardHtml);
-                    } else {
-                        console.error('Produto com dados faltando:', produto);
+            $(document).ready(function () {
+                $.ajax({
+                    url: '/api/produtos',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (Array.isArray(data)) {
+                            data.forEach(function (produto) {
+                                if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('descricao') && produto.hasOwnProperty('preco')) {
+                                    var cardHtml = `
+    <div class="col-md-4 meu-card">
+        <div class="card">
+            <img src="${produto.img[0].url}" class="card-img-top" alt="Imagem do Produto">
+            <div class="card-body" style="display: flex; flex-direction: column; height: 170px;">
+                <h4 class="card-title">${produto.nome}</h4>
+                <h5 class="card-text">R$ ${produto.preco.toFixed(2)}</h5>
+                <button class="btn btn-primary w-100 comprar-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Comprar</button>
+            </div>
+        </div>
+    </div>
+`;
+                                    $('#productCards').append(cardHtml);
+
+                                    $('.comprar-btn').on('click', function () {
+                                        var produtoId = $(this).data('produto-id');
+                                        window.location.href = '/possivelCompra/' + produtoId;
+                                    });
+                                } else {
+                                    console.error('Produto com dados faltando:', produto);
+                                }
+                            });
+                        } else {
+                            console.error('Dados inválidos do servidor:', data);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Erro ao buscar produtos:', error);
                     }
                 });
-            } else {
-                console.error('Dados inválidos do servidor:', data);
-            }
-        },
-        error: function (error) {
-            console.error('Erro ao buscar produtos:', error);
-        }
-    });
-});
-
+            });
 
 
         </script>

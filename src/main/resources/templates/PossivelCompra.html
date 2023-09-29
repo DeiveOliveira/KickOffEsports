@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página de Produto</title>
+  <!-- Adicione os links para os arquivos CSS do Bootstrap e seu arquivo CSS personalizado aqui -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/Visualizar.css}">
+  <link rel="stylesheet" href="../static/css/Visualizar.css">
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+          <ol class="carousel-indicators" id="carouselIndicators">
+          </ol>
+          <div class="carousel-inner" id="carouselInner">
+          </div>
+          <a class="carousel-control-prev" href="#carouselExample" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExample" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <!-- Informações do Produto -->
+        <h2 class="display-4" th:text="${produto.nome}"></h2>
+
+        <h4 class="descricao" th:text="${produto.descricao}"></h4>
+
+        <p class="stars-highlight">Avaliação: <span class="text-warning">★</span><span class="text-warning"
+            th:text="${produto.avaliacao}"></span></p>
+
+        <p class="text-primary h-50 d-inline-block">R$<span class="text-primary h-50 d-inline-block"
+            th:text="${produto.preco}"></span></p>
+
+            <div class="d-flex flex-column mt-0 align-items-center">
+              <button class="btn btn-primary btn-lg mb-2 mr-2">Comprar</button>
+              <button class="btn btn-primary btn-lg mr-2">Adicionar ao Carrinho</button>
+          </div>
+          
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts do Bootstrap e JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      var produtoId = obterProdutoIdDaUrl();
+
+      $.ajax({
+        url: '/api/produtos/' + produtoId,
+        method: 'GET',
+        dataType: 'json',
+        success: function (produto) {
+          const carouselIndicators = document.getElementById('carouselIndicators');
+          const carouselInner = document.getElementById('carouselInner');
+          const imagens = produto.img;
+
+          carouselIndicators.innerHTML = '';
+          carouselInner.innerHTML = '';
+
+          for (let i = 0; i < imagens.length; i++) {
+            // Crie um indicador para a imagem
+            const indicator = document.createElement('li');
+            indicator.setAttribute('data-target', '#carouselExample'); 
+            indicator.setAttribute('data-slide-to', i.toString());
+            if (i === 0) {
+              indicator.classList.add('active');
+            }
+            carouselIndicators.appendChild(indicator);
+
+            // Crie um item de carrossel para a imagem
+            const carouselItem = document.createElement('div');
+            carouselItem.classList.add('carousel-item');
+            if (i === 0) {
+              carouselItem.classList.add('active');
+            }
+            const img = document.createElement('img');
+            img.classList.add('d-block', 'w-100', 'imagem-carrossel');
+            img.src = imagens[i].url; // Ajuste isso conforme necessário
+
+            // Adicione a imagem ao slide do carrossel
+            carouselItem.appendChild(img);
+            carouselInner.appendChild(carouselItem);
+          }
+        },
+        error: function (error) {
+          console.error('Erro ao buscar imagens:', error);
+        }
+      });
+    });
+
+
+    function obterProdutoIdDaUrl() {
+      // Obtém a parte da URL após a última barra (presumindo que o ID do produto está no final da URL)
+      var url = window.location.pathname;
+      var partesDaUrl = url.split('/');
+      var produtoId = partesDaUrl[partesDaUrl.length - 1];
+
+      if (produtoId) {
+        return produtoId;
+      } else {
+        return null;
+      }
+    }
+
+    
+  </script>
+</body>
+
+</html>
