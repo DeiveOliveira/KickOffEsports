@@ -22,8 +22,7 @@
                     </div>
                     <div class="form-group col-md-9">
                         <label for="nome">Nome do Produto</label>
-                        <input type="text" class="form-control" id="nome" maxlength="200" required
-                            th:value="${produto?.getNome()}">
+                        <input type="text" class="form-control" id="nome" name="nome" required th:value="${produto?.getNome()}">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="avaliacao">Avaliação</label>
@@ -79,7 +78,7 @@
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary btn-lg mr-3" id="btnSalvar">Salvar</button>
+                <button type="button" class="btn btn-primary btn-lg mr-3" id="btnSalvar">Salvar</button>
                 <button type="reset" class="btn btn-secondary btn-lg">Cancelar</button>
             </div>
         </form>
@@ -90,127 +89,78 @@
 
     <script>
         $(document).ready(function () {
-            $('#btnSalvar').click(function () {
-                var nome = $('#nome').val();
-                var avaliacao = $('#avaliacao').val();
-                var descricao = $('#descricao').val();
-                var preco = $('#preco').val();
-                var quantidade = $('#estoque').val();
-                var imagem = $('#file')[0].files[0];
-                ;
+        $('#btnSalvar').click(function () {
+        var nome = $('#nome').val();
+        var avaliacao = $('#avaliacao').val();
+        var descricao = $('#descricao').val();
+        var preco = $('#preco').val();
+        var quantidade = $('#estoque').val();
+        var imagem = $('#file')[0].files[0];
 
-                if (nome === '' || avaliacao === '' || descricao === '' || preco === '' || quantidade === '') {
-                    alert('Por favor, preencha todos os campos e adicione ao menos uma imagem.');
-                    return;
+        alert('Nome: ', nome);
+
+        if (nome === '' || avaliacao === '' || descricao === '' || preco === '' || quantidade === '' || !imagem) {
+            alert('Por favor, preencha todos os campos e adicione uma imagem.');
+            return;
+        }
+
+        var produto = {
+            nome: nome,
+            avaliacao: avaliacao,
+            descricao: descricao,
+            preco: preco,
+            quantidade: quantidade
+        };
+
+        alert('Nome: ', nome);
+
+        var formData = new FormData();
+        formData.append('produto', JSON.stringify(produto));
+        formData.append('file', imagem);
+
+        var url, type, acao;
+
+        if (window.location.pathname.startsWith('/editarProduto/')) {
+            var urlAtual = window.location.href;
+            var partesDaUrl = urlAtual.split('/');
+            var idProduto = partesDaUrl[partesDaUrl.length - 1];
+
+            console.log('ID do produto:', idProduto);
+
+            url = '/produtoEditado/' + idProduto;
+            type = 'PUT';
+            acao = 'Atualizado';
+        }
+        else {
+            url = '/cadastrarProduto';
+            type = 'POST';
+            acao = 'Cadastrado';
+        }
+
+        $.ajax({
+            type: type,
+            url: url,
+            data: formData,
+            contentType: false, // Não definir o tipo de conteúdo
+            processData: false, // Não processar os dados
+            success: function (data) {
+                alert(acao + ' com sucesso');
+                console.log(acao + ' com sucesso: ', data);
+
+                window.location.href = '/listaDeProduto';
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro: ' + errorMessage);
+                } else {
+                    alert('Erro : ' + error);
                 }
-
-                var produto = {
-                    nome: nome,
-                    avaliacao: avaliacao,
-                    descricao: descricao,
-                    preco: preco,
-                    quantidade: quantidade
-                };
-                if (window.location.pathname.startsWith('/editarProduto/')) {
-                    var urlAtual = window.location.href;
-                    var partesDaUrl = urlAtual.split('/');
-                    var idProduto = partesDaUrl[partesDaUrl.length - 1];
-
-                    console.log('ID do produto:', idProduto);
-
-                    url = '/produtoEditado/' + idProduto;
-                    type = 'PUT'
-                    acao = 'Atualizado'
-                }
-                else {
-                    url = '/cadastrarProduto';
-                    type = 'POST'
-                    acao = 'Cadastrado';
-                }
-
-                $.ajax({
-                    type: type,
-                    url: url,
-                    contentType: 'application/json',
-                    data: JSON.stringify(produto),
-                    success: function (data) {
-
-                        alert(acao + 'com sucesso');
-                        console.log(acao + 'com sucesso: ', data);
-
-                        window.location.href = '/listaDeProduto';
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status === 400) {
-                            var errorMessage = xhr.responseText;
-                            alert('Erro: ' + errorMessage);
-                        } else {
-                            alert('Erro : ' + error);
-                        }
-                        console.error('Erro :', error);
-                    }
-                });
-            });
-        });
-
-        document.getElementById('file').addEventListener('change', function () {
-            const carouselIndicators = document.getElementById('carouselIndicators');
-            const carouselInner = document.getElementById('carouselInner');
-            const imagensSelecionadas = this.files;
-
-            // Crie um novo índice para o próximo slide
-            const proximoSlideIndex = carouselInner.children.length;
-
-            // Criar um indicador para a nova imagem
-            const indicator = document.createElement('li');
-            indicator.setAttribute('data-target', '#carouselExampleIndicators');
-            indicator.setAttribute('data-slide-to', proximoSlideIndex.toString());
-            if (proximoSlideIndex === 0) {
-                indicator.classList.add('active');
+                console.error('Erro :', error);
             }
-            carouselIndicators.appendChild(indicator);
-
-            // Criar um item de carrossel para a nova imagem
-            const carouselItem = document.createElement('div');
-            carouselItem.classList.add('carousel-item');
-            if (proximoSlideIndex === 0) {
-                carouselItem.classList.add('active');
-            }
-            const img = document.createElement('img');
-
-            img.classList.add('d-block', 'w-100', 'imagem-carrossel'); // Adicione a classe "imagem-carrossel" aqui
-            img.src = URL.createObjectURL(imagensSelecionadas[0]); // Use a primeira imagem do conjunto
-
-            // Adicione a imagem ao slide do carrossel
-            carouselItem.appendChild(img);
-            carouselInner.appendChild(carouselItem);
-
-            // Limpar o valor do input para permitir que o mesmo arquivo seja selecionado novamente
-            this.value = '';
-
-            // Seletor das imagens dentro do carrossel após adicionar a nova imagem
-            const imagensCarrossel = carouselInner.querySelectorAll('.carousel-item img');
-
-            // Agora, imagensCarrossel contém todas as imagens dentro do carrossel
-            // Você pode iterar sobre imagensCarrossel ou fazer qualquer outra operação com elas
         });
-
-        document.getElementById('btnSalvar').addEventListener('click', function () {
-            const meuFormulario = document.getElementById('formularioProduto'); // Use o ID correto do formulário
-            const formData = new FormData(meuFormulario);
-
-            fetch('/cadastrarProduto', {
-                method: 'POST',
-                body: formData,
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Erro ao enviar dados para o servidor:', error);
-                });
-        });                
+    });
+});
     </script>
 </body>
 

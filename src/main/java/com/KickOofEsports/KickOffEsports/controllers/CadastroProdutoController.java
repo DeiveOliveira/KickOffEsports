@@ -13,12 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping
 public class CadastroProdutoController {
+
+    private static String diretorio = "src/main/resources/static/img/imagensDosProdutos";
+
 
     @Autowired
     CadastroProdutoService service;
@@ -40,30 +48,33 @@ public class CadastroProdutoController {
     }
 
     @PostMapping("/cadastrarProduto")
-    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto) {
-        Produto produto1 = service.cadastrarProduto(produto);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(produto1.getId()).toUri();
-        return ResponseEntity.created(uri).body(produto1);
+    public ResponseEntity<Produto> cadastrarProduto(
+            @ModelAttribute Produto produto,
+            @RequestParam("file") MultipartFile file
+    ) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Arquivo não pode ser nulo ou vazio");
+        }
+
+        try{
+            String nomeImagem = Objects.requireNonNull(file.getOriginalFilename()).replace(" ", "");
+            Path path = Paths.get(diretorio, nomeImagem);
+
+            if (!Files.exists(path.getParent())) {
+                Files.createDirectories(path.getParent());
+            }
+
+            Files.write(path, file.getBytes());
+
+            Produto produto1 = service.cadastrarProduto(produto);
+
+            URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest().path("/{id}")
+                    .buildAndExpand(produto1.getId()).toUri();
+            return ResponseEntity.created(uri).body(produto1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-
-//    @PostMapping("/produto")
-//    public ModelAndView cadastroProduto(@ModelAttribute Produto produto, @ModelAttribute Imagens img, @RequestParam("file")MultipartFile imagem){
-//        ModelAndView mv = new ModelAndView("cadastroProduto");
-//        mv.addObject("produto", produto);
-//
-//        try {
-//            if (UploadImagens.fazerUploadImagens(imagem)){
-//                img.setUrl(imagem.getOriginalFilename());
-//                img.setProduto(produto);
-//            }
-//            return new ModelAndView("listaProduto");
-//        }catch (Exception e){
-//            System.out.println("Erro ao salvar imagem");
-//            return mv;
-//        }
-//    }
 
 }
