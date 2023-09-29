@@ -16,7 +16,7 @@ public class HomeController {
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(Model model){
 
         List<Produto> produtos = produtoRepository.findAll();

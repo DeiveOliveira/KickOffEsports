@@ -40,8 +40,8 @@ public class CadastroProdutoController {
     }
 
     @PostMapping("/cadastrarProduto")
-    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto, @RequestParam("files") List<MultipartFile> imagens) {
-        Produto produto1 = service.cadastrarProduto(produto, imagens);
+    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto) {
+        Produto produto1 = service.cadastrarProduto(produto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(produto1.getId()).toUri();

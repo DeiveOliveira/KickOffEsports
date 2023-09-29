@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LogoutController {
 
     @PostMapping("/logout")
-    public ResponseEntity logout(HttpSession session) {
+    public String logout(HttpSession session) {
         System.out.println("Deslogando usuário");
 
         session.invalidate();
 
-        return ResponseEntity.ok().body(session);
+        return "redirect:/login";
 
     }
 }
