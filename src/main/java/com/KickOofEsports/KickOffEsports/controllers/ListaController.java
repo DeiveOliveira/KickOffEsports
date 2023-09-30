@@ -1,6 +1,7 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
+import com.KickOofEsports.KickOffEsports.entities.enums.UserRole;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.ListaService;
 import jakarta.servlet.http.HttpSession;
@@ -31,7 +32,8 @@ public class ListaController {
         if (usuario == null){
             modelAndView.setViewName("Login");
 
-        } else if (usuario.getStatus().equals("ADMIN")) {
+        }
+        else if(usuario.getRole() == UserRole.ADMIN){
             System.out.println("Usuário é um administrador.");
             System.out.println("pesquisou com sucesso por " + nome);
             if (nome != null && !nome.isEmpty()) {
