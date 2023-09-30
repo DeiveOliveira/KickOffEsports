@@ -30,9 +30,6 @@ public class EditarService {
     public Usuario atualizar(String id, Usuario usuarioAtualizado){
         try{
             Usuario usuarioDesatualizado = repository.getReferenceById(id);
-            if(!this.passwordEncoder.matches(usuarioAtualizado.getSenha(), usuarioDesatualizado.getSenha())){
-                throw new SenhaDiferenteException();
-            }
             if(!usuarioAtualizado.getEmail().equals(usuarioDesatualizado.getEmail())){
                 throw new EmailDiferentesException();
             }
@@ -46,11 +43,19 @@ public class EditarService {
         }
     }
 
-    public void atualizarData(Usuario usuarioDesatualizado, Usuario usuarioAtualizado){
-        usuarioDesatualizado.setNome(usuarioAtualizado.getNome());
-        usuarioDesatualizado.setEmail(usuarioAtualizado.getEmail());
-        usuarioDesatualizado.setCpf(usuarioAtualizado.getCpf());
-        usuarioDesatualizado.setSenha(this.passwordEncoder.encode(usuarioAtualizado.getSenha()));
-        usuarioDesatualizado.setRole(usuarioAtualizado.getRole());
+    public void atualizarData(Usuario usuarioDesatualizado, Usuario usuarioAtualizado) {
+        if (usuarioAtualizado.getSenha() == null) {
+            usuarioDesatualizado.setNome(usuarioAtualizado.getNome());
+            usuarioDesatualizado.setEmail(usuarioAtualizado.getEmail());
+            usuarioDesatualizado.setCpf(usuarioAtualizado.getCpf());
+            usuarioDesatualizado.setRole(usuarioAtualizado.getRole());
+        }
+        else{
+            usuarioDesatualizado.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
+            usuarioDesatualizado.setNome(usuarioAtualizado.getNome());
+            usuarioDesatualizado.setEmail(usuarioAtualizado.getEmail());
+            usuarioDesatualizado.setCpf(usuarioAtualizado.getCpf());
+            usuarioDesatualizado.setRole(usuarioAtualizado.getRole());
+        }
     }
 }

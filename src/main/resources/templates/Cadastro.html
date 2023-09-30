@@ -45,12 +45,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="confirmarSenha">Confirmar Senha:</label>
-                    <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
-                    <span id="confirmarSenhaError" class="error"></span>
-                </div>
-
-                <div class="form-group">
                     <label for="role">Grupo:</label>
                     <select class="form-control" id="role" name="role" th:value="${usuario?.getRole()}">
                         <option value="ADMIN">Admin</option>
@@ -124,7 +118,7 @@
             var confirmarSenha = $('#confirmarSenha').val();
 
 
-            if (nome === '' || email === '' || cpf === '' || senha === '' || confirmarSenha === '') {
+            if (nome === '' || email === '' || cpf === '') {
                 alert('Por favor, preencha todos os campos.');
                 return;
             }
@@ -136,11 +130,6 @@
 
             if (!validarCPF(cpf)) {
                 alert('CPF inválido. Por favor, verifique o CPF informado.');
-                return;
-            }
-
-            if (!validarSenha(senha, confirmarSenha)) {
-                alert('As senhas estão diferentes!');
                 return;
             }
 

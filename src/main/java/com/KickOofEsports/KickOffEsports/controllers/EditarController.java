@@ -35,9 +35,6 @@ public class EditarController {
             usuario = service.atualizar(id, usuario);
             return ResponseEntity.ok().body(usuario);
         }
-        catch (SenhaDiferenteException e){
-            return ResponseEntity.badRequest().body("Senha diferente!");
-        }
         catch (EmailDiferentesException e){
             return ResponseEntity.badRequest().body("Email não é alteravel");
         }
