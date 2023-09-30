@@ -1,6 +1,7 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
+import com.KickOofEsports.KickOffEsports.entities.enums.UserRole;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
 import jakarta.servlet.http.HttpSession;
@@ -34,11 +35,11 @@ public class CadastroController {
         if (usuario == null){
             cadastro.setViewName("Login");
         }
-        else if (usuario.getRole().equals("ADMIN")) {
+        else if(usuario.getRole() == UserRole.ADMIN){
             cadastro.setViewName("Cadastro");
         }
         else {
-            cadastro.setViewName("telaPrincipal");
+            cadastro.setViewName("TelaPrincipal");
         }
         return cadastro;
     }

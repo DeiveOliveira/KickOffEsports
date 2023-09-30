@@ -27,10 +27,12 @@ public class ListaController {
         List<Usuario> lista;
         ModelAndView modelAndView = new ModelAndView();
         Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+
         if (usuario == null){
             modelAndView.setViewName("Login");
-        }
-        else if (usuario.getRole().equals("ADMIN")) {
+
+        } else if (usuario.getStatus().equals("ADMIN")) {
+            System.out.println("Usuário é um administrador.");
             System.out.println("pesquisou com sucesso por " + nome);
             if (nome != null && !nome.isEmpty()) {
                 lista = repository.findByNome(nome);
