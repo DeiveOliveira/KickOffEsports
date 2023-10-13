@@ -1,0 +1,19 @@
+body {
+    background-image: url(../img/capa-1.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-color: #f5f5f5;
+}
+
+.container{
+    margin-top: 200px;
+}
+
+.card {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 10px;
+  }

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/CadastroCliente.css}">
+    <link rel="stylesheet" href="../static/css/CadastroCliente.css">
+    <title>Tela de Cadastro</title>
+</head>
+<body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header d-flex justify-content-center">
+                    <h5 class="card-title">Cadastro</h5>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nomeCompleto" class="form-label">Nome Completo</label>
+                            <input type="text" class="form-control" id="nomeCompleto" placeholder="Seu Nome Completo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Seu Email" required="" autofocus="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cpf" class="form-label">CPF</label>
+                            <input type="text" class="form-control" id="cpf" placeholder="Seu CPF" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dataNascimento" class="form-label">Data de Nascimento</label>
+                            <input type="date" class="form-control" id="dataNascimento" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="genero" class="form-label">Gênero</label>
+                            <select class="form-select" id="genero" required>
+                                <option value="" disabled selected>Selecione o Gênero</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="feminino">Feminino</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary btn-lg col-6">Adicionar endereço</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+function redirectToAddAddress() {
+
+    var nomeCompleto = document.getElementById("nomeCompleto").value;
+
+    var palavras = nomeCompleto.split(" ");
+
+    if (palavras.length === 2 && palavras[0].length >= 3 && palavras[1].length >= 3) {
+        return true; 
+    } else {
+        alert("O nome deve conter 2 palavras com pelo menos 3 letras em cada.");
+        return false; 
+    }
+    alert("O endereço cadastrado será o de cobrança, não é possível alterar posteriormente.")
+        window.location.href = "Endereco.html";
+}
+</script>
+</body>
+</html>
