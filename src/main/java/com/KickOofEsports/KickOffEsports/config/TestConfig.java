@@ -1,11 +1,11 @@
 package com.KickOofEsports.KickOffEsports.config;
 
-import com.KickOofEsports.KickOffEsports.entities.Imagens;
-import com.KickOofEsports.KickOffEsports.entities.Produto;
-import com.KickOofEsports.KickOffEsports.entities.Usuario;
+import com.KickOofEsports.KickOffEsports.entities.*;
 import com.KickOofEsports.KickOffEsports.repositories.ListaDeImagensRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
+import com.KickOofEsports.KickOffEsports.services.CadastrarClienteService;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
+import com.KickOofEsports.KickOffEsports.services.EnderecosServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +25,12 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private ListaDeImagensRepository listaDeImagens;
+
+    @Autowired
+    private CadastrarClienteService cadastrarClienteService;
+
+    @Autowired
+    private EnderecosServices enderecosServices;
 
 
 
@@ -60,6 +66,19 @@ public class TestConfig implements CommandLineRunner {
         Imagens l9 = new Imagens(p4, "/img/imagensDosProdutos/JapaoCostas.jpg");
 
         listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9));
+
+        Cliente c1 = new Cliente("AugustoCliente", "augustoCliente@gmail.com", "12345", "66803699080", "28/08/2002", "Masculino");
+        Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "20/10/2001", "Masculino");
+        Cliente c3 = new Cliente("DeiveCliente", "deiveCliente@gmail.com", "12345", "98301097043", "21/04/2001", "Masculino");
+
+        cadastrarClienteService.cadastrar(c1);
+        cadastrarClienteService.cadastrar(c2);
+        cadastrarClienteService.cadastrar(c3);
+
+        Enderecos e1 = new Enderecos("04845-150", "Rua jorge mendes", "69", " ", "Capao redondo", "São Paulo", "SP");
+        System.out.println("id c1 = " +  c1.getId());
+
+
 
 
     }

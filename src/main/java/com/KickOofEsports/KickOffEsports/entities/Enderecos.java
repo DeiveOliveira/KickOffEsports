@@ -28,4 +28,25 @@ public class Enderecos {
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
+
+    public Enderecos(String cep, String logradouro, String numero, String complemento, String bairro, String cidade, String uf, Cliente cliente) {
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+        this.cliente = cliente;
+    }
+
+    public Enderecos(String cep, String logradouro, String numero, String complemento, String bairro, String cidade, String uf) {
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+    }
 }

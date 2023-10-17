@@ -42,4 +42,15 @@ public class Cliente {
         this.dataNascimento = dataNascimento;
         this.genero = genero;
     }
+
+
+    public Cliente(String id ,String nomeCompleto, String email, String senha, String cpf, String dataNascimento, String genero) {
+        this.id = id;
+        this.nomeCompleto = nomeCompleto;
+        this.email = email;
+        this.senha = senha;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.genero = genero;
+    }
 }
