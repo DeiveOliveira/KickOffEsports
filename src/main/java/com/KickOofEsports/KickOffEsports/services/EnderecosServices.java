@@ -7,6 +7,9 @@ import com.KickOofEsports.KickOffEsports.repositories.EnderecosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EnderecosServices {
 
@@ -16,11 +19,19 @@ public class EnderecosServices {
     @Autowired
     ClienteRepository clienteRepository;
 
-    public Enderecos cadastrar(Enderecos enderecos, String idUsuario){
+    public List<Enderecos> cadastrar(List<Enderecos> enderecos, String idUsuario) {
         Cliente cliente = clienteRepository.getReferenceById(idUsuario);
-        Enderecos enderecos1 = new Enderecos(enderecos.getCep(), enderecos.getLogradouro(), enderecos.getNumero(), enderecos.getComplemento(), enderecos.getBairro(), enderecos.getCidade(), enderecos.getUf(), cliente);
-        cliente.enderecosList.add(enderecos1);
+        List<Enderecos> novosEnderecos = new ArrayList<>();
+
+        for (Enderecos endereco : enderecos) {
+            Enderecos novoEndereco = new Enderecos(endereco.getCep(), endereco.getLogradouro(), endereco.getNumero(),
+                    endereco.getComplemento(), endereco.getBairro(), endereco.getCidade(), endereco.getUf(), cliente);
+            cliente.getEnderecosList().add(novoEndereco);
+            novosEnderecos.add(novoEndereco);
+        }
+
         clienteRepository.save(cliente);
-        return enderecosRepository.save(enderecos1);
+        return enderecosRepository.saveAll(novosEnderecos);
     }
+
 }

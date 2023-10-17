@@ -11,7 +11,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -71,13 +73,21 @@ public class TestConfig implements CommandLineRunner {
         Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "20/10/2001", "Masculino");
         Cliente c3 = new Cliente("DeiveCliente", "deiveCliente@gmail.com", "12345", "98301097043", "21/04/2001", "Masculino");
 
-        cadastrarClienteService.cadastrar(c1);
-        cadastrarClienteService.cadastrar(c2);
-        cadastrarClienteService.cadastrar(c3);
+        c1 = cadastrarClienteService.cadastrar(c1);
+        c2 = cadastrarClienteService.cadastrar(c2);
+        c3 = cadastrarClienteService.cadastrar(c3);
 
-        Enderecos e1 = new Enderecos("04845-150", "Rua jorge mendes", "69", " ", "Capao redondo", "São Paulo", "SP");
-        System.out.println("id c1 = " +  c1.getId());
+        Enderecos e1 = new Enderecos("04845-150", "Rua jorge mendes", "60", " ", "Capao redondo", "São Paulo1", "SP1");
+        Enderecos e2 = new Enderecos("04845-150", "Rua jorge mendes", "65", " ", "Capao redondo", "São Paulo2", "SP2");
+        Enderecos e3 = new Enderecos("04845-150", "Rua jorge mendess", "62", " ", "Capao redondo", "São Paulo3", "SP3");
 
+        List<Enderecos> enderecos = new ArrayList<>();
+
+        enderecos.add(e1);
+        enderecos.add(e2);
+        enderecos.add(e3);
+
+        enderecosServices.cadastrar(enderecos, c1.getId());
 
 
 
