@@ -81,13 +81,10 @@ public class TestConfig implements CommandLineRunner {
         Enderecos e2 = new Enderecos("04845-150", "Rua jorge mendes", "65", " ", "Capao redondo", "São Paulo2", "SP2");
         Enderecos e3 = new Enderecos("04845-150", "Rua jorge mendess", "62", " ", "Capao redondo", "São Paulo3", "SP3");
 
-        List<Enderecos> enderecos = new ArrayList<>();
+        enderecosServices.cadastrar(e1, c1.getId());
+        enderecosServices.cadastrar(e2, c1.getId());
+        enderecosServices.cadastrar(e3, c1.getId());
 
-        enderecos.add(e1);
-        enderecos.add(e2);
-        enderecos.add(e3);
-
-        enderecosServices.cadastrar(enderecos, c1.getId());
 
 
 

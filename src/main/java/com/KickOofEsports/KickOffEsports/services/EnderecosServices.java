@@ -19,19 +19,11 @@ public class EnderecosServices {
     @Autowired
     ClienteRepository clienteRepository;
 
-    public List<Enderecos> cadastrar(List<Enderecos> enderecos, String idUsuario) {
+    public Enderecos cadastrar(Enderecos enderecos, String idUsuario){
         Cliente cliente = clienteRepository.getReferenceById(idUsuario);
-        List<Enderecos> novosEnderecos = new ArrayList<>();
-
-        for (Enderecos endereco : enderecos) {
-            Enderecos novoEndereco = new Enderecos(endereco.getCep(), endereco.getLogradouro(), endereco.getNumero(),
-                    endereco.getComplemento(), endereco.getBairro(), endereco.getCidade(), endereco.getUf(), cliente);
-            cliente.getEnderecosList().add(novoEndereco);
-            novosEnderecos.add(novoEndereco);
-        }
-
+        Enderecos enderecos1 = new Enderecos(enderecos.getCep(), enderecos.getLogradouro(), enderecos.getNumero(), enderecos.getComplemento(), enderecos.getBairro(), enderecos.getCidade(), enderecos.getUf(), cliente);
+        cliente.enderecosList.add(enderecos1);
         clienteRepository.save(cliente);
-        return enderecosRepository.saveAll(novosEnderecos);
+        return enderecosRepository.save(enderecos1);
     }
-
 }

@@ -145,9 +145,9 @@
                 contentType: 'application/json',
                 data: JSON.stringify(usuario),
                 success: function(data) {
-                    alert('Cadastrado com sucesso');
+                    alert('Cadastrado com sucesso o id: ' + data.id);
                     console.log('Cadastrado com sucesso:', data);
-                    window.location.href = '/Endereco'; // Redirecione para a página desejada
+                    window.location.href = '/Endereco/' + data.id; // Redirecione para a página desejada
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status === 400) {

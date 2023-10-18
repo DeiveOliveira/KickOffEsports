@@ -1,7 +1,6 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Cliente;
-import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastrarClienteService;
 import jakarta.servlet.http.HttpSession;
@@ -51,7 +50,7 @@ public class CadastrarClienteController {
                 .buildAndExpand(usuario1.getId()).toUri();
 
         if(repository.findByEmail(cliente.getEmail()) != null){
-            session.setAttribute("usuarioLogado", usuario1);
+            session.setAttribute("clienteLogado", usuario1);
         }
         return ResponseEntity.created(uri).body(usuario1);
     }
