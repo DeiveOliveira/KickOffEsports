@@ -28,14 +28,14 @@
                         </div>
 
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary btn-lg btn-login" id="btnLogar">Entrar</button>
+                            <button type="button" class="btn btn-primary btn-lg btn-login" id="btnLogar">Entrar</button>
                             <span style="margin: 0 10px;"></span>
                             <button type="button" class="btn btn-secondary btn-lg" id="btnVoltar">Voltar</button>
                         </div>
                     </form>
                 </div>
                 <div class="card-footer">
-                    <p class="mb-0">Ainda não tem uma conta? <a href="CadastroCliente.html">Cadastrar-se</a></p>
+                    <p class="mb-0">Ainda não tem uma conta? <a href="CadastroCliente">Cadastrar-se</a></p>
                 </div>
             </div>
         </div>
@@ -71,7 +71,7 @@
       success: function(data) {
         alert('Longado com sucesso');
         window.location.href = "/home";
-      }
+      },
 
       error: function(xhr, status, error) {
         if (xhr.status === 400) {

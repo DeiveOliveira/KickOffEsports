@@ -6,6 +6,7 @@ import com.KickOofEsports.KickOffEsports.services.exceptions.SenhaDiferenteExcep
 import com.KickOofEsports.KickOffEsports.utils.LoginRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,14 +28,14 @@ public class LoginClienteController {
 
     @PostMapping("/logarCliente")
     public String logar(@RequestBody LoginRequest loginRequest,
-                        HttpSession session){
+                                HttpSession session) {
         System.out.println("tentou logar");
         Cliente cliente = cadastrarClienteService.login(loginRequest.getEmail(), loginRequest.getSenha());
-        if(cliente != null){
-            System.out.println("logou com sucesso!");
-            session.setAttribute("clienteLongado", cliente);
-            return "redirect:/";
-        }else{
+        if (cliente != null) {
+            System.out.println("logou com sucesso o usuario " + cliente.getNomeCompleto());
+            session.setAttribute("usuarioLogado", cliente);
+            return "redirect:/home";
+        } else {
             throw new SenhaDiferenteException();
         }
     }

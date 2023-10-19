@@ -24,10 +24,24 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
             </form>
             <div class="col-md-2 text-end">
-                <a href="LoginCliente.html" class="text-white fa-lg">
-                    <i class="fas fa-user"></i>
-                    Login
-                </a>
+                <th:block th:if="${usuarioLogado != null}">
+            <span class="text-white fa-lg">
+                <i class="fas fa-user"></i>
+                <span th:text="${usuarioLogado.nomeCompleto}"></span>
+            </span>
+                </th:block>
+                <th:block th:unless="${usuarioLogado != null}">
+                    <a href="loginCliente" class="text-white fa-lg">
+                        <i class="fas fa-user"></i>
+                        Login
+                    </a>
+                </th:block>
+            </div>
+            <button class="btn btn-danger btn-lg position-absolute top-0 end-0 m-3"
+                    th:if="${usuarioLogado != null}"
+                    onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair
+            </button>
+            </div>
             </div>
             <div class="col-md-2 text-end">
                 <a href="#" class="text-white">
@@ -44,6 +58,40 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+    function redirecionarParaLogin() {
+
+    let confirmMessage = 'Tem certeza de que deseja sair da conta';
+
+    const confirmacao = confirm(confirmMessage);
+
+    if (confirmacao) {
+        // O usuário clicou em "Sim", continue com a lógica de atualização
+        $.ajax({
+            type: 'POST',
+            url: '/logout',
+            contentType: 'application/json',
+            data: JSON.stringify({}),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/loginCliente';
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+                console.error('Erro ao atualizar:', error);
+            }
+        });
+    } else {
+        alert('Operação cancelada');
+    }
+}
+</script>
         <script>
             $(document).ready(function () {
                 $.ajax({
