@@ -24,6 +24,8 @@ public class Enderecos {
     private String cidade;
     private String uf;
 
+    private boolean ativo;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)

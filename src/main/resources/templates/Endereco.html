@@ -129,7 +129,7 @@
                 data: JSON.stringify(endereco),
                 success: function(data) {
                     alert('Cadastrado com sucesso o endereco');
-                    window.location.href = '';
+                    window.location.href = '/home';
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status === 400) {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" th:href="@{/css/LoginCliente.css">
+    <link rel="stylesheet" th:href="@{/css/LoginCliente.css}">
     <link rel="stylesheet" href="../static/css/LoginCliente.css">
     <title>Tela de Login</title>
 </head>
@@ -19,12 +19,12 @@
                 <div class="card-body">
                     <form>
                         <div class="mb-3">
-                            <label for="username" class="form-label">Nome de Usuário</label>
-                            <input type="email" id="inputEmail" class="form-control" placeholder="Seu email" required="" autofocus="">
+                            <label for="email" class="form-label">Nome de Usuário</label>
+                            <input type="email" id="email" class="form-control" placeholder="Seu email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="password" placeholder="Sua Senha" required>
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="senha" placeholder="Sua Senha" required>
                         </div>
 
                         <div class="d-flex justify-content-center">
@@ -43,12 +43,50 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    // Adicione um evento de clique ao botão "Cancelar" para redirecionar para a tela inicial
-    document.getElementById("btnVoltar").addEventListener("click", function() {
-        window.location.href = "http://localhost:8080/"; // Substitua a URL pela sua tela inicial
+  $(document).ready(function() {
+  console.log('tentou')
+  $('#btnLogar').click(function() {
+    alert('tentou logar');
+    console.log('tentou')
+    var email = $('#email').val();
+    var senha = $('#senha').val();
+
+    if (email === '' || senha === '') {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    var usuario = {
+      email: email,
+      senha: senha
+    };
+
+    $.ajax({
+      url: '/logarCliente',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(usuario),
+      success: function(data) {
+        alert('Longado com sucesso');
+        window.location.href = "/home";
+      }
+
+      error: function(xhr, status, error) {
+        if (xhr.status === 400) {
+          var errorMessage = xhr.responseText;
+          alert('Erro: ' + errorMessage);
+        } else {
+          alert('Erro: ' + error);
+        }
+        console.error('Erro:', error);
+      }
     });
+  });
+});
+
 </script>
+
 </body>
 </html>
