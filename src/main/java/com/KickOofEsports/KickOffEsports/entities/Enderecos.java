@@ -26,6 +26,9 @@ public class Enderecos {
 
     private boolean ativo;
 
+    @OneToOne(mappedBy = "enderecoCobranca")
+    private Cliente clienteCobranca;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)

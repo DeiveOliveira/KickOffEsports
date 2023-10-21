@@ -21,9 +21,9 @@ public class PossivelCompraController {
     @GetMapping("/possivelCompra/{id}")
     public ModelAndView possivelCompra(@PathVariable String id, HttpSession session) {
         Optional<Produto> optionalProduto = service.procurarPorId(id);
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        //   Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
         ModelAndView cadastroProduto = new ModelAndView();
-        if(usuario != null){
+        //if(usuario != null){
             if (optionalProduto.isPresent()) {
                 Produto produto = optionalProduto.get();
                 ModelAndView PossivelCompra = new ModelAndView();
@@ -36,10 +36,10 @@ public class PossivelCompraController {
                 // Você pode redirecionar para uma página de erro, por exemplo
                 // Ou lançar uma exceção adequada
             }
-        }
-        else{
-            cadastroProduto.setViewName("Login");
-        }
+        //  }
+        //else{
+        //     cadastroProduto.setViewName("Login");
+        // }
 
         return null;
     }

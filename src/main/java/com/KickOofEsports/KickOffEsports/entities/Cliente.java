@@ -28,11 +28,16 @@ public class Cliente {
     private String dataNascimento;
     private String genero;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "endereco_cobranca")
+    private Enderecos enderecoCobranca;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "cliente", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Fetch(value = FetchMode.JOIN)
     @Setter(value = AccessLevel.NONE)
     public List<Enderecos> enderecosList = new ArrayList<>();
+
 
     public Cliente(String nomeCompleto, String email, String senha, String cpf, String dataNascimento, String genero) {
         this.nomeCompleto = nomeCompleto;
