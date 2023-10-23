@@ -1,28 +1,31 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Cliente;
+import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
-import com.KickOofEsports.KickOffEsports.services.CadastrarClienteService;
+import com.KickOofEsports.KickOffEsports.services.ClienteService;
+import com.KickOofEsports.KickOffEsports.services.EditarService;
+import com.KickOofEsports.KickOffEsports.services.exceptions.EmailDiferentesException;
+import com.KickOofEsports.KickOffEsports.services.exceptions.RecursoNaoEncontradoException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 
 @Controller
-public class CadastrarClienteController {
+public class ClienteController {
 
     @Autowired
     ClienteRepository repository;
 
     @Autowired
-    CadastrarClienteService service;
+    ClienteService service;
 
     @GetMapping("/CadastroCliente")
     public ModelAndView cadastroCliente(){
@@ -53,5 +56,29 @@ public class CadastrarClienteController {
             session.setAttribute("clienteLogado", usuario1);
         }
         return ResponseEntity.created(uri).body(usuario1);
+    }
+
+    @GetMapping(value = "/editarCliente/{id}")
+    public ModelAndView editarCliente(@PathVariable String id){
+        Optional<?> cliente = service.procurarPorId(id);
+        ModelAndView editar = new ModelAndView();
+        cliente.ifPresent(u -> editar.addObject("usuario", u));
+        editar.setViewName("Cadastro");
+        System.out.println("pesquisou com sucesso o usuario do id: " + id);
+        return editar;
+    }
+
+    @PutMapping(value = "editarCliente/{id}")
+    public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody Cliente cliente){
+        try{
+            cliente = service.atualizar(id, cliente);
+            return ResponseEntity.ok().body(cliente);
+        }
+        catch (EmailDiferentesException e){
+            return ResponseEntity.badRequest().body("Email não é alteravel");
+        }
+        catch (RecursoNaoEncontradoException e){
+            return ResponseEntity.badRequest().body("Usuario não encontrado.");
+        }
     }
 }

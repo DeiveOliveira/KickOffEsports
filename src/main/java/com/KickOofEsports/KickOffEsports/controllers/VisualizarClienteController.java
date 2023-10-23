@@ -1,8 +1,7 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
-import com.KickOofEsports.KickOffEsports.entities.Cliente;
 import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
-import com.KickOofEsports.KickOffEsports.services.CadastrarClienteService;
+import com.KickOofEsports.KickOffEsports.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,11 +17,11 @@ public class VisualizarClienteController {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private CadastrarClienteService cadastrarClienteService;
+    private ClienteService clienteService;
 
     @GetMapping(value = "/visualizarCliente/{id}")
-    public ResponseEntity<Cliente> findById(@PathVariable String id){
-        Cliente obj = cadastrarClienteService.findById(id);
+    public ResponseEntity<Optional<?>> findById(@PathVariable String id){
+        Optional<?> obj = clienteService.procurarPorId(id);
         return ResponseEntity.ok().body(obj);
     }
 }

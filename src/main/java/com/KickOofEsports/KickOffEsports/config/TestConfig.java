@@ -1,9 +1,10 @@
 package com.KickOofEsports.KickOffEsports.config;
 
 import com.KickOofEsports.KickOffEsports.entities.*;
+import com.KickOofEsports.KickOffEsports.repositories.EnderecosRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ListaDeImagensRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
-import com.KickOofEsports.KickOffEsports.services.CadastrarClienteService;
+import com.KickOofEsports.KickOffEsports.services.ClienteService;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
 import com.KickOofEsports.KickOffEsports.services.EnderecosServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -29,7 +28,7 @@ public class TestConfig implements CommandLineRunner {
     private ListaDeImagensRepository listaDeImagens;
 
     @Autowired
-    private CadastrarClienteService cadastrarClienteService;
+    private ClienteService clienteService;
 
     @Autowired
     private EnderecosServices enderecosServices;
@@ -73,17 +72,21 @@ public class TestConfig implements CommandLineRunner {
         Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "20/10/2001", "Masculino");
         Cliente c3 = new Cliente("DeiveCliente", "deiveCliente@gmail.com", "12345", "98301097043", "21/04/2001", "Masculino");
 
-        c1 = cadastrarClienteService.cadastrar(c1);
-        c2 = cadastrarClienteService.cadastrar(c2);
-        c3 = cadastrarClienteService.cadastrar(c3);
+        c1 = clienteService.cadastrar(c1);
+        c2 = clienteService.cadastrar(c2);
+        c3 = clienteService.cadastrar(c3);
 
         Enderecos e1 = new Enderecos("04845-150", "Rua jorge mendes", "60", " ", "Capao redondo", "São Paulo1", "SP1");
         Enderecos e2 = new Enderecos("04845-150", "Rua jorge mendes", "65", " ", "Capao redondo", "São Paulo2", "SP2");
         Enderecos e3 = new Enderecos("04845-150", "Rua jorge mendess", "62", " ", "Capao redondo", "São Paulo3", "SP3");
 
+        c1.setEnderecoCobranca(e1);
+        c2.setEnderecoCobranca(e2);
+        c3.setEnderecoCobranca(e3);
+
         enderecosServices.cadastrar(e1, c1.getId());
-        enderecosServices.cadastrar(e2, c1.getId());
-        enderecosServices.cadastrar(e3, c1.getId());
+        enderecosServices.cadastrar(e2, c2.getId());
+        enderecosServices.cadastrar(e3, c3.getId());
 
 
 
