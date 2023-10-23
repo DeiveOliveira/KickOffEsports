@@ -1,7 +1,7 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
+import com.KickOofEsports.KickOffEsports.entities.Cliente;
 import com.KickOofEsports.KickOffEsports.entities.Produto;
-import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.services.VisualizarService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +20,18 @@ public class PossivelCompraController {
 
     @GetMapping("/possivelCompra/{id}")
     public ModelAndView possivelCompra(@PathVariable String id, HttpSession session) {
+        ModelAndView possivelCompra = new ModelAndView();
         Optional<Produto> optionalProduto = service.procurarPorId(id);
-        //   Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-        ModelAndView cadastroProduto = new ModelAndView();
-        //if(usuario != null){
-            if (optionalProduto.isPresent()) {
-                Produto produto = optionalProduto.get();
-                ModelAndView PossivelCompra = new ModelAndView();
-                PossivelCompra.setViewName("PossivelCompra");
-                PossivelCompra.addObject("produto", produto);
-                System.out.println("pesquisou com sucesso o usuario do id: " + id);
-                return PossivelCompra;
-            } else {
-                // Trate o caso em que o Produto não foi encontrado
-                // Você pode redirecionar para uma página de erro, por exemplo
-                // Ou lançar uma exceção adequada
-            }
-        //  }
-        //else{
-        //     cadastroProduto.setViewName("Login");
-        // }
-
-        return null;
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+        if (cliente != null) {
+            possivelCompra.setViewName("PossivelCompra");
+            possivelCompra.addObject("produto", optionalProduto);
+            System.out.println("pesquisou com sucesso o usuario do id: " + id);
+            return possivelCompra;
+        } else {
+            possivelCompra.setViewName("LoginCliente");
+        }
+        return possivelCompra;
     }
 }
+

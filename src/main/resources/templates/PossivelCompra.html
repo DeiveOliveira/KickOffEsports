@@ -31,15 +31,15 @@
 
       <div class="col-md-6">
 
-        <h2 class="display-4" th:text="${produto.nome}"></h2>
+        <h2 class="display-4" th:value="${produto.nome}"></h2>
 
-        <h4 class="descricao" th:text="${produto.descricao}"></h4>
+        <h4 class="descricao" th:value="${produto.descricao}"></h4>
 
         <p class="stars-highlight">Avaliação: <span class="text-warning">★</span><span class="text-warning"
-            th:text="${produto.avaliacao}"></span></p>
+            th:value="${produto.avaliacao}"></span></p>
 
         <p class="text-primary h-50 d-inline-block">R$<span class="text-primary h-50 d-inline-block"
-            th:text="${produto.preco}"></span></p>
+            th:value="${produto.preco}"></span></p>
 
             <div class="d-flex flex-column mt-0 align-items-center">
               <button class="btn btn-primary btn-lg mb-2 mr-2">Comprar</button>
@@ -102,19 +102,6 @@
       });
     });
 
-
-    function obterProdutoIdDaUrl() {
-      // Obtém a parte da URL após a última barra (presumindo que o ID do produto está no final da URL)
-      var url = window.location.pathname;
-      var partesDaUrl = url.split('/');
-      var produtoId = partesDaUrl[partesDaUrl.length - 1];
-
-      if (produtoId) {
-        return produtoId;
-      } else {
-        return null;
-      }
-    }
 
     
   </script>

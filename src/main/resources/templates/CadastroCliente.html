@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,9 +18,14 @@
                 </div>
                 <div class="card-body">
                     <form>
+
+                        <div class="form-group">
+                            <input type="hidden" id="id" name="id" th:if="${cliente}" th:value="${cliente.id}">
+                        </div>
                         <div class="mb-3">
                             <label for="nomeCompleto" class="form-label">Nome Completo</label>
-                            <input type="text" class="form-control" id="nomeCompleto" placeholder="Seu Nome Completo" required>
+                            <input type="text" class="form-control" id="nomeCompleto" name="nomeCompleto" required th:value="${cliente?.getNomeCompleto()}">
+
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>

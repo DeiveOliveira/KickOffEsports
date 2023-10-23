@@ -1,5 +1,6 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
+import com.KickOofEsports.KickOffEsports.entities.Cliente;
 import com.KickOofEsports.KickOffEsports.entities.Imagens;
 import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
@@ -22,7 +23,7 @@ public class VisualizarController {
     @GetMapping("/visualizar/{id}")
     public ModelAndView visualizar(@PathVariable String id, HttpSession session) {
         Optional<Produto> optionalProduto = service.procurarPorId(id);
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        Cliente usuario = (Cliente) session.getAttribute("usuarioLogado");
         ModelAndView cadastroProduto = new ModelAndView();
         if(usuario != null){
             if (optionalProduto.isPresent()) {
@@ -39,7 +40,7 @@ public class VisualizarController {
             }
         }
         else{
-            cadastroProduto.setViewName("Login");
+            cadastroProduto.setViewName("LoginCliente");
         }
 
         return null;

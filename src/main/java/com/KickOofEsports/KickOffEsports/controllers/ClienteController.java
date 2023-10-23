@@ -28,8 +28,12 @@ public class ClienteController {
     ClienteService service;
 
     @GetMapping("/CadastroCliente")
-    public ModelAndView cadastroCliente(){
+    public ModelAndView cadastroCliente(HttpSession session){
         ModelAndView mv = new ModelAndView();
+        Cliente cliente = (Cliente) session.getAttribute("clienteLogado");
+        if(cliente != null){
+            mv.addObject("cliente", cliente);
+        }
         mv.setViewName("CadastroCliente");
         return mv;
     }
@@ -63,7 +67,7 @@ public class ClienteController {
         Optional<?> cliente = service.procurarPorId(id);
         ModelAndView editar = new ModelAndView();
         cliente.ifPresent(u -> editar.addObject("usuario", u));
-        editar.setViewName("Cadastro");
+        editar.setViewName("CadastroCliente");
         System.out.println("pesquisou com sucesso o usuario do id: " + id);
         return editar;
     }

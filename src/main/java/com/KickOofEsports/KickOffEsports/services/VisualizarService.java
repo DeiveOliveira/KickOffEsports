@@ -13,6 +13,7 @@ public class VisualizarService {
     ProdutoRepository repository;
     public Optional<Produto> procurarPorId(String id){
 
-        return Optional.of(repository.getReferenceById(id));
+        return repository.findById(id);
+
     }
 }

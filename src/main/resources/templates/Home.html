@@ -25,10 +25,10 @@
             </form>
             <div class="col-md-2 text-end">
                 <th:block th:if="${usuarioLogado != null}">
-            <span class="text-white fa-lg">
+            <a href="CadastroCliente" class="text-white fa-lg">
                 <i class="fas fa-user"></i>
                 <span th:text="${usuarioLogado.nomeCompleto}"></span>
-            </span>
+            </a>
                 </th:block>
                 <th:block th:unless="${usuarioLogado != null}">
                     <a href="loginCliente" class="text-white fa-lg">
@@ -115,7 +115,7 @@
 
                                     $('.comprar-btn').on('click', function () {
                                         var produtoId = $(this).data('produto-id');
-                                        window.location.href = '/possivelCompra/' + produtoId;
+                                        window.location.href = '/visualizar/' + produtoId;
                                     });
                                 } else {
                                     console.error('Produto com dados faltando:', produto);

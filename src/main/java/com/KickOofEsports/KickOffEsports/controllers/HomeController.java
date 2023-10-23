@@ -22,6 +22,7 @@ public class HomeController {
     @GetMapping("/home")
     public String home(Model model, HttpSession session){
 
+
         Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
 
         List<Produto> produtos = produtoRepository.findAll();
@@ -34,8 +35,12 @@ public class HomeController {
 
 
         model.addAttribute("produtos", produtos);
-        model.addAttribute("usuarioLogado", cliente); // Adicione o usuário logado à modelo
 
+        if(cliente != null){
+
+            model.addAttribute("usuarioLogado", cliente); // Adicione o usuário logado à modelo
+
+        }
         return "Home";
 
     }
