@@ -37,16 +37,13 @@
                     </a>
                 </th:block>
             </div>
-            <button class="btn btn-danger btn-lg position-absolute top-0 end-0 m-3"
-                    th:if="${usuarioLogado != null}"
-                    onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair
-            </button>
             </div>
             </div>
-            <div class="col-md-2 text-end">
+            <div class="col-md-2 text-end d-flex align-items-center">
                 <a th:href="@{/CarrinhoDeCompra}" class="text-white">
                     <i class="fas fa-shopping-cart fa-2x"></i>
                 </a>
+                <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}" onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
             </div>
         </nav>
         <div class="container">
@@ -61,7 +58,7 @@
         <script>
     function redirecionarParaLogin() {
 
-    let confirmMessage = 'Tem certeza de que deseja sair da conta';
+    let confirmMessage = 'Tem certeza de que deseja sair da conta ?';
 
     const confirmacao = confirm(confirmMessage);
 
