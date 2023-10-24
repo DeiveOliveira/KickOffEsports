@@ -1,0 +1,15 @@
+.produto-imagem {
+  max-width: 100px; /* Defina o tamanho máximo desejado para as imagens */
+  height: auto; /* Mantém a proporção da imagem */
+}
+
+#carrinhoLista li {
+  display: block; /* Garante que os elementos sejam exibidos um abaixo do outro */
+  margin-bottom: 100px; /* Adiciona espaço entre os itens */
+}
+.produto-list-item {
+  margin-bottom: 20px; /* Adiciona espaço entre os itens */
+}
+.input-group-append {
+  margin-right: 10px; /* Ajusta a margem entre o botão e o campo de entrada */
+}
