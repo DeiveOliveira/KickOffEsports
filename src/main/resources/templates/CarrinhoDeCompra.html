@@ -72,7 +72,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <p>Total de Todos os Produtos: <span id="totalTodosProdutos">0.00</span></p>
+      <p>Total de Todos os Produtos: R$ <span id="totalTodosProdutos">0.00</span></p>
       <button class="btn btn-success finalizar-compra">Finalizar Compra</button>
     </div>
   </div>
@@ -108,7 +108,7 @@
                   <button class="btn btn-primary aumentar-quantidade">+</button>
                 </div>
                 <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>
-                <button class="btn btn-primary w-100 comprar-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>
+                <button class="btn btn-primary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>
               `;
               $('#carrinhoLista').append(listItem);
 
@@ -126,6 +126,18 @@
                   $(listItem).find('.quantidadeProduto').text(quantidade);
                   atualizarPrecoTotal(listItem);
                 }
+              });
+
+              // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
+              $('.remover-btn').click(function () {
+              // Encontre o elemento pai do botão, que é o item da lista de produtos
+              var listItem = $(this).closest('.produto-list-item');
+
+              // Remova o item da lista
+              listItem.remove();
+
+              // Recalcule o total de todos os produtos
+              calcularTotalTodosProdutos();
               });
 
               // Função para atualizar o preço total de um produto
