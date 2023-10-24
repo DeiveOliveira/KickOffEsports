@@ -57,6 +57,8 @@ public class CadastroController {
             return ResponseEntity.badRequest().body("Cpf ja cadastrado.");
         }
 
+
+
         Usuario usuario1 = service.cadastrar(usuario);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")

@@ -24,16 +24,18 @@
                         </div>
                         <div class="mb-3">
                             <label for="nomeCompleto" class="form-label">Nome Completo</label>
-                            <input type="text" class="form-control" id="nomeCompleto" name="nomeCompleto" required th:value="${cliente?.getNomeCompleto()}">
-
+                            <input type="text" class="form-control" id="nomeCompleto" name="nomeCompleto"
+                                   required th:value="${cliente?.getNomeCompleto()}">
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Seu Email" required>
+                            <input type="email" class="form-control" id="email" placeholder="Seu Email"
+                                   required th:value="${cliente?.getEmail()}">
                         </div>
                         <div class="mb-3">
                             <label for="senha" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="senha" placeholder="Senha" required>
+                            <input type="password" class="form-control" id="senha" placeholder="Senha"
+                                   required>
                         </div>
                         <div class="mb-3">
                             <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
@@ -41,19 +43,19 @@
                         </div>
                         <div class="mb-3">
                             <label for="cpf" class="form-label">CPF</label>
-                            <input type="text" class="form-control" id="cpf" placeholder="Seu CPF" required>
+                            <input type="text" class="form-control" id="cpf" placeholder="Seu CPF"
+                                   required th:value="${cliente?.getCpf()}">
                         </div>
                         <div class="mb-3">
                             <label for="dataNascimento" class="form-label">Data de Nascimento</label>
-                            <input type="date" class="form-control" id="dataNascimento" required>
+                            <input type="date" class="form-control" id="dataNascimento"
+                                   required th:value="${cliente?.getDataNascimento()}">
                         </div>
                         <div class="mb-3">
                             <label for="genero" class="form-label">Gênero</label>
                             <select class="form-select" id="genero" required>
-                                <option value="" disabled selected>Selecione o Gênero</option>
                                 <option value="masculino">Masculino</option>
                                 <option value="feminino">Feminino</option>
-                                <option value="outro">Outro</option>
                             </select>
                         </div>
                         <div class="d-flex justify-content-center">
@@ -116,7 +118,12 @@
             var dataNascimento = $('#dataNascimento').val();
 
             if (nomeCompleto === '' || email === '' || cpf === '' || dataNascimento === '') {
-                alert('Por favor, preencha todos os campos.');
+                alert('Apenas o campo complemento não é obrigatorio!.');
+                return;
+            }
+
+            if(senha != confirmarSenha){
+                alert('As senhas devem ser iguais!');
                 return;
             }
 

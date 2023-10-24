@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
@@ -32,9 +33,10 @@ public class ClienteController {
         ModelAndView mv = new ModelAndView();
         Cliente cliente = (Cliente) session.getAttribute("clienteLogado");
         if(cliente != null){
-            mv.addObject("cliente", cliente);
+            mv.setViewName("Home");
+        }else{
+            mv.setViewName("CadastroCliente");
         }
-        mv.setViewName("CadastroCliente");
         return mv;
     }
 
@@ -62,13 +64,19 @@ public class ClienteController {
         return ResponseEntity.created(uri).body(usuario1);
     }
 
-    @GetMapping(value = "/editarCliente/{id}")
-    public ModelAndView editarCliente(@PathVariable String id){
-        Optional<?> cliente = service.procurarPorId(id);
+    @GetMapping(value = "/editarCli")
+    public ModelAndView editarCliente(HttpSession session){
+        Cliente sessionCliente = (Cliente) session.getAttribute("usuarioLogado");
+        Optional<?> optionalCliente = service.procurarPorId(sessionCliente.getId());
         ModelAndView editar = new ModelAndView();
-        cliente.ifPresent(u -> editar.addObject("usuario", u));
+        Cliente cliente = (Cliente) optionalCliente.get();
+        editar.addObject("cliente", cliente);
+        if (cliente.getDataNascimento() != null) {
+            LocalDate dataNascimento = LocalDate.parse(cliente.getDataNascimento());
+            editar.addObject("dataNascimento", dataNascimento);
+        }
         editar.setViewName("CadastroCliente");
-        System.out.println("pesquisou com sucesso o usuario do id: " + id);
+        System.out.println("pesquisou com sucesso o usuario do id: " + sessionCliente.getId());
         return editar;
     }
 

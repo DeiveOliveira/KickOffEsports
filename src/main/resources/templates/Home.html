@@ -25,7 +25,7 @@
             </form>
             <div class="col-md-2 text-end">
                 <th:block th:if="${usuarioLogado != null}">
-            <a href="CadastroCliente" class="text-white fa-lg">
+            <a href="editarCli" class="text-white fa-lg">
                 <i class="fas fa-user"></i>
                 <span th:text="${usuarioLogado.nomeCompleto}"></span>
             </a>
@@ -43,7 +43,8 @@
                 <a th:href="@{/CarrinhoDeCompra}" class="text-white">
                     <i class="fas fa-shopping-cart fa-2x"></i>
                 </a>
-                <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}" onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
+                <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}"
+                        onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
             </div>
         </nav>
         <div class="container">
@@ -115,7 +116,7 @@
 
                                     $('.comprar-btn').on('click', function () {
                                         var produtoId = $(this).data('produto-id');
-                                        window.location.href = '/visualizar/' + produtoId;
+                                        window.location.href = '/possivelCompra/' + produtoId;
                                     });
                                 } else {
                                     console.error('Produto com dados faltando:', produto);

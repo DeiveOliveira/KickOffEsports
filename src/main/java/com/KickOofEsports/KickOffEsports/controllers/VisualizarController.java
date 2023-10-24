@@ -23,26 +23,13 @@ public class VisualizarController {
     @GetMapping("/visualizar/{id}")
     public ModelAndView visualizar(@PathVariable String id, HttpSession session) {
         Optional<Produto> optionalProduto = service.procurarPorId(id);
-        Cliente usuario = (Cliente) session.getAttribute("usuarioLogado");
-        ModelAndView cadastroProduto = new ModelAndView();
-        if(usuario != null){
-            if (optionalProduto.isPresent()) {
-                Produto produto = optionalProduto.get();
-                ModelAndView visualizar = new ModelAndView();
-                visualizar.setViewName("Visualizar");
-                visualizar.addObject("produto", produto);
-                System.out.println("pesquisou com sucesso o usuario do id: " + id);
-                return visualizar;
-            } else {
-                // Trate o caso em que o Produto não foi encontrado
-                // Você pode redirecionar para uma página de erro, por exemplo
-                // Ou lançar uma exceção adequada
-            }
-        }
-        else{
-            cadastroProduto.setViewName("LoginCliente");
-        }
-
-        return null;
+        Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+        Produto produto = optionalProduto.get();
+        ModelAndView visualizar = new ModelAndView();
+        visualizar.setViewName("Visualizar");
+        visualizar.addObject("produto", produto);
+        System.out.println("pesquisou com sucesso o usuario do id: " + id);
+        return visualizar;
     }
 }
+
