@@ -148,8 +148,26 @@
                 dataNascimento: dataNascimento
             };
 
-            var url = '/CadastrarCliente'; // Defina a URL corretamente para a sua aplicação
-            var type = 'POST';
+            if (window.location.pathname.startsWith('/editarCli')) {
+
+            var urlAtual = window.location.href;
+            var partesDaUrl = urlAtual.split('/');
+            var idUsuario = partesDaUrl[partesDaUrl.length - 1];
+
+            console.log('ID do usuário:', idUsuario);
+
+            url = '/editarCliente';
+            type = 'PUT'
+            acao = 'Atualizado'
+            enderecoHref = '/home';
+        } else {
+
+            url = '/CadastrarCliente';
+            type = 'POST'
+            acao = 'Cadastrado';
+            enderecoHref = '/Endereco/' + data.id;
+
+        }
 
             $.ajax({
                 type: type,
@@ -157,9 +175,9 @@
                 contentType: 'application/json',
                 data: JSON.stringify(usuario),
                 success: function(data) {
-                    alert('Cadastrado com sucesso o id: ' + data.id);
+                    alert(acao + "" + data.id);
                     console.log('Cadastrado com sucesso:', data);
-                    window.location.href = '/Endereco/' + data.id; // Redirecione para a página desejada
+                    window.location.href = enderecoHref;
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status === 400) {

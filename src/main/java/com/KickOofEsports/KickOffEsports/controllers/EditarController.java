@@ -5,6 +5,7 @@ import com.KickOofEsports.KickOffEsports.services.EditarService;
 import com.KickOofEsports.KickOffEsports.services.exceptions.EmailDiferentesException;
 import com.KickOofEsports.KickOffEsports.services.exceptions.RecursoNaoEncontradoException;
 import com.KickOofEsports.KickOffEsports.services.exceptions.SenhaDiferenteException;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class EditarController {
     }
 
     @PutMapping(value = "editarUsuario/{id}")
-    public ResponseEntity<?> editar(@PathVariable String id, @RequestBody Usuario usuario){
+    public ResponseEntity<?> editar(@PathVariable String id, @RequestBody Usuario usuario, HttpSession session){
         try{
             usuario = service.atualizar(id, usuario);
             return ResponseEntity.ok().body(usuario);

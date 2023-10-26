@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -61,7 +62,7 @@ public class ClienteController {
         if(repository.findByEmail(cliente.getEmail()) != null){
             session.setAttribute("clienteLogado", usuario1);
         }
-        return ResponseEntity.created(uri).body(usuario1);
+        return ResponseEntity.created(uri).body(session);
     }
 
     @GetMapping(value = "/editarCli")
@@ -72,7 +73,12 @@ public class ClienteController {
         Cliente cliente = (Cliente) optionalCliente.get();
         editar.addObject("cliente", cliente);
         if (cliente.getDataNascimento() != null) {
-            LocalDate dataNascimento = LocalDate.parse(cliente.getDataNascimento());
+            DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataNascimento = LocalDate.parse(cliente.getDataNascimento(), originalFormatter);
+            DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String dataNascimentoFormatted = dataNascimento.format(targetFormatter);
+            editar.addObject("dataNascimento", dataNascimentoFormatted);
+
             editar.addObject("dataNascimento", dataNascimento);
         }
         editar.setViewName("CadastroCliente");
@@ -80,8 +86,10 @@ public class ClienteController {
         return editar;
     }
 
-    @PutMapping(value = "editarCliente/{id}")
-    public ResponseEntity<?> editarCliente(@PathVariable String id, @RequestBody Cliente cliente){
+    @PutMapping(value = "editarCliente")
+    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, HttpSession session){
+        Cliente cliente1 = (Cliente) session.getAttribute("usuarioLogado");
+        String id = cliente1.getId();
         try{
             cliente = service.atualizar(id, cliente);
             return ResponseEntity.ok().body(cliente);
