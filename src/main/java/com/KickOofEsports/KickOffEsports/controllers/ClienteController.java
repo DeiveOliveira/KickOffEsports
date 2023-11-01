@@ -65,7 +65,7 @@ public class ClienteController {
         return ResponseEntity.created(uri).body(session);
     }
 
-    @GetMapping(value = "/editarCli")
+    @GetMapping(value = "/editarCli/{id}")
     public ModelAndView editarCliente(HttpSession session){
         Cliente sessionCliente = (Cliente) session.getAttribute("usuarioLogado");
         Optional<?> optionalCliente = service.procurarPorId(sessionCliente.getId());
@@ -82,16 +82,15 @@ public class ClienteController {
             editar.addObject("dataNascimento", dataNascimento);
         }
         editar.setViewName("CadastroCliente");
-        System.out.println("pesquisou com sucesso o usuario do id: " + sessionCliente.getId());
+        System.out.println("Atualizou com sucesso o cliente do id: " + sessionCliente.getId());
         return editar;
     }
 
-    @PutMapping(value = "editarCliente")
-    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, HttpSession session){
-        Cliente cliente1 = (Cliente) session.getAttribute("usuarioLogado");
-        String id = cliente1.getId();
+    @PutMapping(value = "editarCliente/{id}")
+    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable String id){
         try{
             cliente = service.atualizar(id, cliente);
+            System.out.println("Atualizou com sucesso o cliente do id: " + id);
             return ResponseEntity.ok().body(cliente);
         }
         catch (EmailDiferentesException e){

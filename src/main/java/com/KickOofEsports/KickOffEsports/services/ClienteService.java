@@ -67,6 +67,5 @@ public class ClienteService {
         }
         clienteDesatualizado.setNomeCompleto(clienteAtualizado.getNomeCompleto());
         clienteDesatualizado.setEmail(clienteAtualizado.getEmail());
-        clienteDesatualizado.setCpf(clienteAtualizado.getCpf());
     }
 }

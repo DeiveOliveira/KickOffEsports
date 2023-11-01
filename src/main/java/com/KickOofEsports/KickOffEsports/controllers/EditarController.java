@@ -26,7 +26,7 @@ public class EditarController {
         ModelAndView editar = new ModelAndView();
         usuario.ifPresent(u -> editar.addObject("usuario", u));
         editar.setViewName("Cadastro");
-        System.out.println("pesquisou com sucesso o usuario do id: " + id);
+        System.out.println("Atualizou o id: " + id);
         return editar;
     }
 
