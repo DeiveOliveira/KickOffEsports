@@ -150,13 +150,14 @@
 
             if (window.location.pathname.startsWith('/editarCli')) {
 
+
             var urlAtual = window.location.href;
             var partesDaUrl = urlAtual.split('/');
             var idUsuario = partesDaUrl[partesDaUrl.length - 1];
 
             console.log('ID do usuário:', idUsuario);
 
-            url = '/editarCliente';
+            url = '/editarCliente/' + idUsuario;
             type = 'PUT'
             acao = 'Atualizado'
             enderecoHref = '/home';
