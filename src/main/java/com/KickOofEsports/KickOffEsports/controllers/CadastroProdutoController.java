@@ -1,11 +1,15 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
+import com.KickOofEsports.KickOffEsports.entities.Imagens;
 import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.services.CadastroProdutoService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -39,31 +43,22 @@ public class CadastroProdutoController {
         return cadastroProduto;
     }
 
+    @SneakyThrows
     @PostMapping("/cadastrarProduto")
-    public ResponseEntity<Produto> cadastrarProduto(@RequestBody Produto produto) {
-        Produto produto1 = service.cadastrarProduto(produto);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(produto1.getId()).toUri();
-        return ResponseEntity.created(uri).body(produto1);
+    public ModelAndView cadastrarProduto(@RequestPart("produto") String produtoStr, @RequestPart("file") MultipartFile[] imagens) {
+        ObjectMapper mapper = new ObjectMapper();
+        Produto produto = mapper.readValue(produtoStr, Produto.class);
+        for (MultipartFile ima: imagens){
+            System.out.println(ima.getName());
+        }
+        try {
+            service.cadastrarProduto(produto, imagens);
+            return new ModelAndView("ListaProduto");
+        }catch (Exception e) {
+            System.out.println("Erro ao tentar salvar");
+            return new ModelAndView("ListaProduto");
+        }
     }
 
-
-//    @PostMapping("/produto")
-//    public ModelAndView cadastroProduto(@ModelAttribute Produto produto, @ModelAttribute Imagens img, @RequestParam("file")MultipartFile imagem){
-//        ModelAndView mv = new ModelAndView("cadastroProduto");
-//        mv.addObject("produto", produto);
-//
-//        try {
-//            if (UploadImagens.fazerUploadImagens(imagem)){
-//                img.setUrl(imagem.getOriginalFilename());
-//                img.setProduto(produto);
-//            }
-//            return new ModelAndView("listaProduto");
-//        }catch (Exception e){
-//            System.out.println("Erro ao salvar imagem");
-//            return mv;
-//        }
-//    }
 
 }
