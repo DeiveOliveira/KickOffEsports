@@ -1,6 +1,7 @@
 package com.KickOofEsports.KickOffEsports.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,13 +24,9 @@ public class Enderecos {
     private String bairro;
     private String cidade;
     private String uf;
-
     private boolean ativo;
 
-    @OneToOne(mappedBy = "enderecoCobranca")
-    private Cliente clienteCobranca;
-
-    @JsonBackReference
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
@@ -43,6 +40,7 @@ public class Enderecos {
         this.cidade = cidade;
         this.uf = uf;
         this.cliente = cliente;
+        this.ativo = true;
     }
 
     public Enderecos(String cep, String logradouro, String numero, String complemento, String bairro, String cidade, String uf) {
@@ -53,5 +51,6 @@ public class Enderecos {
         this.bairro = bairro;
         this.cidade = cidade;
         this.uf = uf;
+        this.ativo = true;
     }
 }

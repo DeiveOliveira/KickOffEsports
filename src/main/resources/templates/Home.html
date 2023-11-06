@@ -25,7 +25,7 @@
             </form>
             <div class="col-md-2 text-end">
                 <th:block th:if="${usuarioLogado != null}">
-                    <a th:href="@{'editarCli/' + ${usuarioLogado.id}}" class="text-white fa-lg">
+                    <a th:href="@{'opcoesCliente'}" class="text-white fa-lg">
                 <i class="fas fa-user"></i>
                 <span th:text="${usuarioLogado.nomeCompleto}"></span>
             </a>

@@ -20,8 +20,14 @@ public class VisualizarClienteController {
     private ClienteService clienteService;
 
     @GetMapping(value = "/visualizarCliente/{id}")
-    public ResponseEntity<Optional<?>> findById(@PathVariable String id){
-        Optional<?> obj = clienteService.procurarPorId(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<?> findById(@PathVariable String id){
+        Optional<?> objOptional = clienteService.procurarPorId(id);
+        if (objOptional.isPresent()) {
+            Object obj = objOptional.get();
+            return ResponseEntity.ok().body(obj);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 }

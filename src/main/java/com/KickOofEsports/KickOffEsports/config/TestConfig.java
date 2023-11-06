@@ -1,7 +1,7 @@
 package com.KickOofEsports.KickOffEsports.config;
 
 import com.KickOofEsports.KickOffEsports.entities.*;
-import com.KickOofEsports.KickOffEsports.repositories.EnderecosRepository;
+import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ListaDeImagensRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.services.ClienteService;
@@ -33,7 +33,8 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private EnderecosServices enderecosServices;
 
-
+    @Autowired
+    private ClienteRepository clienteRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -68,9 +69,9 @@ public class TestConfig implements CommandLineRunner {
 
         listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9));
 
-        Cliente c1 = new Cliente("AugustoCliente", "augustoCliente@gmail.com", "12345", "66803699080", "28/08/2002", "Masculino");
-        Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "20/10/2001", "Masculino");
-        Cliente c3 = new Cliente("DeiveCliente", "deiveCliente@gmail.com", "12345", "98301097043", "21/04/2001", "Masculino");
+        Cliente c1 = new Cliente("AugustoCliente", "augustoCliente@gmail.com", "12345", "66803699080", "2002-08-21\t", "Masculino");
+        Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "2002-08-20\t", "Masculino");
+        Cliente c3 = new Cliente("DeiveCliente", "deiveCliente@gmail.com", "12345", "98301097043", "2002-04-14\t", "Masculino");
 
         c1 = clienteService.cadastrar(c1);
         c2 = clienteService.cadastrar(c2);
@@ -80,16 +81,9 @@ public class TestConfig implements CommandLineRunner {
         Enderecos e2 = new Enderecos("04845-150", "Rua jorge mendes", "65", " ", "Capao redondo", "São Paulo2", "SP2");
         Enderecos e3 = new Enderecos("04845-150", "Rua jorge mendess", "62", " ", "Capao redondo", "São Paulo3", "SP3");
 
-        c1.setEnderecoCobranca(e1);
-        c2.setEnderecoCobranca(e2);
-        c3.setEnderecoCobranca(e3);
-
-        enderecosServices.cadastrar(e1, c1.getId());
-        enderecosServices.cadastrar(e2, c2.getId());
-        enderecosServices.cadastrar(e3, c3.getId());
-
-
-
+        e1 = enderecosServices.cadastrar(e1, c1.getId());
+        e2 = enderecosServices.cadastrar(e2, c2.getId());
+        e3 = enderecosServices.cadastrar(e3, c3.getId());
 
     }
 }

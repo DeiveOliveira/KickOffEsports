@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Endereços</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
+</head>
+<body>
+<div class="container mt-5 col-11">
+    <h1>Lista de Endereços</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>CEP</th>
+            <th>Logradouro</th>
+            <th>Número</th>
+            <th>Complemento</th>
+            <th>Bairro</th>
+            <th>Cidade</th>
+            <th>UF</th>
+            <th>Ativo</th>
+            <th>Editar</th>
+        </tr>
+        </thead>
+        <tbody id="enderecosList">
+            <tr th:each="endereco : ${endereco}">
+                <td th:text="${endereco.id}"></td>
+                <td th:text="${endereco.cep}"></td>
+                <td th:text="${endereco.logradouro}"></td>
+                <td th:text="${endereco.numero}"></td>
+                <td th:text="${endereco.complemento}"></td>
+                <td th:text="${endereco.bairro}"></td>
+                <td th:text="${endereco.cidade}"></td>
+                <td th:text="${endereco.uf}"></td>
+                <td th:text="${endereco.ativo} ? 'Sim' : 'Não'"></td>
+                <td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

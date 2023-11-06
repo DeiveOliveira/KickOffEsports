@@ -1,5 +1,6 @@
 package com.KickOofEsports.KickOffEsports.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.FetchMode;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "clientes")
 @Entity(name = "clientes")
 @Getter
@@ -27,12 +29,8 @@ public class Cliente {
     private String cpf;
     private String dataNascimento;
     private String genero;
+    private String idEnderecoCobranca;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "endereco_cobranca")
-    private Enderecos enderecoCobranca;
-
-    @JsonManagedReference
     @OneToMany(mappedBy = "cliente", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Fetch(value = FetchMode.JOIN)
     @Setter(value = AccessLevel.NONE)
@@ -47,5 +45,4 @@ public class Cliente {
         this.dataNascimento = dataNascimento;
         this.genero = genero;
     }
-
 }

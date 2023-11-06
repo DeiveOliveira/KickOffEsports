@@ -60,9 +60,24 @@ public class ClienteController {
                 .buildAndExpand(usuario1.getId()).toUri();
 
         if(repository.findByEmail(cliente.getEmail()) != null){
-            session.setAttribute("clienteLogado", usuario1);
+            session.setAttribute("usuarioLogado", usuario1);
         }
-        return ResponseEntity.created(uri).body(session);
+        return ResponseEntity.created(uri).body(usuario1);
+    }
+
+    @GetMapping("/opcoesCliente")
+    public ModelAndView opcoesCliente(HttpSession session){
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+        ModelAndView mv = new ModelAndView();
+        if (cliente != null) {
+            System.out.println("o : " + cliente.getNomeCompleto() + " Logou com sucesso");
+        } else {
+            mv.setViewName("LoginCliente");
+            return mv;
+        }
+        mv.setViewName("OpcoesCliente");
+        mv.addObject("usuarioLogado" ,cliente);
+        return mv;
     }
 
     @GetMapping(value = "/editarCli/{id}")
@@ -72,15 +87,6 @@ public class ClienteController {
         ModelAndView editar = new ModelAndView();
         Cliente cliente = (Cliente) optionalCliente.get();
         editar.addObject("cliente", cliente);
-        if (cliente.getDataNascimento() != null) {
-            DateTimeFormatter originalFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate dataNascimento = LocalDate.parse(cliente.getDataNascimento(), originalFormatter);
-            DateTimeFormatter targetFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String dataNascimentoFormatted = dataNascimento.format(targetFormatter);
-            editar.addObject("dataNascimento", dataNascimentoFormatted);
-
-            editar.addObject("dataNascimento", dataNascimento);
-        }
         editar.setViewName("CadastroCliente");
         System.out.println("Atualizou com sucesso o cliente do id: " + sessionCliente.getId());
         return editar;

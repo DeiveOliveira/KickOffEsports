@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/TelaPrincipal.css}">
+
+    <title>Index</title>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center align-items-center full-height">
+        <div class="col-md-6">
+            <div class="card card-transparent">
+                <div class="card-body text-center">
+                    <a th:if="${usuarioLogado != null}" th:href="@{'listaEnderecos/' + ${usuarioLogado.id}}" class="btn btn-secondary btn-lg mt-3">Lista de Endereço</a>
+                    <a th:if="${usuarioLogado != null}" th:href="@{'ediEndereco/' + ${usuarioLogado.idEnderecoCobranca}}" class="btn btn-secondary btn-lg mt-3">Endereco de Cobraça</a>
+                    <a th:if="${usuarioLogado != null}" th:href="@{'editarCli/' + ${usuarioLogado.id}}" class="btn btn-secondary btn-lg mt-3">Editar Cliente</a>
+                </div>
+            </div>
+
+            <button class="btn btn-danger btn-lg position-absolute top-0 end-0 m-3"
+                    onclick="redirecionarParaLogin()"
+                    type="button" id="btnLogout">Sair</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function redirecionarParaLogin() {
+
+    let confirmMessage = 'Tem certeza de que deseja sair da conta';
+
+    const confirmacao = confirm(confirmMessage);
+
+    if (confirmacao) {
+        // O usuário clicou em "Sim", continue com a lógica de atualização
+        $.ajax({
+            type: 'POST',
+            url: '/logout', // Corrigido
+            contentType: 'application/json',
+            data: JSON.stringify({}),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/loginCliente';
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+                console.error('Erro ao atualizar:', error);
+            }
+        });
+    } else {
+        alert('Operação cancelada');
+    }
+}
+</script>
+</body>
+</html>
