@@ -11,6 +11,20 @@
 <body>
 <div class="container mt-5 col-11">
     <h1>Lista de Endereços</h1>
+    <nav class="navbar navbar-light bg-light my-2">
+        <form class="input-group mr-2">
+            <input class="form-control m-2" type="search" id="inputPesquisa" placeholder="Pesquisar" aria-label="Pesquisar">
+            <button
+                    class="btn btn-outline-secondary m-2 btn-pesquisar"
+                    type="submit"
+                    onclick="pesquisar(event, this);">
+                Pesquisar</button>
+
+            <a th:href="@{/Endereco}" class="btn btn-success m-2 btn-cadastrar">
+                <i class="fas fa-plus"></i>Adicionar endereço
+            </a>
+        </form>
+    </nav>
     <table class="table">
         <thead>
         <tr>
@@ -36,7 +50,26 @@
                 <td th:text="${endereco.bairro}"></td>
                 <td th:text="${endereco.cidade}"></td>
                 <td th:text="${endereco.uf}"></td>
-                <td th:text="${endereco.ativo} ? 'Sim' : 'Não'"></td>
+                <td>
+                    <button
+                            th:if="${endereco.ativo}"
+                            type="button"
+                            class="btn btn-success status-button"
+                            th:data-endereco-id="${endereco.id}"
+                            data-status="Ativo"
+                            onclick="atualizarStatus(this);">
+                        Ativo
+                    </button>
+                    <button
+                            th:unless="${endereco.ativo}"
+                            type="button"
+                            class="btn btn-danger status-button"
+                            th:data-endereco-id="${endereco.id}"
+                            data-status="Inativo"
+                            onclick="atualizarStatus(this);">
+                        Inativo
+                    </button>
+                </td>
                 <td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>
             </tr>
         </tbody>
@@ -44,5 +77,53 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function atualizarStatus(button) {
+    const produtosId = button.getAttribute("data-endereco-id");
+    const status = button.getAttribute("data-status");
+
+    console.log("Produtos ID:", produtosId);
+    console.log("Status:", status);
+
+    let confirmMessage = '';
+
+    if (status === 'Ativo') {
+        confirmMessage = 'Tem certeza de que deseja mudar para Inativo?';
+    } else if (status === 'Inativo') {
+        confirmMessage = 'Tem certeza de que deseja mudar para Ativo?';
+    }
+
+    const confirmacao = confirm(confirmMessage);
+
+    var urlAtual = window.location.href;
+    var partesDaUrl = urlAtual.split('/');
+    var idUsuario = partesDaUrl[partesDaUrl.length - 1];
+
+    if (confirmacao) {
+        $.ajax({
+            type: 'PUT',
+            url: '/ativarDesativar/' + produtosId,
+            contentType: 'application/json',
+            data: JSON.stringify({ produtoId: produtosId }),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/listaEnderecos/' + idUsuario ;
+            },
+            error: function(xhr, status, error) {
+                console.log('Erro na chamada AJAX:', error);
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+            }
+        });
+    } else {
+        alert('Operação cancelada');
+    }
+}
+</script>
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.Cliente;
 import com.KickOofEsports.KickOffEsports.entities.Enderecos;
+import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
 import com.KickOofEsports.KickOffEsports.repositories.EnderecosRepository;
@@ -96,6 +97,13 @@ public class EnderecoController {
         else{
             return new ModelAndView();
         }
+    }
+
+    @PutMapping(value = "/ativarDesativar/{id}")
+    public ResponseEntity<Enderecos> ativarDesativar(@PathVariable String id){
+        System.out.println("chegou aqui");
+        Enderecos enderecos = clienteService.atualizarStatus(id);
+        return ResponseEntity.ok().body(enderecos);
     }
 
 

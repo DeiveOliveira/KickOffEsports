@@ -2,7 +2,10 @@ package com.KickOofEsports.KickOffEsports.services;
 
 import com.KickOofEsports.KickOffEsports.entities.Cliente;
 
+import com.KickOofEsports.KickOffEsports.entities.Enderecos;
+import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
+import com.KickOofEsports.KickOffEsports.repositories.EnderecosRepository;
 import com.KickOofEsports.KickOffEsports.services.exceptions.CpfDiferentesExceptions;
 import com.KickOofEsports.KickOffEsports.services.exceptions.EmailDiferentesException;
 import com.KickOofEsports.KickOffEsports.services.exceptions.RecursoNaoEncontradoException;
@@ -21,6 +24,9 @@ public class ClienteService {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
     ClienteRepository repository;
+
+    @Autowired
+    EnderecosRepository enderecosRepository;
 
     public Cliente cadastrar(Cliente cliente){
         String criptografando = this.passwordEncoder.encode(cliente.getSenha());
@@ -62,10 +68,28 @@ public class ClienteService {
     }
 
     public void atualizarData(Cliente clienteDesatualizado, Cliente clienteAtualizado) {
-        if (clienteAtualizado.getSenha() != null) {
+        if (!clienteAtualizado.getSenha().isEmpty()) {
             clienteDesatualizado.setSenha(passwordEncoder.encode(clienteAtualizado.getSenha()));
         }
         clienteDesatualizado.setNomeCompleto(clienteAtualizado.getNomeCompleto());
         clienteDesatualizado.setEmail(clienteAtualizado.getEmail());
+    }
+
+    public Enderecos atualizarStatus(String id){
+        try{
+            Enderecos enderecos = enderecosRepository.getReferenceById(id);
+            ativarDesativar(enderecos);
+            return enderecosRepository.save(enderecos);
+        }catch (EntityNotFoundException e){
+            throw new RecursoNaoEncontradoException(id);
+        }
+    }
+
+    private void ativarDesativar(Enderecos enderecos){
+        if (enderecos.isAtivo() == true){
+            enderecos.setAtivo(false);
+        }else{
+            enderecos.setAtivo(true);
+        }
     }
 }

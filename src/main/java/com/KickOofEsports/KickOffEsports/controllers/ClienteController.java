@@ -93,10 +93,12 @@ public class ClienteController {
     }
 
     @PutMapping(value = "editarCliente/{id}")
-    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable String id){
+    public ResponseEntity<?> editarCliente(@RequestBody Cliente cliente, @PathVariable String id, HttpSession session){
+        Cliente cliente1 = (Cliente) session.getAttribute("usuarioLogado");
         try{
             cliente = service.atualizar(id, cliente);
             System.out.println("Atualizou com sucesso o cliente do id: " + id);
+            session.invalidate();
             return ResponseEntity.ok().body(cliente);
         }
         catch (EmailDiferentesException e){

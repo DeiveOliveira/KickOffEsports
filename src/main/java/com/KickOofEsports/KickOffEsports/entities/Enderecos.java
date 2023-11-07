@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Table(name = "enderecos")
 @Entity(name = "enderecos")
 @Getter
@@ -53,4 +55,5 @@ public class Enderecos {
         this.uf = uf;
         this.ativo = true;
     }
+
 }

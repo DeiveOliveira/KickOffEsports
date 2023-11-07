@@ -47,15 +47,12 @@ public class TestConfig implements CommandLineRunner {
         cadastrar.cadastrar(u2);
         cadastrar.cadastrar(u3);
 
-
-
         Produto p1 = new Produto("Camisa do Real Madrid", 5.00, "Camisa do Real Madrid de 2023", 350.00, 10);
         Produto p2 = new Produto("Camisa Retro do Barcelona", 3.50, "Camisa do Barcelona de 2016", 160.00, 30);
         Produto p3 = new Produto("Camisa da Alemanha", 1.00, "Camisa da Juventus do CR7", 400.00, 5);
         Produto p4 = new Produto("Camisa do Japão", 3.00, "Camisa do Japão, edição limitada", 400.00, 5);
 
         produtoRepository.saveAll(Arrays.asList(p1,p2,p3, p4));
-
 
         Imagens l1 = new Imagens(p1, "/img/imagensDosProdutos/RealMadrir.jpg");
         Imagens l2 = new Imagens(p1, "/img/imagensDosProdutos/RealMadrirCosta.jpg");
@@ -84,6 +81,7 @@ public class TestConfig implements CommandLineRunner {
         e1 = enderecosServices.cadastrar(e1, c1.getId());
         e2 = enderecosServices.cadastrar(e2, c2.getId());
         e3 = enderecosServices.cadastrar(e3, c3.getId());
+
 
     }
 }
