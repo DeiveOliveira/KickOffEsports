@@ -13,12 +13,38 @@
   <link rel="stylesheet" href="../static/css/CarrinhoDeCompra.css">
   <style>
     .produto-imagem {
-      max-width: 100px; /* Defina o tamanho máximo desejado para as imagens */
-      height: auto; /* Mantém a proporção da imagem */
+      max-width: 100px;
+      height: auto;
     }
 
     .produto-list-item {
-      margin-bottom: 20px; /* Adiciona espaço entre os itens */
+      margin-bottom: 20px;
+    }
+
+    /* Estilos para destacar o total de produtos e total com frete */
+    #totalTodosProdutos, #totalComFrete, #RS, #RS2 {
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .quantidadeProduto{
+      color: white;
+    }
+
+    /* Adicione espaço entre as opções de frete */
+    .form-check {
+      margin-bottom: 100px;
+    }
+
+    p, h4, h5, h1, label{
+      text-transform: uppercase;
+      color: #F0F8FF
+    }
+
+
+    body {
+      background-color: black; /* Define uma cor de fundo */
     }
   </style>
   <title>Carrinho de Compra</title>
@@ -29,16 +55,16 @@
 <!-- Área para digitar o CEP e botão para buscar o CEP -->
 <div class="input-group mb-3" style="width: 45%;">
   <input type="text" class="form-control form-control-sm" placeholder="Digite o CEP" id="cepInput">
-  <div class="input-group-append">
-    <button class="btn btn-primary" type="button" id="buscarCep">Buscar CEP</button>
-  </div>
 </div>
-
+<div class="input-group-append">
+  <button class="btn btn-primary" type="button" id="buscarCep">Buscar CEP</button>
+</div>
+<br>
 <!-- Botão para abrir a janela modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBuscaEnderecos">
   Buscar Endereços
 </button>
-
+<br>
 <!-- Modal para buscar endereços -->
 <div class="modal fade" id="modalBuscaEnderecos" tabindex="-1" role="dialog" aria-labelledby="modalBuscaEnderecosLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -71,8 +97,26 @@
     <!-- Itens do carrinho serão inseridos aqui -->
   </div>
   <div class="row">
+    <br>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="frete" value="expresso" id="freteExpresso">
+      <label class="form-check-label" for="freteExpresso">Expresso (5 dias úteis) - R$ 20</label>
+    </div>
+    <br>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="frete" value="normal" id="freteNormal">
+      <label class="form-check-label" for="freteNormal">Normal (10 dias úteis) - R$ 10</label>
+    </div>
+    <br>
+    <div class="form-check">
+      <input type="radio" class="form-check-input" name="frete" value="buscar-loja" id="freteLoja">
+      <label class="form-check-label" for="freteLoja">Buscar na loja (7 dias) - R$ 5</label>
+    </div>
+    <br>
     <div class="col">
-      <p>Total de Todos os Produtos: R$ <span id="totalTodosProdutos">0.00</span></p>
+      <br>
+      <p>Total de Todos os Produtos: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
+      <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
       <button class="btn btn-success finalizar-compra">Finalizar Compra</button>
     </div>
   </div>
@@ -96,19 +140,19 @@
             if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('preco')) {
               var quantidade = 1; // Declare a quantidade dentro do loop
               // Crie um elemento de lista para cada produto
-              var listItem = document.createElement('li');
-              listItem.className = 'produto-list-item'; // Classe para espaço entre os produtos
+              var listItem = document.createElement('div');
+              listItem.className = 'col-md-4 mb-4'; // Classe para espaço entre os produtos
               listItem.innerHTML = `
                 <img src="${produto.img[0].url}" class="produto-imagem">
                 <h4>${produto.nome}</h4>
                 <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
                 <div>
-                  <button class="btn btn-primary diminuir-quantidade">-</button>
+                  <button class="btn btn-secondary diminuir-quantidade">-</button>
                   <span class="quantidadeProduto">${quantidade}</span>
-                  <button class="btn btn-primary aumentar-quantidade">+</button>
+                  <button class="btn btn-secondary aumentar-quantidade">+</button>
                 </div>
                 <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>
-                <button class="btn btn-primary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>
+                <button class="btn btn-secondary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>
               `;
               $('#carrinhoLista').append(listItem);
 
@@ -172,6 +216,33 @@
   // Chame a função para buscar produtos quando a página for carregada
   buscarProdutos();
 });
+
+// Função para atualizar o valor total com base na escolha de frete
+function atualizarTotalComFrete() {
+  var freteSelecionado = $('input[name="frete"]:checked').val();
+  var totalProdutos = parseFloat($('#totalTodosProdutos').text());
+
+  // Defina os valores dos fretes
+  var valorFreteExpresso = 20;
+  var valorFreteNormal = 10;
+  var valorFreteLoja = 5;
+
+  var totalComFrete = totalProdutos;
+
+  if (freteSelecionado === "expresso") {
+    totalComFrete += valorFreteExpresso;
+  } else if (freteSelecionado === "normal") {
+    totalComFrete += valorFreteNormal;
+  } else if (freteSelecionado === "buscar-loja") {
+    totalComFrete += valorFreteLoja;
+  }
+
+  // Atualize o valor total com o frete selecionado
+  $('#totalComFrete').text(totalComFrete.toFixed(2));
+}
+
+// Adicione um evento para detectar a mudança na seleção de frete
+$('input[name="frete"]').change(atualizarTotalComFrete);
 </script>
 </body>
 </html>
