@@ -37,7 +37,8 @@
             <th>Cidade</th>
             <th>UF</th>
             <th>Ativo</th>
-            <th>Editar</th>
+            <!--<th>Editar</th>-->
+            <th>End. Padrao</th>
         </tr>
         </thead>
         <tbody id="enderecosList">
@@ -70,7 +71,10 @@
                         Inativo
                     </button>
                 </td>
-                <td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>
+                <!--<td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>-->
+                <td>
+                    <input type="checkbox" class="address-checkbox" th:data-endereco-id="${endereco.id}" th:disabled="${!endereco.ativo}" th:checked="${endereco.enderecoPadrao}" />
+                </td>
             </tr>
         </tbody>
     </table>
@@ -124,6 +128,36 @@
         alert('Operação cancelada');
     }
 }
+
+$(document).ready(function () {
+    // Lidar com cliques na caixa de seleção
+    $('.address-checkbox').on('change', function () {
+        // Verifique se esta caixa de seleção está sendo marcada
+        if ($(this).is(':checked')) {
+            // Se marcada, desmarque todas as outras caixas de seleção
+            $('.address-checkbox').not(this).prop('checked', false);
+        }
+    });
+
+    // Lidar com o estado da caixa de seleção quando o endereço é marcado como inativo
+    $('.status-button').on('click', function () {
+        const isActive = $(this).data('status') === 'Ativo';
+        const addressId = $(this).data('endereco-id');
+
+        // Encontre a caixa de seleção para este endereço
+        const checkbox = $('.address-checkbox[th:data-endereco-id="' + addressId + '"]');
+
+        // Se o endereço for marcado como inativo, desmarque a caixa de seleção
+        if (!isActive) {
+            checkbox.prop('checked', false);
+        }
+
+        // Desabilite ou habilite a caixa de seleção com base no status do endereço
+        checkbox.prop('disabled', !isActive);
+    });
+});
+
+
 </script>
 </body>
 </html>

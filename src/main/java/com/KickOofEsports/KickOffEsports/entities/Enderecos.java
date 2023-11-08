@@ -27,6 +27,7 @@ public class Enderecos {
     private String cidade;
     private String uf;
     private boolean ativo;
+    private boolean enderecoPadrao;
 
     @JsonIgnore
     @ManyToOne
