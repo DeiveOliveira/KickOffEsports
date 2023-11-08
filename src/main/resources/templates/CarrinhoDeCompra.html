@@ -173,9 +173,9 @@
               });
 
               // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
-              $('.remover-btn').click(function () {
+              $(document).on('click', '.remover-btn', function () {
               // Encontre o elemento pai do botão, que é o item da lista de produtos
-              var listItem = $(this).closest('.produto-list-item');
+              var listItem = $(this).closest('.col-md-4');
 
               // Remova o item da lista
               listItem.remove();
