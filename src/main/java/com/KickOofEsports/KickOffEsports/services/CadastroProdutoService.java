@@ -51,7 +51,7 @@ public class CadastroProdutoService {
         for (MultipartFile imagem : imagens) {
             try {
                 String originalName = StringUtils.cleanPath(imagem.getOriginalFilename());
-                String fileName = UUID.randomUUID().toString() + ".jpg"; // Nome do arquivo com extensão .jpg
+                String fileName = UUID.randomUUID().toString() +".jpg" ; // Nome do arquivo com extensão .jpg
 
                 // Caminho completo para o arquivo
                 String filePath = Paths.get(uploadDir, fileName).toString();
@@ -61,7 +61,7 @@ public class CadastroProdutoService {
 
                 // Salva a informação da imagem no banco de dados
                 // Adiciona a string ao nome do arquivo ao salvar no banco de dados
-                String dbFileName = "/img/imagensDosProdutos/" + fileName;
+                String dbFileName = fileName;
                 Imagens img = new Imagens(pro, dbFileName);
                 listaDeImagensRepository.save(img);
                 pro.getImg().add(img);

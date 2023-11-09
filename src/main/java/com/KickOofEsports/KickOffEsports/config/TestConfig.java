@@ -54,15 +54,15 @@ public class TestConfig implements CommandLineRunner {
 
         produtoRepository.saveAll(Arrays.asList(p1,p2,p3, p4));
 
-        Imagens l1 = new Imagens(p1, "/img/imagensDosProdutos/RealMadrir.jpg");
-        Imagens l2 = new Imagens(p1, "/img/imagensDosProdutos/RealMadrirCosta.jpg");
-        Imagens l3 = new Imagens(p2, "/img/imagensDosProdutos/BarçaFrente.jpg");
-        Imagens l4 = new Imagens(p2, "/img/imagensDosProdutos/BarçaCostas.jpg");
-        Imagens l5 = new Imagens(p2, "/img/imagensDosProdutos/Barça.jpg");
-        Imagens l6 = new Imagens(p3, "/img/imagensDosProdutos/AlemanhaFrente.jpg");
-        Imagens l7 = new Imagens(p3, "/img/imagensDosProdutos/AlemanhaCostas.jpg");
-        Imagens l8 = new Imagens(p4, "/img/imagensDosProdutos/JapaoFrente.jpg");
-        Imagens l9 = new Imagens(p4, "/img/imagensDosProdutos/JapaoCostas.jpg");
+        Imagens l1 = new Imagens(p1, "RealMadrir.jpg");
+        Imagens l2 = new Imagens(p1, "RealMadrirCosta.jpg");
+        Imagens l3 = new Imagens(p2, "BarçaFrente.jpg");
+        Imagens l4 = new Imagens(p2, "BarçaCostas.jpg");
+        Imagens l5 = new Imagens(p2, "Barça.jpg");
+        Imagens l6 = new Imagens(p3, "AlemanhaFrente.jpg");
+        Imagens l7 = new Imagens(p3, "AlemanhaCostas.jpg");
+        Imagens l8 = new Imagens(p4, "JapaoFrente.jpg");
+        Imagens l9 = new Imagens(p4, "JapaoCostas.jpg");
 
         listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9));
 

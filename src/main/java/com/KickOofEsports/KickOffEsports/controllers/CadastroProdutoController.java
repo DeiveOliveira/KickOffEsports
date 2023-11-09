@@ -1,6 +1,5 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
-import com.KickOofEsports.KickOffEsports.entities.Imagens;
 import com.KickOofEsports.KickOffEsports.entities.Produto;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
@@ -9,16 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
 
 @Controller
 @RequestMapping
@@ -59,6 +52,7 @@ public class CadastroProdutoController {
             return new ModelAndView("ListaProduto");
         }
     }
+
 
 
 }

@@ -125,9 +125,9 @@
 <!-- JavaScript -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-
+<script th:src="@{/javascript/Carrinho.js}"></script> 
 <script>
-  $(document).ready(function () {
+ $(document).ready(function () {
   // Função para buscar produtos do banco de dados
   function buscarProdutos() {
     $.ajax({
@@ -136,7 +136,13 @@
       dataType: 'json',
       success: function (data) {
         if (Array.isArray(data)) {
-          data.forEach(function (produto) {
+          // Filtrar produtos que estão no carrinho
+          var produtosCarrinho = data.filter(function (produto) {
+            return carrinhoProdutos.includes(produto.id);
+          });
+
+          // Agora, 'produtosCarrinho' contém apenas os produtos que estão no carrinho
+          produtosCarrinho.forEach(function (produto) {
             if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('preco')) {
               var quantidade = 1; // Declare a quantidade dentro do loop
               // Crie um elemento de lista para cada produto
@@ -155,67 +161,67 @@
                 <button class="btn btn-secondary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>
               `;
               $('#carrinhoLista').append(listItem);
-
-              // Adicionar a lógica para aumentar a quantidade
-              $(listItem).find('.aumentar-quantidade').click(function () {
-                quantidade++;
-                $(listItem).find('.quantidadeProduto').text(quantidade);
-                atualizarPrecoTotal(listItem);
-              });
-
-              // Adicionar a lógica para diminuir a quantidade
-              $(listItem).find('.diminuir-quantidade').click(function () {
-                if (quantidade > 1) {
-                  quantidade--;
-                  $(listItem).find('.quantidadeProduto').text(quantidade);
-                  atualizarPrecoTotal(listItem);
-                }
-              });
-
-              // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
-              $(document).on('click', '.remover-btn', function () {
-              // Encontre o elemento pai do botão, que é o item da lista de produtos
-              var listItem = $(this).closest('.col-md-4');
-
-              // Remova o item da lista
-              listItem.remove();
-
-              // Recalcule o total de todos os produtos
-              calcularTotalTodosProdutos();
-              });
-
-              // Função para atualizar o preço total de um produto
-              function atualizarPrecoTotal(item) {
-                var precoProduto = parseFloat($(item).find('.precoProduto').text());
-                $(item).find('.totalProduto').text((precoProduto * quantidade).toFixed(2));
-                calcularTotalTodosProdutos();
-              }
-
-              calcularTotalTodosProdutos();
             }
           });
-        } else {
-          console.error('Dados inválidos do servidor:', data);
         }
-      },
-      error: function (error) {
-        console.error('Erro ao buscar produtos:', error);
       }
     });
   }
+});
+
+  //             // Adicionar a lógica para diminuir a quantidade
+  //             $(listItem).find('.diminuir-quantidade').click(function () {
+  //               if (quantidade > 1) {
+  //                 quantidade--;
+  //                 $(listItem).find('.quantidadeProduto').text(quantidade);
+  //                 atualizarPrecoTotal(listItem);
+  //               }
+  //             });
+
+  //             // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
+  //             $(document).on('click', '.remover-btn', function () {
+  //             // Encontre o elemento pai do botão, que é o item da lista de produtos
+  //             var listItem = $(this).closest('.col-md-4');
+
+  //             // Remova o item da lista
+  //             listItem.remove();
+
+  //             // Recalcule o total de todos os produtos
+  //             calcularTotalTodosProdutos();
+  //             });
+
+  //             // Função para atualizar o preço total de um produto
+  //             function atualizarPrecoTotal(item) {
+  //               var precoProduto = parseFloat($(item).find('.precoProduto').text());
+  //               $(item).find('.totalProduto').text((precoProduto * quantidade).toFixed(2));
+  //               calcularTotalTodosProdutos();
+  //             }
+
+  //             calcularTotalTodosProdutos();
+  //           }
+  //         });
+  //       } else {
+  //         console.error('Dados inválidos do servidor:', data);
+  //       }
+  //     },
+  //     error: function (error) {
+  //       console.error('Erro ao buscar produtos:', error);
+  //     }
+  //   });
+  // }
 
   // Função para calcular o total de todos os produtos
-  function calcularTotalTodosProdutos() {
-    var total = 0;
-    $('.totalProduto').each(function () {
-      total += parseFloat($(this).text());
-    });
-    $('#totalTodosProdutos').text(total.toFixed(2));
-  }
+//   function calcularTotalTodosProdutos() {
+//     var total = 0;
+//     $('.totalProduto').each(function () {
+//       total += parseFloat($(this).text());
+//     });
+//     $('#totalTodosProdutos').text(total.toFixed(2));
+//   }
 
-  // Chame a função para buscar produtos quando a página for carregada
-  buscarProdutos();
-});
+//   // Chame a função para buscar produtos quando a página for carregada
+//   buscarProdutos();
+// });
 
 // Função para atualizar o valor total com base na escolha de frete
 function atualizarTotalComFrete() {
