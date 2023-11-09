@@ -44,6 +44,7 @@ public class Enderecos {
         this.uf = uf;
         this.cliente = cliente;
         this.ativo = true;
+        this.enderecoPadrao = false;
     }
 
     public Enderecos(String cep, String logradouro, String numero, String complemento, String bairro, String cidade, String uf) {
@@ -55,6 +56,7 @@ public class Enderecos {
         this.cidade = cidade;
         this.uf = uf;
         this.ativo = true;
+        this.enderecoPadrao = false;
     }
 
 }

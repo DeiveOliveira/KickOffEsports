@@ -64,6 +64,7 @@ public class CadastroProdutoService {
                 String dbFileName = "/img/imagensDosProdutos/" + fileName;
                 Imagens img = new Imagens(pro, dbFileName);
                 listaDeImagensRepository.save(img);
+                pro.getImg().add(img);
             } catch (IOException e) {
                 e.printStackTrace();
                 System.out.println("Erro ao copiar a imagem: " + e.getMessage());

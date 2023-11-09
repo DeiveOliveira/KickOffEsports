@@ -106,5 +106,11 @@ public class EnderecoController {
         return ResponseEntity.ok().body(enderecos);
     }
 
+    @PutMapping(value = "/atualizarEnderecoPadrao/{id}")
+    public ResponseEntity<Enderecos> atualizarEnderecoPadrao(@PathVariable String id){
+        System.out.println("chegou aqui");
+        Enderecos enderecos = clienteService.atualizarEnderecoPadrao(id);
+        return ResponseEntity.ok().body(enderecos);
+    }
 
 }

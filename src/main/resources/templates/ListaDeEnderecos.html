@@ -73,7 +73,11 @@
                 </td>
                 <!--<td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>-->
                 <td>
-                    <input type="checkbox" class="address-checkbox" th:data-endereco-id="${endereco.id}" th:disabled="${!endereco.ativo}" th:checked="${endereco.enderecoPadrao}" />
+                    <input type="checkbox"
+                           class="address-checkbox"
+                           th:data-endereco-id="${endereco.id}"
+                           th:checked="${endereco.enderecoPadrao}"
+                           onclick="minhaFuncao(this)" />
                 </td>
             </tr>
         </tbody>
@@ -81,6 +85,62 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+
+    function minhaFuncao(checkbox) {
+    const produtosId = checkbox.dataset.enderecoId;
+
+    console.log("Produtos ID:", produtosId);
+    console.log("Status:", status);
+
+    let confirmMessage = '';
+
+    if (checkbox.checked) {
+        alert('Checkbox está marcado');
+        confirmMessage = 'Deseja tornar o endereço como padrão?'
+
+    } else {
+        alert('Checkbox está desmarcado');
+        confirmMessage = 'Deseja desativar o endereço como padrão?'
+
+    }
+
+    const confirmacao = confirm(confirmMessage);
+
+    var urlAtual = window.location.href;
+    var partesDaUrl = urlAtual.split('/');
+    var idUsuario = partesDaUrl[partesDaUrl.length - 1];
+
+    alert(produtosId)
+
+    if (confirmacao) {
+        $.ajax({
+            type: 'PUT',
+            url: '/atualizarEnderecoPadrao/' + produtosId,
+            contentType: 'application/json',
+            data: JSON.stringify({ produtoId: produtosId }),
+            success: function(data) {
+                alert('Atualizado com sucesso');
+                console.log('Atualizado com sucesso:', data);
+                window.location.href = '/listaEnderecos/' + idUsuario ;
+            },
+            error: function(xhr, status, error) {
+                console.log('Erro na chamada AJAX:', error);
+                if (xhr.status === 400) {
+                    var errorMessage = xhr.responseText;
+                    alert('Erro ao atualizar: ' + errorMessage);
+                } else {
+                    alert('Erro ao atualizar: ' + error);
+                }
+            }
+        });
+    } else {
+        alert('Operação cancelada');
+    }
+}
+</script>
+
 <script>
     function atualizarStatus(button) {
     const produtosId = button.getAttribute("data-endereco-id");

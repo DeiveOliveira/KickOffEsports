@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -90,6 +91,35 @@ public class ClienteService {
             enderecos.setAtivo(false);
         }else{
             enderecos.setAtivo(true);
+        }
+    }
+
+    public Enderecos atualizarEnderecoPadrao(String id) {
+        try{
+            Enderecos enderecos = enderecosRepository.getReferenceById(id);
+            alterarEnderecoPadrao(enderecos);
+            return enderecosRepository.save(enderecos);
+        }catch (EntityNotFoundException e){
+            throw new RecursoNaoEncontradoException(id);
+        }
+    }
+
+    private void alterarEnderecoPadrao(Enderecos enderecos){
+
+        if (enderecos.isEnderecoPadrao() == true){
+            enderecos.setEnderecoPadrao(false);
+        }else{
+            Cliente cliente = repository.getReferenceById(enderecos.getCliente().getId());
+            List<Enderecos> listaDeEndereco = cliente.enderecosList;
+
+            for(Enderecos enderecos1 : listaDeEndereco){
+                if(enderecos1.getId() != enderecos.getId()){
+                    Enderecos enderecos2 = enderecosRepository.getReferenceById(enderecos1.getId());
+                    enderecos2.setEnderecoPadrao(false);
+                    enderecosRepository.save(enderecos2);
+                }
+            }
+            enderecos.setEnderecoPadrao(true);
         }
     }
 }
