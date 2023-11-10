@@ -89,11 +89,9 @@
         </div>
         <div class="modal-body">
           <!-- Adicione aqui a lista de endereços disponíveis para seleção -->
-          <select class="form-control" id="enderecoSelecionado">
-            <option value="endereco1">Endereço 1</option>
-            <option value="endereco2">Endereço 2</option>
-            <!-- Adicione mais opções conforme necessário -->
-          </select>
+          <ul id="listaEnderecos">
+            <!-- Os endereços serão adicionados aqui pela chamada AJAX -->
+          </ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary">Salvar</button>
@@ -129,7 +127,8 @@
         <br>
         <p>Total de Todos os Produtos: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
         <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
-        <button class="btn btn-success finalizar-compra">Finalizar Compra</button>
+        <button type="button" class="btn btn-success finalizar-compra" id="finalizarCompra"
+          onclick="finalizarCompra">Finalizar Compra</button>
       </div>
     </div>
   </div>
@@ -137,12 +136,13 @@
   <!-- JavaScript -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-  <script th:src="@{/javascript/Carrinho.js}"></script>
   <script>
     $(document).ready(function () {
 
+
       // Obtenha a lista do armazenamento local
       var carrinho = localStorage.getItem('carrinho');
+
 
       // Verifique se a lista existe
       if (carrinho) {
@@ -237,10 +237,20 @@
         atualizarPrecoTotal(item);
       }
 
-      // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
       $(document).on('click', '.remover-btn', function () {
         // Encontre o elemento pai do botão, que é o item da lista de produtos
         var listItem = $(this).closest('.col-md-4');
+
+        // Obtenha o ID do produto
+        var produtoId = $(this).data('produto-id');
+
+        // Remova o ID do produto do array carrinho
+        carrinho = carrinho.filter(function (id) {
+          return id !== produtoId;
+        });
+
+        // Salve o array carrinho atualizado de volta no localStorage
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
 
         // Remova o item da lista
         listItem.remove();
@@ -248,6 +258,8 @@
         // Recalcule o total de todos os produtos
         calcularTotalTodosProdutos();
       });
+
+      var valorTotal = calcularTotalTodosProdutos();
 
       // Função para atualizar o preço total de um produto
       function atualizarPrecoTotal(item) {
@@ -298,8 +310,61 @@
       // Chame a função para buscar produtos quando a página for carregada
       buscarProdutos();
 
+      document.getElementById('finalizarCompra').onclick = finalizarCompra;
+
+      function finalizarCompra() {
+        // Verifique se o usuário está logado
+        var usuarioLogado = localStorage.getItem('usuarioLogado');
+        if (usuarioLogado) {
+          var totalComFrete = $('#totalComFrete').text();
+          localStorage.setItem('totalComFrete', totalComFrete);
+          // O usuário está logado, armazene o valor tota        
+          window.location.href = '/pagamento';
+        } else {
+          // O usuário não está logado, mostre uma mensagem pedindo para ele fazer login
+          alert('Por favor, faça login para finalizar a compra.');
+          window.location.href = '/loginCliente';
+        }
+      }
     });
 
+
+  </script>
+
+  <script>
+    $('#modalBuscaEnderecos').on('show.bs.modal', function (event) {
+
+
+      // Limpe o select
+      $('#enderecoSelecionado').empty();
+      // Faça uma chamada AJAX para obter os endereços
+      $.ajax({
+        url: '/listaEnderecos/' + usuarioLogado, // Substitua isso pela URL da sua API
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          // Adicione cada endereço à lista
+          data.forEach(function (endereco, index) {
+            // Crie uma string para representar o endereço
+            var enderecoStr = endereco.logradouro + ', ' + endereco.numero;
+            if (endereco.complemento) {
+              enderecoStr += ', ' + endereco.complemento;
+            }
+            enderecoStr += ', ' + endereco.bairro + ', ' + endereco.cidade + ', ' + endereco.uf;
+
+            $('#listaEnderecos').append(`
+          <li>
+            <input type="radio" id="endereco${index}" name="endereco" value="${enderecoStr}">
+            <label for="endereco${index}">${enderecoStr}</label>
+          </li>
+        `);
+          });
+        },
+        error: function (error) {
+          console.error('Erro ao buscar endereços:', error);
+        }
+      });
+    });
   </script>
 </body>
 

@@ -70,6 +70,7 @@
       data: JSON.stringify(usuario),
       success: function(data) {
         alert('Longado com sucesso');
+        localStorage.setItem('usuarioLogado', JSON.stringify(data));
         window.location.href = "/home";
       },
 

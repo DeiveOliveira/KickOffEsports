@@ -22,6 +22,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class EnderecoController {
@@ -90,7 +91,13 @@ public class EnderecoController {
         if(objOptional.isPresent()){
             Cliente cliente = (Cliente) objOptional.get();
             List<Enderecos> listaDeEndereco = cliente.getEnderecosList();
-            mv.addObject("endereco", listaDeEndereco);
+
+            // Filtrar apenas os endereços ativos
+            List<Enderecos> listaDeEnderecoAtivo = listaDeEndereco.stream()
+                    .filter(Enderecos::isAtivo)
+                    .collect(Collectors.toList());
+
+            mv.addObject("endereco", listaDeEnderecoAtivo);
             mv.setViewName("ListaDeEnderecos");
             return mv;
         }

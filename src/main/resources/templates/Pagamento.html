@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Forma de Pagamento</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #0f0f0f;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+
+        .form-check-label {
+            font-size: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        #validateButton {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="text-center">Forma de pagamento</h2>
+        <form id="paymentForm">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymentMethod" id="boleto" value="boleto">
+                <label class="form-check-label ml-2" for="boleto">
+                    <i class="fas fa-barcode"></i> Boleto
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" value="creditCard">
+                <label class="form-check-label ml-2" for="creditCard">
+                    <i class="fas fa-credit-card"></i> Cartão de Crédito
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Número do cartão</label>
+                <input type="text" inputmode="numeric" pattern="[0-9]{5,12}" class="form-control" id="cardNumber"
+                    required>
+            </div>
+            <div class="form-group">
+                <label for="cardName">Nome Completo</label>
+                <input type="text" class="form-control" id="cardName" required pattern="[a-zA-Z\s]+">
+            </div>
+            <div class="form-group">
+                <label for="expiryDate">Data de vencimento</label>
+                <input type="date" class="form-control" id="expiryDate" required>
+            </div>
+            <div class="form-group">
+                <label for="cvv">Código verificador</label>
+                <input type="text" inputmode="numeric" pattern="[0-9]{2,5}" class="form-control" id="cvv" required>
+            </div>
+            <div class="form-group">
+                <label for="installments">Quantidade de parcelas</label>
+                <input type="number" class="form-control" id="installments" required min="1" max="12">
+            </div>
+            <div id="valorParcela">
+            </div>
+
+            <button type="submit" class="btn btn-primary mx-auto d-block" id="validateButton" disabled>Validar pedido
+                final</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            
+            $('input[type=radio][name=paymentMethod]').change(function () {
+                if (this.value == 'creditCard') {
+                    $('#creditCardInfo').show();
+                }
+                else if (this.value == 'boleto') {
+                    $('#creditCardInfo').hide();
+                }
+            });
+            var valorTotal = localStorage.getItem('totalComFrete');
+            console.log(localStorage.getItem('totalComFrete'));
+
+            // Pega a quantidade de parcelas do input
+            var parcelasInput = document.getElementById('installments');
+
+            // Pega o elemento para exibir o valor da parcela
+            var valorParcelaDisplay = document.getElementById('valorParcela');
+
+            // Função para calcular e exibir o valor da parcela
+            function calcularParcela() {
+                var parcelas = parcelasInput.value;
+                var valorParcela = valorTotal / parcelas;
+                valorParcelaDisplay.innerHTML = '<h5 class="text-dark">O valor de cada parcela: R$ ' + valorParcela.toFixed(2) + '</h5>';
+                
+            }
+
+            // Adiciona um ouvinte de evento para atualizar o valor da parcela sempre que o número de parcelas mudar
+            parcelasInput.addEventListener('input', calcularParcela);
+
+            // Calcula e exibe o valor da parcela inicial
+            calcularParcela();
+
+            $('#paymentForm').on('submit', function (e) {
+                e.preventDefault();
+
+                // Verificar se há somente números nos campos de número
+                var cardNumber = $('#cardNumber').val();
+                var cvv = $('#cvv').val();
+                if (!/^\d+$/.test(cardNumber) || !/^\d+$/.test(cvv)) {
+                    alert('Por favor, insira somente números nos campos de número do cartão e CVV.');
+                    return;
+                }
+
+
+                // Verificar se há somente letras nos campos de letras
+                var cardName = $('#cardName').val();
+                if (!/^[a-zA-Z\s]+$/.test(cardName)) {
+                    alert('Por favor, insira somente letras no campo de nome.');
+                    return;
+                }
+                // lógica para validar e processar o formulário de pagamento
+                alert('Pedido final validado!');
+            });
+
+            $('#paymentForm input').on('change', function () {
+                var isValid = true;
+                $('#paymentForm input').each(function () {
+                    if ($(this).val() === '') {
+                        isValid = false;
+                    }
+                });
+                $('#validateButton').prop('disabled', !isValid);
+            });
+        });
+
+    </script>
+
+</body>
+
+</html>

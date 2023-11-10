@@ -139,10 +139,11 @@
       }
 
       if (carrinho.includes(id)) {
-        alert('Este produto já foi adicionado ao carrinho.');
+        alert('Este produto já foi adicionado ao carrinho!');
       } else {
         carrinho.push(id);
         localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        alert('produto adicionado ao carrinho!');
       }
     }
 
