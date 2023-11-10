@@ -21,18 +21,18 @@ public class EnderecosServices {
     ClienteRepository clienteRepository;
 
     @Transactional
-    public Enderecos cadastrar(Enderecos enderecos, String idUsuario) {
+    public Enderecos cadastrar(Enderecos enderecos, String idUsuario){
         Cliente cliente = clienteRepository.getReferenceById(idUsuario);
         Enderecos enderecos1 = new Enderecos(enderecos.getCep(), enderecos.getLogradouro(), enderecos.getNumero(), enderecos.getComplemento(), enderecos.getBairro(), enderecos.getCidade(), enderecos.getUf(), cliente);
-
-        if (enderecos.isEnderecoPadrao()) {
-            // Defina o endereço padrão, desmarcando outros endereços
-            cliente.getEnderecosList().forEach(endereco -> endereco.setEnderecoPadrao(false));
+        if(cliente.enderecosList.isEmpty()){
+            cliente.enderecosList.add(enderecos1);
+            enderecosRepository.save(enderecos1);
+            cliente.setIdEnderecoCobranca(enderecos1.getId());
+            clienteRepository.save(cliente);
+            return enderecos1;
         }
-
-        cliente.getEnderecosList().add(enderecos1);
+        cliente.enderecosList.add(enderecos1);
         clienteRepository.save(cliente);
-
         return enderecosRepository.save(enderecos1);
     }
 
