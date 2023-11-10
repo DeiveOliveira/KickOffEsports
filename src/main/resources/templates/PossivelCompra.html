@@ -43,7 +43,9 @@
             th:text="${produto.preco}"></span></p>
 
         <div class="d-flex flex-column mt-3 align-items-center">
-          <button class="btn btn-primary btn-lg mb-2">Comprar</button>
+          <button type="button" class="btn btn-primary btn-lg mb-2" id="comprar"
+          onclick="comprar">Comprar</button>
+
           <button type="button" class="btn btn-primary btn-lg mr-2" id="adicionarAoCarrinho"
             onclick="adicionarAoCarrinho">Adicionar ao Carrinho</button>
         </div>
@@ -60,27 +62,6 @@
   <script>
     $(document).ready(function () {
       var produtoId = obterProdutoIdDaUrl();
-
-      document.getElementById('adicionarAoCarrinho').onclick = function () {
-
-        var id = produtoId;
-
-        var carrinho = localStorage.getItem('carrinho');
-        
-        if (carrinho) {
-          carrinho = JSON.parse(carrinho);
-        } else {
-          carrinho = [];
-        }
-
-        if (carrinho.includes(id)) {
-          alert('Este produto já foi adicionado ao carrinho.');
-        } else {
-          carrinho.push(id);
-
-          localStorage.setItem('carrinho', JSON.stringify(carrinho));
-        }
-      }
 
       $.ajax({
         url: '/api/produtos/' + produtoId,
@@ -123,6 +104,16 @@
           console.error('Erro ao buscar imagens:', error);
         }
       });
+
+
+      document.getElementById('adicionarAoCarrinho').onclick = function () {
+        adicionarAoCarrinho(produtoId);
+      }
+
+      document.getElementById('comprar').onclick = function () {
+        adicionarAoCarrinho(produtoId);
+        window.location.href = '/CarrinhoDeCompra'; // Substitua isso pelo caminho para a sua página de carrinho
+      }
     });
 
 
@@ -138,7 +129,22 @@
         return null;
       }
     }
+    function adicionarAoCarrinho(id) {
+      var carrinho = localStorage.getItem('carrinho');
 
+      if (carrinho) {
+        carrinho = JSON.parse(carrinho);
+      } else {
+        carrinho = [];
+      }
+
+      if (carrinho.includes(id)) {
+        alert('Este produto já foi adicionado ao carrinho.');
+      } else {
+        carrinho.push(id);
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+      }
+    }
 
   </script>
 </body>

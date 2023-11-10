@@ -192,7 +192,6 @@
       // Função para criar um elemento de lista para um produto
       function criarListItem(produto) {
 
-        
         var listItem = $('<div>').addClass('col-md-4 mb-4');
         listItem.append(`<img src="/img/imagensDosProdutos/${produto.img[0].url}" class="produto-imagem">
       <h4>${produto.nome}</h4>
@@ -206,15 +205,15 @@
       <button class="btn btn-secondary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>`);
         // Adicionar eventos aos botões de quantidade
 
-        
+
         listItem.find('.diminuir-quantidade').click(function () {
           diminuirQuantidade(listItem);
         });
-        
+
         listItem.find('.aumentar-quantidade').click(function () {
           aumentarQuantidade(listItem);
         });
-        
+
         atualizarPrecoTotal(listItem);
 
         return listItem;
