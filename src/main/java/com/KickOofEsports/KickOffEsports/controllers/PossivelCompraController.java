@@ -26,7 +26,7 @@ public class PossivelCompraController {
         Cliente usuario = (Cliente) session.getAttribute("usuarioLogado");
         Produto produto = optionalProduto.get();
         ModelAndView visualizar = new ModelAndView();
-        visualizar.setViewName("Visualizar");
+        visualizar.setViewName("PossivelCompra");
         visualizar.addObject("produto", produto);
         System.out.println("pesquisou com sucesso o usuario do id: " + id);
         return visualizar;

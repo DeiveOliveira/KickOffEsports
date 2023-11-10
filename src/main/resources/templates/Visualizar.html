@@ -44,8 +44,9 @@
 
             <div class="d-flex flex-column mt-3 align-items-center">
               <button class="btn btn-primary btn-lg mb-2">Comprar</button>
-              <button class="btn btn-primary btn-lg">Adicionar ao Carrinho</button>
-          </div>
+              <button type="button" class="btn btn-primary btn-lg mr-2" id="adicionarAoCarrinho"
+              onclick="adicionarAoCarrinho">Adicionar ao Carrinho</button>
+            </div>
 
       </div>
     </div>
@@ -58,7 +59,7 @@
   <script>
     $(document).ready(function () {
       var produtoId = obterProdutoIdDaUrl();
-
+      
       $.ajax({
         url: '/api/produtos/' + produtoId,
         method: 'GET',

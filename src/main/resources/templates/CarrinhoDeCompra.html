@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <head>
   <!-- Meta tags Obrigatórias -->
   <meta charset="utf-8">
@@ -9,7 +10,8 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="../static/css/CarrinhoDeCompra.css">
   <style>
     .produto-imagem {
@@ -22,13 +24,16 @@
     }
 
     /* Estilos para destacar o total de produtos e total com frete */
-    #totalTodosProdutos, #totalComFrete, #RS, #RS2 {
+    #totalTodosProdutos,
+    #totalComFrete,
+    #RS,
+    #RS2 {
       font-size: 18px;
       font-weight: bold;
       color: white;
     }
 
-    .quantidadeProduto{
+    .quantidadeProduto {
       color: white;
     }
 
@@ -37,218 +42,266 @@
       margin-bottom: 100px;
     }
 
-    p, h4, h5, h1, label{
+    p,
+    h4,
+    h5,
+    h1,
+    label {
       text-transform: uppercase;
       color: #F0F8FF
     }
 
 
     body {
-      background-color: black; /* Define uma cor de fundo */
+      background-color: black;
+      /* Define uma cor de fundo */
     }
   </style>
   <title>Carrinho de Compra</title>
 </head>
+
 <body>
-<h1>Carrinho de Compra</h1>
+  <h1>Carrinho de Compra</h1>
 
-<!-- Área para digitar o CEP e botão para buscar o CEP -->
-<div class="input-group mb-3" style="width: 45%;">
-  <input type="text" class="form-control form-control-sm" placeholder="Digite o CEP" id="cepInput">
-</div>
-<div class="input-group-append">
-  <button class="btn btn-primary" type="button" id="buscarCep">Buscar CEP</button>
-</div>
-<br>
-<!-- Botão para abrir a janela modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBuscaEnderecos">
-  Buscar Endereços
-</button>
-<br>
-<!-- Modal para buscar endereços -->
-<div class="modal fade" id="modalBuscaEnderecos" tabindex="-1" role="dialog" aria-labelledby="modalBuscaEnderecosLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalBuscaEnderecosLabel">Buscar Endereços para Entrega</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Adicione aqui a lista de endereços disponíveis para seleção -->
-        <select class="form-control" id="enderecoSelecionado">
-          <option value="endereco1">Endereço 1</option>
-          <option value="endereco2">Endereço 2</option>
-          <!-- Adicione mais opções conforme necessário -->
-        </select>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Salvar</button>
-        <a th:href="@{/cadastrarEndereco(clienteId=${id})}" class="btn btn-primary btn-lg">Novo endereço</a>
+  <!-- Área para digitar o CEP e botão para buscar o CEP -->
+  <div class="input-group mb-3" style="width: 45%;">
+    <input type="text" class="form-control form-control-sm" placeholder="Digite o CEP" id="cepInput">
+  </div>
+  <div class="input-group-append">
+    <button class="btn btn-primary" type="button" id="buscarCep">Buscar CEP</button>
+  </div>
+  <br>
+  <!-- Botão para abrir a janela modal -->
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBuscaEnderecos">
+    Buscar Endereços
+  </button>
+  <br>
+  <!-- Modal para buscar endereços -->
+  <div class="modal fade" id="modalBuscaEnderecos" tabindex="-1" role="dialog"
+    aria-labelledby="modalBuscaEnderecosLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalBuscaEnderecosLabel">Buscar Endereços para Entrega</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Adicione aqui a lista de endereços disponíveis para seleção -->
+          <select class="form-control" id="enderecoSelecionado">
+            <option value="endereco1">Endereço 1</option>
+            <option value="endereco2">Endereço 2</option>
+            <!-- Adicione mais opções conforme necessário -->
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">Salvar</button>
+          <a th:href="@{/cadastrarEndereco(clienteId=${id})}" class="btn btn-primary btn-lg">Novo endereço</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Lista de itens no carrinho -->
-<div class="container">
-  <div class="row" id="carrinhoLista">
-    <!-- Itens do carrinho serão inseridos aqui -->
+  <!-- Lista de itens no carrinho -->
+  <div class="container">
+    <div class="row" id="carrinhoLista">
+      <!-- Itens do carrinho serão inseridos aqui -->
+    </div>
+    <div class="row">
+
+      <div class="form-check col-md-4 mb-4">
+        <input type="radio" class="form-check-input" name="frete" value="expresso" id="freteExpresso">
+        <label class="form-check-label" for="freteExpresso">Expresso (5 dias úteis) - R$ 20</label>
+      </div>
+
+      <div class="form-check col-md-4 mb-4">
+        <input type="radio" class="form-check-input" name="frete" value="normal" id="freteNormal">
+        <label class="form-check-label" for="freteNormal">Normal (10 dias úteis) - R$ 10</label>
+      </div>
+
+      <div class="form-check col-md-4 mb-4">
+        <input type="radio" class="form-check-input" name="frete" value="buscar-loja" id="freteLoja">
+        <label class="form-check-label" for="freteLoja">Buscar na loja (7 dias) - R$ 5</label>
+      </div>
+
+      <div class="col">
+        <br>
+        <p>Total de Todos os Produtos: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
+        <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
+        <button class="btn btn-success finalizar-compra">Finalizar Compra</button>
+      </div>
+    </div>
   </div>
-  <div class="row">
 
-    <div class="form-check col-md-4 mb-4">
-      <input type="radio" class="form-check-input" name="frete" value="expresso" id="freteExpresso">
-      <label class="form-check-label" for="freteExpresso">Expresso (5 dias úteis) - R$ 20</label>
-    </div>
+  <!-- JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script th:src="@{/javascript/Carrinho.js}"></script>
+  <script>
+    $(document).ready(function () {
 
-    <div class="form-check col-md-4 mb-4">
-      <input type="radio" class="form-check-input" name="frete" value="normal" id="freteNormal">
-      <label class="form-check-label" for="freteNormal">Normal (10 dias úteis) - R$ 10</label>
-    </div>
+      // Obtenha a lista do armazenamento local
+      var carrinho = localStorage.getItem('carrinho');
 
-    <div class="form-check col-md-4 mb-4">
-      <input type="radio" class="form-check-input" name="frete" value="buscar-loja" id="freteLoja">
-      <label class="form-check-label" for="freteLoja">Buscar na loja (7 dias) - R$ 5</label>
-    </div>
+      // Verifique se a lista existe
+      if (carrinho) {
+        // Se a lista existir, converta-a de volta em um array
+        carrinho = JSON.parse(carrinho);
+      } else {
+        // Se a lista não existir, crie uma nova
+        alert('Carrinho vázio!');
+      }
 
-    <div class="col">
-      <br>
-      <p>Total de Todos os Produtos: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
-      <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
-      <button class="btn btn-success finalizar-compra">Finalizar Compra</button>
-    </div>
-  </div>
-</div>
+      // Variável para armazenar a quantidade atual
+      var quantidade = 1;
 
-<!-- JavaScript -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-<script th:src="@{/javascript/Carrinho.js}"></script> 
-<script>
- $(document).ready(function () {
-  // Função para buscar produtos do banco de dados
-  function buscarProdutos() {
-    $.ajax({
-      url: '/api/produtos',
-      method: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        if (Array.isArray(data)) {
-          // Filtrar produtos que estão no carrinho
-          var produtosCarrinho = data.filter(function (produto) {
-            return carrinhoProdutos.includes(produto.id);
-          });
 
-          // Agora, 'produtosCarrinho' contém apenas os produtos que estão no carrinho
-          produtosCarrinho.forEach(function (produto) {
-            if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('preco')) {
-              var quantidade = 1; // Declare a quantidade dentro do loop
-              // Crie um elemento de lista para cada produto
-              var listItem = document.createElement('div');
-              listItem.className = 'col-md-4 mb-4'; // Classe para espaço entre os produtos
-              listItem.innerHTML = `
-                <img src="${produto.img[0].url}" class="produto-imagem">
-                <h4>${produto.nome}</h4>
-                <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
-                <div>
-                  <button class="btn btn-secondary diminuir-quantidade">-</button>
-                  <span class="quantidadeProduto">${quantidade}</span>
-                  <button class="btn btn-secondary aumentar-quantidade">+</button>
-                </div>
-                <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>
-                <button class="btn btn-secondary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>
-              `;
-              $('#carrinhoLista').append(listItem);
+      // Função para buscar produtos do banco de dados
+      function buscarProdutos() {
+        $.ajax({
+          url: '/api/produtos',
+          method: 'GET',
+          dataType: 'json',
+          success: function (data) {
+            if (Array.isArray(data)) {
+              // Filtrar produtos que estão no carrinho
+              var produtosCarrinho = data.filter(function (produto) {
+                return carrinho.includes(produto.id);
+              });
+
+              // Limpar a lista antes de adicionar novos itens
+              $('#carrinhoLista').empty();
+
+              // Adicionar produtos ao carrinho
+              produtosCarrinho.forEach(function (produto) {
+                if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('preco')) {
+                  // Crie um elemento de lista para cada produto
+                  var listItem = criarListItem(produto);
+                  $('#carrinhoLista').append(listItem);
+                }
+              });
             }
-          });
+          },
+          error: function (error) {
+            console.error('Erro ao buscar produtos:', error);
+          }
+        });
+      }
+
+      // Função para criar um elemento de lista para um produto
+      function criarListItem(produto) {
+
+        
+        var listItem = $('<div>').addClass('col-md-4 mb-4');
+        listItem.append(`<img src="/img/imagensDosProdutos/${produto.img[0].url}" class="produto-imagem">
+      <h4>${produto.nome}</h4>
+      <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
+      <div>
+        <button class="btn btn-secondary diminuir-quantidade">-</button>
+        <span class="quantidadeProduto">${quantidade}</span>
+        <button class="btn btn-secondary aumentar-quantidade">+</button>
+      </div>
+      <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>
+      <button class="btn btn-secondary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>`);
+        // Adicionar eventos aos botões de quantidade
+
+        
+        listItem.find('.diminuir-quantidade').click(function () {
+          diminuirQuantidade(listItem);
+        });
+        
+        listItem.find('.aumentar-quantidade').click(function () {
+          aumentarQuantidade(listItem);
+        });
+        
+        atualizarPrecoTotal(listItem);
+
+        return listItem;
+      }
+
+      // Função para diminuir a quantidade
+      function diminuirQuantidade(item) {
+        quantidade = parseInt(item.find('.quantidadeProduto').text());
+        if (quantidade > 1) {
+          quantidade--;
+          item.find('.quantidadeProduto').text(quantidade);
+          atualizarPrecoTotal(item);
         }
       }
+
+      // Função para aumentar a quantidade
+      function aumentarQuantidade(item) {
+        quantidade = parseInt(item.find('.quantidadeProduto').text());
+        quantidade++;
+        item.find('.quantidadeProduto').text(quantidade);
+        atualizarPrecoTotal(item);
+      }
+
+      // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
+      $(document).on('click', '.remover-btn', function () {
+        // Encontre o elemento pai do botão, que é o item da lista de produtos
+        var listItem = $(this).closest('.col-md-4');
+
+        // Remova o item da lista
+        listItem.remove();
+
+        // Recalcule o total de todos os produtos
+        calcularTotalTodosProdutos();
+      });
+
+      // Função para atualizar o preço total de um produto
+      function atualizarPrecoTotal(item) {
+        var precoProduto = parseFloat(item.find('.precoProduto').text());
+        item.find('.totalProduto').text((precoProduto * quantidade).toFixed(2));
+        calcularTotalTodosProdutos();
+      }
+
+      // Função para calcular o total de todos os produtos
+      function calcularTotalTodosProdutos() {
+        var total = 0;
+        $('.totalProduto').each(function () {
+          total += parseFloat($(this).text());
+        });
+        $('#totalTodosProdutos').text(total.toFixed(2));
+
+        // Chame a função para atualizar o valor total com base na escolha de frete
+        atualizarTotalComFrete();
+      }
+
+      // Função para atualizar o valor total com base na escolha de frete
+      function atualizarTotalComFrete() {
+        var freteSelecionado = $('input[name="frete"]:checked').val();
+        var totalProdutos = parseFloat($('#totalTodosProdutos').text());
+
+        // Defina os valores dos fretes
+        var valorFreteExpresso = 20;
+        var valorFreteNormal = 10;
+        var valorFreteLoja = 5;
+
+        var totalComFrete = totalProdutos;
+
+        if (freteSelecionado === "expresso") {
+          totalComFrete += valorFreteExpresso;
+        } else if (freteSelecionado === "normal") {
+          totalComFrete += valorFreteNormal;
+        } else if (freteSelecionado === "buscar-loja") {
+          totalComFrete += valorFreteLoja;
+        }
+
+        // Atualize o valor total com o frete selecionado
+        $('#totalComFrete').text(totalComFrete.toFixed(2));
+      }
+
+      // Adicione um evento para detectar a mudança na seleção de frete
+      $('input[name="frete"]').change(atualizarTotalComFrete);
+
+      // Chame a função para buscar produtos quando a página for carregada
+      buscarProdutos();
+
     });
-  }
-});
 
-  //             // Adicionar a lógica para diminuir a quantidade
-  //             $(listItem).find('.diminuir-quantidade').click(function () {
-  //               if (quantidade > 1) {
-  //                 quantidade--;
-  //                 $(listItem).find('.quantidadeProduto').text(quantidade);
-  //                 atualizarPrecoTotal(listItem);
-  //               }
-  //             });
-
-  //             // Adicione a lógica para remover um produto da lista quando o botão "Remover" for clicado
-  //             $(document).on('click', '.remover-btn', function () {
-  //             // Encontre o elemento pai do botão, que é o item da lista de produtos
-  //             var listItem = $(this).closest('.col-md-4');
-
-  //             // Remova o item da lista
-  //             listItem.remove();
-
-  //             // Recalcule o total de todos os produtos
-  //             calcularTotalTodosProdutos();
-  //             });
-
-  //             // Função para atualizar o preço total de um produto
-  //             function atualizarPrecoTotal(item) {
-  //               var precoProduto = parseFloat($(item).find('.precoProduto').text());
-  //               $(item).find('.totalProduto').text((precoProduto * quantidade).toFixed(2));
-  //               calcularTotalTodosProdutos();
-  //             }
-
-  //             calcularTotalTodosProdutos();
-  //           }
-  //         });
-  //       } else {
-  //         console.error('Dados inválidos do servidor:', data);
-  //       }
-  //     },
-  //     error: function (error) {
-  //       console.error('Erro ao buscar produtos:', error);
-  //     }
-  //   });
-  // }
-
-  // Função para calcular o total de todos os produtos
-//   function calcularTotalTodosProdutos() {
-//     var total = 0;
-//     $('.totalProduto').each(function () {
-//       total += parseFloat($(this).text());
-//     });
-//     $('#totalTodosProdutos').text(total.toFixed(2));
-//   }
-
-//   // Chame a função para buscar produtos quando a página for carregada
-//   buscarProdutos();
-// });
-
-// Função para atualizar o valor total com base na escolha de frete
-function atualizarTotalComFrete() {
-  var freteSelecionado = $('input[name="frete"]:checked').val();
-  var totalProdutos = parseFloat($('#totalTodosProdutos').text());
-
-  // Defina os valores dos fretes
-  var valorFreteExpresso = 20;
-  var valorFreteNormal = 10;
-  var valorFreteLoja = 5;
-
-  var totalComFrete = totalProdutos;
-
-  if (freteSelecionado === "expresso") {
-    totalComFrete += valorFreteExpresso;
-  } else if (freteSelecionado === "normal") {
-    totalComFrete += valorFreteNormal;
-  } else if (freteSelecionado === "buscar-loja") {
-    totalComFrete += valorFreteLoja;
-  }
-
-  // Atualize o valor total com o frete selecionado
-  $('#totalComFrete').text(totalComFrete.toFixed(2));
-}
-
-// Adicione um evento para detectar a mudança na seleção de frete
-$('input[name="frete"]').change(atualizarTotalComFrete);
-</script>
+  </script>
 </body>
+
 </html>
