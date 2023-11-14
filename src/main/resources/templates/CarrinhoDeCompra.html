@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../static/css/CarrinhoDeCompra.css">
   <style>
     .produto-imagem {
-      max-width: 100px;
+      max-width:150px;
       height: auto;
     }
 
@@ -28,7 +28,7 @@
     #totalComFrete,
     #RS,
     #RS2 {
-      font-size: 18px;
+      font-size: 25px;
       font-weight: bold;
       color: white;
     }
@@ -56,50 +56,111 @@
       background-color: black;
       /* Define uma cor de fundo */
     }
+
+    /* O Modal (fundo) */
+    .modal {
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1;
+      /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgb(0, 0, 0);
+      /* Fallback color */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Black w/ opacity */
+    }
+
+    /* Conteúdo do Modal */
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      /* Could be more or less, depending on screen size */
+    }
+
+    /* O botão Close */
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #myModal label,
+    h5 {
+      display: inline !important;
+      color: black !important;
+    }
   </style>
   <title>Carrinho de Compra</title>
 </head>
 
 <body>
-  <h1>Carrinho de Compra</h1>
+  <h1 class="text-center">Carrinho de Compra</h1>
 
-  <!-- Área para digitar o CEP e botão para buscar o CEP -->
-  <div class="input-group mb-3" style="width: 45%;">
-    <input type="text" class="form-control form-control-sm" placeholder="Digite o CEP" id="cepInput">
-  </div>
-  <div class="input-group-append">
-    <button class="btn btn-primary" type="button" id="buscarCep">Buscar CEP</button>
-  </div>
   <br>
-  <!-- Botão para abrir a janela modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBuscaEnderecos">
-    Buscar Endereços
-  </button>
-  <br>
-  <!-- Modal para buscar endereços -->
-  <div class="modal fade" id="modalBuscaEnderecos" tabindex="-1" role="dialog"
-    aria-labelledby="modalBuscaEnderecosLabel" aria-hidden="true">
+
+  <div class="modal" id="myModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalBuscaEnderecosLabel">Buscar Endereços para Entrega</h5>
+          <h5 class="text-center">Calcular Frete</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
-          <!-- Adicione aqui a lista de endereços disponíveis para seleção -->
-          <ul id="listaEnderecos">
-            <!-- Os endereços serão adicionados aqui pela chamada AJAX -->
-          </ul>
+          <div class="row">
+            <div class="col">
+              <input type="text" class="form-control" id="inputCep" placeholder="CEP" pattern="\d{8}"
+                title="Por favor, insira exatamente 8 dígitos para o CEP." required>
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary" id="calculateFreight">Calcular Frete</button>
+            </div>
+          </div>
+          <div id="freightOptions" style="display: none;">
+            <div>
+              <input type="radio" id="expresso" name="frete" value="expresso">
+              <label for="expresso">Expresso (5 dias úteis) - R$ 20</label>
+            </div>
+            <div>
+              <input type="radio" id="normal" name="frete" value="normal">
+              <label for="normal">Normal (7 dias úteis) - R$ 10</label>
+            </div>
+            <div>
+              <input type="radio" id="loja" name="frete" value="loja">
+              <label for="loja">Retirar na loja (7 dias) - Grátis</label>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Salvar</button>
-          <a th:href="@{/cadastrarEndereco(clienteId=${id})}" class="btn btn-primary btn-lg">Novo endereço</a>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" id="continuar">Continuar</button>
         </div>
       </div>
     </div>
   </div>
+
 
   <!-- Lista de itens no carrinho -->
   <div class="container">
@@ -107,23 +168,7 @@
       <!-- Itens do carrinho serão inseridos aqui -->
     </div>
     <div class="row">
-
-      <div class="form-check col-md-4 mb-4">
-        <input type="radio" class="form-check-input" name="frete" value="expresso" id="freteExpresso">
-        <label class="form-check-label" for="freteExpresso">Expresso (5 dias úteis) - R$ 20</label>
-      </div>
-
-      <div class="form-check col-md-4 mb-4">
-        <input type="radio" class="form-check-input" name="frete" value="normal" id="freteNormal">
-        <label class="form-check-label" for="freteNormal">Normal (10 dias úteis) - R$ 10</label>
-      </div>
-
-      <div class="form-check col-md-4 mb-4">
-        <input type="radio" class="form-check-input" name="frete" value="buscar-loja" id="freteLoja">
-        <label class="form-check-label" for="freteLoja">Buscar na loja (7 dias) - R$ 5</label>
-      </div>
-
-      <div class="col">
+      <div class="col text-center">
         <br>
         <p>Total de Todos os Produtos: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
         <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
@@ -192,7 +237,7 @@
       // Função para criar um elemento de lista para um produto
       function criarListItem(produto) {
 
-        var listItem = $('<div>').addClass('col-md-4 mb-4');
+        var listItem = $('<div>').addClass('col-md-6 mb-6 text-center').css('margin-top', '50px');
         listItem.append(`<img src="/img/imagensDosProdutos/${produto.img[0].url}" class="produto-imagem">
       <h4>${produto.nome}</h4>
       <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
@@ -202,9 +247,9 @@
         <button class="btn btn-secondary aumentar-quantidade">+</button>
       </div>
       <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>
-      <button class="btn btn-secondary w-100 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>`);
-        // Adicionar eventos aos botões de quantidade
-
+      <button class="btn btn-secondary w-90 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>`);
+        
+      // Adicionar eventos aos botões de quantidade
 
         listItem.find('.diminuir-quantidade').click(function () {
           diminuirQuantidade(listItem);
@@ -288,7 +333,7 @@
         // Defina os valores dos fretes
         var valorFreteExpresso = 20;
         var valorFreteNormal = 10;
-        var valorFreteLoja = 5;
+        var valorFreteLoja = 0;
 
         var totalComFrete = totalProdutos;
 
@@ -296,7 +341,7 @@
           totalComFrete += valorFreteExpresso;
         } else if (freteSelecionado === "normal") {
           totalComFrete += valorFreteNormal;
-        } else if (freteSelecionado === "buscar-loja") {
+        } else if (freteSelecionado === "loja") {
           totalComFrete += valorFreteLoja;
         }
 
@@ -304,38 +349,88 @@
         $('#totalComFrete').text(totalComFrete.toFixed(2));
       }
 
+      $('#myModal').on('shown.bs.modal', function () {
+        alert('evento');
+        $('input[name="frete"]').change(function () {
+          var freteSelecionado = $(this).val();
+          console.log('Frete selecionado: ' + freteSelecionado);
+          atualizarTotalComFrete();
+        });
+      });
+
+
       // Adicione um evento para detectar a mudança na seleção de frete
       $('input[name="frete"]').change(atualizarTotalComFrete);
 
       // Chame a função para buscar produtos quando a página for carregada
       buscarProdutos();
 
-      document.getElementById('finalizarCompra').onclick = finalizarCompra;
+
+      document.getElementById('finalizarCompra').onclick = calcularFrete;
 
       function finalizarCompra() {
+
+        calcularFrete();
         // Verifique se o usuário está logado
-        var usuarioLogado = localStorage.getItem('usuarioLogado');
+        
+      }
+
+      // Pega o modal
+      var modal = document.getElementById("myModal");
+
+      // Pega o elemento que fecha o modal
+      var span = document.getElementsByClassName("close")[0];
+
+      document.getElementById('calculateFreight').addEventListener('click', function () {
+        var cep = document.getElementById('inputCep').value;
+
+        if (cep.length === 8) {
+          document.getElementById('freightOptions').style.display = 'block';
+        } else {
+          alert('Por favor, insira um CEP válido com 8 dígitos.');
+        }
+      });
+
+      // Quando o usuário clica no botão, abre o modal 
+      function calcularFrete() {
+        modal.style.display = "block";
+      }
+
+    });
+
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      
+      var closeButton = document.querySelector('.close');
+      var closeFooterButton = document.querySelector('.btn-secondary');
+      var modal = document.querySelector('#myModal');
+
+      closeButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+      });
+
+      closeFooterButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+      });
+    });
+  </script>
+
+  <script>
+    $('#continuar').click(function () {
+      var usuarioLogado = localStorage.getItem('usuarioLogado');
         if (usuarioLogado) {
           var totalComFrete = $('#totalComFrete').text();
           localStorage.setItem('totalComFrete', totalComFrete);
-          // O usuário está logado, armazene o valor tota        
+          //O usuário está logado, armazene o valor tota        
           window.location.href = '/pagamento';
         } else {
           // O usuário não está logado, mostre uma mensagem pedindo para ele fazer login
           alert('Por favor, faça login para finalizar a compra.');
           window.location.href = '/loginCliente';
         }
-      }
-    });
-
-
-  </script>
-
-  <script>
-    $('#modalBuscaEnderecos').on('show.bs.modal', function (event) {
-
-
-      // Limpe o select
+      alert('evento');
       $('#enderecoSelecionado').empty();
       // Faça uma chamada AJAX para obter os endereços
       $.ajax({
@@ -353,11 +448,11 @@
             enderecoStr += ', ' + endereco.bairro + ', ' + endereco.cidade + ', ' + endereco.uf;
 
             $('#listaEnderecos').append(`
-          <li>
-            <input type="radio" id="endereco${index}" name="endereco" value="${enderecoStr}">
-            <label for="endereco${index}">${enderecoStr}</label>
-          </li>
-        `);
+      <li>
+        <input type="radio" id="endereco${index}" name="endereco" value="${enderecoStr}">
+        <label for="endereco${index}">${enderecoStr}</label>
+      </li>
+    `);
           });
         },
         error: function (error) {
@@ -365,6 +460,7 @@
         }
       });
     });
+
   </script>
 </body>
 

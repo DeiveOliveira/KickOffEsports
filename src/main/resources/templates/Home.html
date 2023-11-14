@@ -64,6 +64,7 @@
                 const confirmacao = confirm(confirmMessage);
 
                 if (confirmacao) {
+                    localStorage.removeItem('usuarioLogado');
                     // O usuário clicou em "Sim", continue com a lógica de atualização
                     $.ajax({
                         type: 'POST',
