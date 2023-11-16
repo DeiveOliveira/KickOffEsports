@@ -8,7 +8,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -36,9 +35,6 @@ public class Cliente {
     @Fetch(value = FetchMode.JOIN)
     @Setter(value = AccessLevel.NONE)
     public List<Enderecos> enderecosList = new ArrayList<>();
-
-    @OneToMany
-    private List<Pedido> produtos = new ArrayList<>();
 
 
     public Cliente(String nomeCompleto, String email, String senha, String cpf, String dataNascimento, String genero) {
