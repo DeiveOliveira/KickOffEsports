@@ -3,16 +3,20 @@ package com.KickOofEsports.KickOffEsports.config;
 import com.KickOofEsports.KickOffEsports.entities.*;
 import com.KickOofEsports.KickOffEsports.repositories.ClienteRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ListaDeImagensRepository;
+import com.KickOofEsports.KickOffEsports.repositories.PedidoRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.services.ClienteService;
 import com.KickOofEsports.KickOffEsports.services.CadastrarService;
 import com.KickOofEsports.KickOffEsports.services.EnderecosServices;
+import com.KickOofEsports.KickOffEsports.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @Profile("test")
@@ -35,6 +39,9 @@ public class TestConfig implements CommandLineRunner {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private PedidoService pedidoService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -81,6 +88,29 @@ public class TestConfig implements CommandLineRunner {
         e1 = enderecosServices.cadastrar(e1, c1.getId());
         e2 = enderecosServices.cadastrar(e2, c2.getId());
         e3 = enderecosServices.cadastrar(e3, c3.getId());
+
+        List<Produto> pC1 = new ArrayList<>();
+        List<Produto> pC2 = new ArrayList<>();
+        List<Produto> pC3 = new ArrayList<>();
+
+
+        pC1.add(p1);
+        pC1.add(p2);
+        pC1.add(p3);
+
+        pC2.add(p3);
+
+        pC3.add(p2);
+        pC3.add(p3);
+
+        Pedido pedidoCliente1 = new Pedido("Debito", 565.00, 5, "Aguardando Pagamento", pC1);
+        Pedido pedidoCliente2 = new Pedido("Boleto", 1000.00, 4, "Aguardando Pagamento", pC2);
+        Pedido pedidoCliente3 = new Pedido("Debito", 1200.00, 10, "Aguardando Pagamento", pC3);
+
+
+        pedidoService.cadastrarPedido(pedidoCliente1, c1.getId());
+        pedidoService.cadastrarPedido(pedidoCliente2, c2.getId());
+        pedidoService.cadastrarPedido(pedidoCliente3, c3.getId());
 
 
     }
