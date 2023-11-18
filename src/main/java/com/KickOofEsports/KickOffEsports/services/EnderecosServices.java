@@ -41,7 +41,6 @@ public class EnderecosServices {
             Enderecos enderecoDesatualizado = enderecosRepository.getReferenceById(id);
 
             if (enderecoAtualizado.isEnderecoPadrao()) {
-                // Defina o endereço padrão, desmarcando outros endereços
                 enderecoDesatualizado.getCliente().getEnderecosList().forEach(endereco -> endereco.setEnderecoPadrao(false));
             }
 

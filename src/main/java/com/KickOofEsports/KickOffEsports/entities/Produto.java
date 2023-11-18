@@ -8,6 +8,7 @@ import org.hibernate.annotations.FetchMode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Table(name = "produtos")
@@ -41,7 +42,7 @@ public class Produto implements Serializable {
         this.avaliacao = avaliacao;
         this.descricao = descricao;
         this.preco = preco;
-        this.quantidade = quantidade;
+        this.quantidade = 1;
         this.status = true;
     }
 

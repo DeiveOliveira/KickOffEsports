@@ -31,10 +31,13 @@ public class Cliente {
     private String genero;
     private String idEnderecoCobranca;
 
-    @OneToMany(mappedBy = "cliente", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "cliente")
     @Fetch(value = FetchMode.JOIN)
     @Setter(value = AccessLevel.NONE)
     public List<Enderecos> enderecosList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "clientePedido")
+    private List<Pedidos> pedidosList = new ArrayList<>();
 
 
     public Cliente(String nomeCompleto, String email, String senha, String cpf, String dataNascimento, String genero) {
