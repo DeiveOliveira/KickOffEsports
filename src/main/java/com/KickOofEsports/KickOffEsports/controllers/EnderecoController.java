@@ -12,6 +12,7 @@ import com.KickOofEsports.KickOffEsports.services.exceptions.EmailDiferentesExce
 import com.KickOofEsports.KickOffEsports.services.exceptions.RecursoNaoEncontradoException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -120,4 +121,15 @@ public class EnderecoController {
         return ResponseEntity.ok().body(enderecos);
     }
 
+    @RequestMapping("/api/enderecos")
+    @GetMapping
+    public ResponseEntity<List<Enderecos>> obterTodosEnderecos(HttpSession session) {
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+        try {
+            List<Enderecos> enderecos = service.procurarTodosEnderecos(cliente.getId());
+            return new ResponseEntity<>(enderecos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
