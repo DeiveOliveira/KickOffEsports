@@ -107,6 +107,28 @@ public class EnderecoController {
         }
     }
 
+    @GetMapping("/enderecoEntrega/{id}")
+    @ResponseBody
+    public ModelAndView enderecoEntrega(@PathVariable String id){
+        ModelAndView mv = new ModelAndView();
+        Optional<?> objOptional = clienteService.procurarPorId(id);
+        if(objOptional.isPresent()){
+            Cliente cliente = (Cliente) objOptional.get();
+            List<Enderecos> listaDeEndereco = cliente.getEnderecosList();
+
+            // Filtrar apenas os endereços ativos
+            List<Enderecos> listaDeEnderecoAtivo = listaDeEndereco.stream()
+                    .filter(Enderecos::isAtivo)
+                    .collect(Collectors.toList());
+
+            mv.addObject("endereco", listaDeEnderecoAtivo);
+            mv.setViewName("EnderecoEntrega");
+            return mv;
+        }
+        else{
+            return new ModelAndView();
+        }
+    }
     @PutMapping(value = "/ativarDesativar/{id}")
     public ResponseEntity<Enderecos> ativarDesativar(@PathVariable String id){
         System.out.println("chegou aqui");

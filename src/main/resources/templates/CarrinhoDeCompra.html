@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../static/css/CarrinhoDeCompra.css">
   <style>
     .produto-imagem {
-      max-width:150px;
+      max-width: 150px;
       height: auto;
     }
 
@@ -248,8 +248,8 @@
       </div>
       <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>
       <button class="btn btn-secondary w-90 remover-btn" data-produto-id="${produto.id}" style="margin-top: auto;">Remover</button>`);
-        
-      // Adicionar eventos aos botões de quantidade
+
+        // Adicionar eventos aos botões de quantidade
 
         listItem.find('.diminuir-quantidade').click(function () {
           diminuirQuantidade(listItem);
@@ -372,7 +372,7 @@
 
         calcularFrete();
         // Verifique se o usuário está logado
-        
+
       }
 
       // Pega o modal
@@ -402,7 +402,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      
+
       var closeButton = document.querySelector('.close');
       var closeFooterButton = document.querySelector('.btn-secondary');
       var modal = document.querySelector('#myModal');
@@ -419,47 +419,36 @@
 
   <script>
     $('#continuar').click(function () {
-      var usuarioLogado = localStorage.getItem('usuarioLogado');
-        if (usuarioLogado) {
-          var totalComFrete = $('#totalComFrete').text();
-          localStorage.setItem('totalComFrete', totalComFrete);
-          //O usuário está logado, armazene o valor tota        
-          window.location.href = '/pagamento';
-        } else {
-          // O usuário não está logado, mostre uma mensagem pedindo para ele fazer login
-          alert('Por favor, faça login para finalizar a compra.');
-          window.location.href = '/loginCliente';
-        }
-      alert('evento');
-      $('#enderecoSelecionado').empty();
-      // Faça uma chamada AJAX para obter os endereços
-      $.ajax({
-        url: '/listaEnderecos/' + usuarioLogado, // Substitua isso pela URL da sua API
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-          // Adicione cada endereço à lista
-          data.forEach(function (endereco, index) {
-            // Crie uma string para representar o endereço
-            var enderecoStr = endereco.logradouro + ', ' + endereco.numero;
-            if (endereco.complemento) {
-              enderecoStr += ', ' + endereco.complemento;
+      fetch('/clienteId')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro na rede!');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data) {
+            var idCliente = data.id;
+            console.log('ID do Cliente:', idCliente);
+            var usuarioLogado = localStorage.getItem('usuarioLogado');
+            if (usuarioLogado) {
+              var totalComFrete = $('#totalComFrete').text();
+              localStorage.setItem('totalComFrete', totalComFrete);
+              window.location.href = '/enderecoEntrega/' + idCliente;
+            } else {
+              alert('Por favor, faça login para finalizar a compra.');
+              window.location.href = '/loginCliente';
             }
-            enderecoStr += ', ' + endereco.bairro + ', ' + endereco.cidade + ', ' + endereco.uf;
-
-            $('#listaEnderecos').append(`
-      <li>
-        <input type="radio" id="endereco${index}" name="endereco" value="${enderecoStr}">
-        <label for="endereco${index}">${enderecoStr}</label>
-      </li>
-    `);
-          });
-        },
-        error: function (error) {
-          console.error('Erro ao buscar endereços:', error);
-        }
-      });
+          } else {
+            console.log('Nenhum dado retornado da API');
+          }
+        })
+        .catch(error => {
+          console.error('Houve um erro ao buscar o cliente:', error);
+        });
     });
+
+
 
   </script>
 </body>
