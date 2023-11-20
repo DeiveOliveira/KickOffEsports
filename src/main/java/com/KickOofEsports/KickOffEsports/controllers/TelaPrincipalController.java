@@ -1,5 +1,6 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
+import com.KickOofEsports.KickOffEsports.entities.Cliente;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -21,8 +22,13 @@ public class TelaPrincipalController {
     }
 
     @GetMapping("/CarrinhoDeCompra")
-    public ModelAndView CarrinhoDeCompra(){
+    public ModelAndView CarrinhoDeCompra(HttpSession session){
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
         ModelAndView mv = new ModelAndView();
+        if (session.getAttribute("usuarioLogado") != null) {
+            mv.addObject("usuarioLogado", cliente);
+            mv.addObject("enderecosUsuarioLogado", cliente.enderecosList);
+        }
         mv.setViewName("CarrinhoDeCompra");
         return mv;
     }
