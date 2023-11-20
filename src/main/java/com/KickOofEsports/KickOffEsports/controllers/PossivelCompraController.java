@@ -24,10 +24,6 @@ public class PossivelCompraController {
         Cliente usuario = (Cliente) session.getAttribute("usuarioLogado");
         ModelAndView visualizar = new ModelAndView();
         List<Enderecos> enderecosList = new ArrayList<>();
-        if(usuario.getId() != null){
-            enderecosList = usuario.getEnderecosList();
-            visualizar.addObject("enderecos", enderecosList);
-        }
         Produto produto = optionalProduto.get();
         visualizar.setViewName("PossivelCompra");
         visualizar.addObject("produto", produto);

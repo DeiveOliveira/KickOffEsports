@@ -21,18 +21,20 @@ public class PedidoService {
     private ClienteRepository clienteRepository;
 
     @Transactional
-    public Pedidos cadastrarPedidos(Double valorFrete,Integer parcelas,List<Produto> produtos, String id){
+    public Pedidos cadastrarPedidos(Double valorFrete, Integer parcelas, List<Produto> produtos, String id) {
         Cliente cliente = clienteRepository.getReferenceById(id);
         double valorTotal = 0;
-        for(Produto produto : produtos){
-            valorTotal += produto.getPreco();
+        for (Produto produto : produtos) {
+            valorTotal += produto.getPreco() * produto.getQuantidade();
         }
         valorTotal += valorFrete;
-        double valorParcela = valorTotal/parcelas;
-        Pedidos pedidos = new Pedidos(valorParcela, valorTotal, valorFrete, parcelas, cliente, produtos);
-        pedidos = pedidosRepository.save(pedidos);
-        cliente.getPedidosList().add(pedidos);
-        clienteRepository.save(cliente);
-        return pedidos;
+        double valorParcela = valorTotal / parcelas;
+        Pedidos pedido = new Pedidos(valorParcela, valorTotal, valorFrete, parcelas, cliente);
+        for (Produto produto : produtos) {
+            pedido.adicionarProduto(produto, produto.getQuantidade());
+        }
+        pedido = pedidosRepository.save(pedido);
+        return pedido;
     }
+
 }

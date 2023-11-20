@@ -17,7 +17,7 @@ import java.util.List;
 public class Pedidos {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String formaDePagamento;
@@ -31,16 +31,22 @@ public class Pedidos {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente clientePedido;
 
-    @Column
-    @ElementCollection
-    private List<Produto> produtoList = new ArrayList<>();
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoProduto> produtos = new ArrayList<>();
 
-    public Pedidos(Double valorParcela, Double valorTotal, Double valorFrete, Integer parcelas, Cliente clientePedido, List<Produto> produtoList) {
+    public Pedidos(Double valorParcela, Double valorTotal, Double valorFrete, Integer parcelas, Cliente clientePedido) {
         this.valorParcela = valorParcela;
         this.valorTotal = valorTotal;
         this.valorFrete = valorFrete;
         this.parcelas = parcelas;
         this.clientePedido = clientePedido;
-        this.produtoList = produtoList;
+    }
+
+    public void adicionarProduto(Produto produto, Integer quantidade) {
+        PedidoProduto pedidoProduto = new PedidoProduto();
+        pedidoProduto.setPedido(this);
+        pedidoProduto.setProduto(produto);
+        pedidoProduto.setQuantidade(quantidade);
+        this.produtos.add(pedidoProduto);
     }
 }
