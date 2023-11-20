@@ -5,6 +5,7 @@ import com.KickOofEsports.KickOffEsports.entities.Usuario;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -21,15 +22,30 @@ public class TelaPrincipalController {
         return "TelaPrincipal";
     }
 
-    @GetMapping("/CarrinhoDeCompra")
-    public ModelAndView CarrinhoDeCompra(HttpSession session){
-        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+    @GetMapping("/CarrinhoDeCompra/{id}")
+    public ModelAndView CarrinhoDeCompra(@PathVariable String id, HttpSession session) {
         ModelAndView mv = new ModelAndView();
-        if (session.getAttribute("usuarioLogado") != null) {
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+        if (cliente != null) {
             mv.addObject("usuarioLogado", cliente);
-            mv.addObject("enderecosUsuarioLogado", cliente.enderecosList);
+            mv.addObject("enderecosUsuarioLogado", cliente.getEnderecosList());
         }
         mv.setViewName("CarrinhoDeCompra");
         return mv;
     }
+
+    @GetMapping("/CarrinhoDeCompra")
+    public ModelAndView CarrinhoDeCompraDeslogado(@PathVariable String id, HttpSession session) {
+        ModelAndView mv = new ModelAndView();
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+        if (cliente != null) {
+            mv.addObject("usuarioLogado", cliente);
+            mv.addObject("enderecosUsuarioLogado", cliente.getEnderecosList());
+        }
+        mv.setViewName("CarrinhoDeCompra");
+        return mv;
+    }
+
+
+
 }
