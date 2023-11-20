@@ -35,7 +35,7 @@ public class TelaPrincipalController {
     }
 
     @GetMapping("/CarrinhoDeCompra")
-    public ModelAndView CarrinhoDeCompraDeslogado(@PathVariable String id, HttpSession session) {
+    public ModelAndView CarrinhoDeCompraDeslogado(HttpSession session) {
         ModelAndView mv = new ModelAndView();
         Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
         if (cliente != null) {
