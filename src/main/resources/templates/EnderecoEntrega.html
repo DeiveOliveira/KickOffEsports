@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,220 +9,239 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
 </head>
+
 <body>
-<div class="container mt-5 col-11">
-    <h1>Endereços</h1>
-    <nav class="navbar navbar-light bg-light my-2">
-        <form class="input-group mr-2">
-            <input class="form-control m-2" type="search" id="inputPesquisa" placeholder="Pesquisar" aria-label="Pesquisar">
-            <button
-                    class="btn btn-outline-secondary m-2 btn-pesquisar"
-                    type="submit"
+    <div class="container mt-5 col-11">
+        <h1>Endereços</h1>
+        <nav class="navbar navbar-light bg-light my-2">
+            <form class="input-group mr-2">
+                <input class="form-control m-2" type="search" id="inputPesquisa" placeholder="Pesquisar"
+                    aria-label="Pesquisar">
+                <button class="btn btn-outline-secondary m-2 btn-pesquisar" type="submit"
                     onclick="pesquisar(event, this);">
-                Pesquisar</button>
+                    Pesquisar</button>
 
-            <a th:href="@{/Endereco}" class="btn btn-success m-2 btn-cadastrar">
-                <i class="fas fa-plus"></i>Adicionar endereço
-            </a>
-        </form>
-    </nav>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>CEP</th>
-            <th>Logradouro</th>
-            <th>Número</th>
-            <th>Complemento</th>
-            <th>Bairro</th>
-            <th>Cidade</th>
-            <th>UF</th>
-            <th>Ativo</th>
-            <!--<th>Editar</th>-->
-            <th>End. Padrao</th>
-        </tr>
-        </thead>
-        <tbody id="enderecosList">
-            <tr th:each="endereco : ${endereco}">
-                <td th:text="${endereco.id}"></td>
-                <td th:text="${endereco.cep}"></td>
-                <td th:text="${endereco.logradouro}"></td>
-                <td th:text="${endereco.numero}"></td>
-                <td th:text="${endereco.complemento}"></td>
-                <td th:text="${endereco.bairro}"></td>
-                <td th:text="${endereco.cidade}"></td>
-                <td th:text="${endereco.uf}"></td>
-                <td>
-                    <button
-                            th:if="${endereco.ativo}"
-                            type="button"
-                            class="btn btn-success status-button"
-                            th:data-endereco-id="${endereco.id}"
-                            data-status="Ativo"
-                            onclick="atualizarStatus(this);">
-                        Ativo
-                    </button>
-                    <button
-                            th:unless="${endereco.ativo}"
-                            type="button"
-                            class="btn btn-danger status-button"
-                            th:data-endereco-id="${endereco.id}"
-                            data-status="Inativo"
-                            onclick="atualizarStatus(this);">
-                        Inativo
-                    </button>
-                </td>
-                <!--<td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>-->
-                <td>
-                    <input type="checkbox"
-                           class="address-checkbox"
-                           th:data-endereco-id="${endereco.id}"
-                           th:checked="${endereco.enderecoPadrao}"
-                           onclick="minhaFuncao(this)" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div>
-        <a href="Pagamento.html" class="btn btn-primary">Continuar</a>
-
+                <a class="btn btn-success m-2 btn-cadastrar" id="btnNovoEndereco" onclick="novoEndereco">
+                    <i class="fas fa-plus"></i>Novo endereço
+                </a>
+            </form>
+        </nav>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>CEP</th>
+                    <th>Logradouro</th>
+                    <th>Número</th>
+                    <th>Complemento</th>
+                    <th>Bairro</th>
+                    <th>Cidade</th>
+                    <th>UF</th>
+                    <th>Ativo</th>
+                    <!--<th>Editar</th>-->
+                    <th>End. Padrao</th>
+                </tr>
+            </thead>
+            <tbody id="enderecosList">
+                <tr th:each="endereco : ${endereco}">
+                    <td th:text="${endereco.id}"></td>
+                    <td th:text="${endereco.cep}"></td>
+                    <td th:text="${endereco.logradouro}"></td>
+                    <td th:text="${endereco.numero}"></td>
+                    <td th:text="${endereco.complemento}"></td>
+                    <td th:text="${endereco.bairro}"></td>
+                    <td th:text="${endereco.cidade}"></td>
+                    <td th:text="${endereco.uf}"></td>
+                    <td>
+                        <button th:if="${endereco.ativo}" type="button" class="btn btn-success status-button"
+                            th:data-endereco-id="${endereco.id}" data-status="Ativo" onclick="atualizarStatus(this);">
+                            Ativo
+                        </button>
+                        <button th:unless="${endereco.ativo}" type="button" class="btn btn-danger status-button"
+                            th:data-endereco-id="${endereco.id}" data-status="Inativo" onclick="atualizarStatus(this);">
+                            Inativo
+                        </button>
+                    </td>
+                    <!--<td><a th:href="@{/ediEndereco/{id}(id=${endereco.id})}">Editar</a></td>-->
+                    <td>
+                        <input type="checkbox" class="address-checkbox" th:data-endereco-id="${endereco.id}"
+                            th:checked="${endereco.enderecoPadrao}" onclick="minhaFuncao(this)" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <a class="btn btn-primary" id="btnPagamento" onclick="paginaPagamento">Continuar</a>
+        </div>
     </div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<script>
+    <script>
 
-    function minhaFuncao(checkbox) {
-    const produtosId = checkbox.dataset.enderecoId;
+        function minhaFuncao(checkbox) {
+            const produtosId = checkbox.dataset.enderecoId;
 
-    console.log("Produtos ID:", produtosId);
-    console.log("Status:", status);
+            console.log("Produtos ID:", produtosId);
+            console.log("Status:", status);
 
-    let confirmMessage = '';
+            let confirmMessage = '';
 
-    if (checkbox.checked) {
-        alert('Checkbox está marcado');
-        confirmMessage = 'Deseja tornar o endereço como padrão?'
+            if (checkbox.checked) {
+                alert('Checkbox está marcado');
+                confirmMessage = 'Deseja tornar o endereço como padrão?'
 
-    } else {
-        alert('Checkbox está desmarcado');
-        confirmMessage = 'Deseja desativar o endereço como padrão?'
+            } else {
+                alert('Checkbox está desmarcado');
+                confirmMessage = 'Deseja desativar o endereço como padrão?'
 
-    }
-
-    const confirmacao = confirm(confirmMessage);
-
-    var urlAtual = window.location.href;
-    var partesDaUrl = urlAtual.split('/');
-    var idUsuario = partesDaUrl[partesDaUrl.length - 1];
-
-    alert(produtosId)
-
-    if (confirmacao) {
-        $.ajax({
-            type: 'PUT',
-            url: '/atualizarEnderecoPadrao/' + produtosId,
-            contentType: 'application/json',
-            data: JSON.stringify({ produtoId: produtosId }),
-            success: function(data) {
-                alert('Atualizado com sucesso');
-                console.log('Atualizado com sucesso:', data);
-                window.location.href = '/listaEnderecos/' + idUsuario ;
-            },
-            error: function(xhr, status, error) {
-                console.log('Erro na chamada AJAX:', error);
-                if (xhr.status === 400) {
-                    var errorMessage = xhr.responseText;
-                    alert('Erro ao atualizar: ' + errorMessage);
-                } else {
-                    alert('Erro ao atualizar: ' + error);
-                }
             }
-        });
-    } else {
-        alert('Operação cancelada');
-    }
-}
-</script>
 
-<script>
-    function atualizarStatus(button) {
-    const produtosId = button.getAttribute("data-endereco-id");
-    const status = button.getAttribute("data-status");
+            const confirmacao = confirm(confirmMessage);
 
-    console.log("Produtos ID:", produtosId);
-    console.log("Status:", status);
+            var urlAtual = window.location.href;
+            var partesDaUrl = urlAtual.split('/');
+            var idUsuario = partesDaUrl[partesDaUrl.length - 1];
 
-    let confirmMessage = '';
+            alert(produtosId)
 
-    if (status === 'Ativo') {
-        confirmMessage = 'Tem certeza de que deseja mudar para Inativo?';
-    } else if (status === 'Inativo') {
-        confirmMessage = 'Tem certeza de que deseja mudar para Ativo?';
-    }
-
-    const confirmacao = confirm(confirmMessage);
-
-    var urlAtual = window.location.href;
-    var partesDaUrl = urlAtual.split('/');
-    var idUsuario = partesDaUrl[partesDaUrl.length - 1];
-
-    if (confirmacao) {
-        $.ajax({
-            type: 'PUT',
-            url: '/ativarDesativar/' + produtosId,
-            contentType: 'application/json',
-            data: JSON.stringify({ produtoId: produtosId }),
-            success: function(data) {
-                alert('Atualizado com sucesso');
-                console.log('Atualizado com sucesso:', data);
-                window.location.href = '/listaEnderecos/' + idUsuario ;
-            },
-            error: function(xhr, status, error) {
-                console.log('Erro na chamada AJAX:', error);
-                if (xhr.status === 400) {
-                    var errorMessage = xhr.responseText;
-                    alert('Erro ao atualizar: ' + errorMessage);
-                } else {
-                    alert('Erro ao atualizar: ' + error);
-                }
+            if (confirmacao) {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/atualizarEnderecoPadrao/' + produtosId,
+                    contentType: 'application/json',
+                    data: JSON.stringify({ produtoId: produtosId }),
+                    success: function (data) {
+                        alert('Atualizado com sucesso');
+                        console.log('Atualizado com sucesso:', data);
+                        window.location.href = '/enderecoEntrega/' + idUsuario;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Erro na chamada AJAX:', error);
+                        if (xhr.status === 400) {
+                            var errorMessage = xhr.responseText;
+                            alert('Erro ao atualizar: ' + errorMessage);
+                        } else {
+                            alert('Erro ao atualizar: ' + error);
+                        }
+                    }
+                });
+            } else {
+                alert('Operação cancelada');
             }
-        });
-    } else {
-        alert('Operação cancelada');
-    }
-}
-
-$(document).ready(function () {
-    // Lidar com cliques na caixa de seleção
-    $('.address-checkbox').on('change', function () {
-        // Verifique se esta caixa de seleção está sendo marcada
-        if ($(this).is(':checked')) {
-            // Se marcada, desmarque todas as outras caixas de seleção
-            $('.address-checkbox').not(this).prop('checked', false);
-        }
-    });
-
-    // Lidar com o estado da caixa de seleção quando o endereço é marcado como inativo
-    $('.status-button').on('click', function () {
-        const isActive = $(this).data('status') === 'Ativo';
-        const addressId = $(this).data('endereco-id');
-
-        // Encontre a caixa de seleção para este endereço
-        const checkbox = $('.address-checkbox[th:data-endereco-id="' + addressId + '"]');
-
-        // Se o endereço for marcado como inativo, desmarque a caixa de seleção
-        if (!isActive) {
-            checkbox.prop('checked', false);
         }
 
-        // Desabilite ou habilite a caixa de seleção com base no status do endereço
-        checkbox.prop('disabled', !isActive);
-    });
-});
+        document.getElementById('btnPagamento').addEventListener('click', function () {
+            var checkboxes = document.getElementsByClassName('address-checkbox');
+            var isChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            if (isChecked) {
+                window.location.href = '/pagamento';
+            } else {
+                alert('Por favor, marque pelo menos um checkbox para continuar.');
+            }
+        });
 
 
-</script>
+    </script>
+
+    <script>
+        function atualizarStatus(button) {
+            const produtosId = button.getAttribute("data-endereco-id");
+            const status = button.getAttribute("data-status");
+
+            console.log("Produtos ID:", produtosId);
+            console.log("Status:", status);
+
+            let confirmMessage = '';
+
+            if (status === 'Ativo') {
+                confirmMessage = 'Tem certeza de que deseja mudar para Inativo?';
+            } else if (status === 'Inativo') {
+                confirmMessage = 'Tem certeza de que deseja mudar para Ativo?';
+            }
+
+            const confirmacao = confirm(confirmMessage);
+
+            var urlAtual = window.location.href;
+            var partesDaUrl = urlAtual.split('/');
+            var idUsuario = partesDaUrl[partesDaUrl.length - 1];
+
+            if (confirmacao) {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/ativarDesativar/' + produtosId,
+                    contentType: 'application/json',
+                    data: JSON.stringify({ produtoId: produtosId }),
+                    success: function (data) {
+                        alert('Atualizado com sucesso');
+                        console.log('Atualizado com sucesso:', data);
+                        window.location.href = '/enderecoEntrega/' + idUsuario;
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Erro na chamada AJAX:', error);
+                        if (xhr.status === 400) {
+                            var errorMessage = xhr.responseText;
+                            alert('Erro ao atualizar: ' + errorMessage);
+                        } else {
+                            alert('Erro ao atualizar: ' + error);
+                        }
+                    }
+                });
+            } else {
+                alert('Operação cancelada');
+            }
+        }
+
+        $(document).ready(function () {
+            // Lidar com cliques na caixa de seleção
+            $('.address-checkbox').on('change', function () {
+                // Verifique se esta caixa de seleção está sendo marcada
+                if ($(this).is(':checked')) {
+                    // Se marcada, desmarque todas as outras caixas de seleção
+                    $('.address-checkbox').not(this).prop('checked', false);
+                }
+            });
+
+            // Lidar com o estado da caixa de seleção quando o endereço é marcado como inativo
+            $('.status-button').on('click', function () {
+                const isActive = $(this).data('status') === 'Ativo';
+                const addressId = $(this).data('endereco-id');
+
+                // Encontre a caixa de seleção para este endereço
+                const checkbox = $('.address-checkbox[th:data-endereco-id="' + addressId + '"]');
+
+                // Se o endereço for marcado como inativo, desmarque a caixa de seleção
+                if (!isActive) {
+                    checkbox.prop('checked', false);
+                }
+
+                // Desabilite ou habilite a caixa de seleção com base no status do endereço
+                checkbox.prop('disabled', !isActive);
+            });
+        });
+    </script>
+
+    <script>
+        function obterProdutoIdDaUrl() {
+            // Obtém a parte da URL após a última barra (presumindo que o ID do produto está no final da URL)
+            var url = window.location.pathname;
+            var partesDaUrl = url.split('/');
+            var produtoId = partesDaUrl[partesDaUrl.length - 1];
+
+            if (produtoId) {
+                return produtoId;
+            } else {
+                return null;
+            }
+        }
+
+        $('#btnNovoEndereco').click(function () {
+
+                var idCliente = obterProdutoIdDaUrl();
+               
+                window.location.href = '/EnderecoCompra/' + idCliente;
+        })
+    </script>
 </body>
+
 </html>

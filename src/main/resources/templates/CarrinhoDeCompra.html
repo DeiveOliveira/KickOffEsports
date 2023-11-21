@@ -418,38 +418,34 @@
   </script>
 
   <script>
+    function obterProdutoIdDaUrl() {
+      // Obtém a parte da URL após a última barra (presumindo que o ID do produto está no final da URL)
+      var url = window.location.pathname;
+      var partesDaUrl = url.split('/');
+      var produtoId = partesDaUrl[partesDaUrl.length - 1];
+
+      if (produtoId) {
+        return produtoId;
+      } else {
+        return null;
+      }
+    }
+
     $('#continuar').click(function () {
-      fetch('/clienteId')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro na rede!');
-          }
-          return response.json();
-        })
-        .then(data => {
-          if (data) {
-            var idCliente = data.id;
-            console.log('ID do Cliente:', idCliente);
-            var usuarioLogado = localStorage.getItem('usuarioLogado');
-            if (usuarioLogado) {
-              var totalComFrete = $('#totalComFrete').text();
-              localStorage.setItem('totalComFrete', totalComFrete);
-              window.location.href = '/enderecoEntrega/' + idCliente;
-            } else {
-              alert('Por favor, faça login para finalizar a compra.');
-              window.location.href = '/loginCliente';
-            }
-          } else {
-            console.log('Nenhum dado retornado da API');
-          }
-        })
-        .catch(error => {
-          console.error('Houve um erro ao buscar o cliente:', error);
-        });
+
+      console.log('ID do Cliente:', idCliente);
+      var usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (usuarioLogado) {
+        var idCliente = obterProdutoIdDaUrl();
+
+        var totalComFrete = $('#totalComFrete').text();
+        localStorage.setItem('totalComFrete', totalComFrete);
+        window.location.href = '/enderecoEntrega/' + idCliente;
+      } else {
+        alert('Por favor, faça login para finalizar a compra.');
+        window.location.href = '/loginCliente';
+      }
     });
-
-
-
   </script>
 </body>
 

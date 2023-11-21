@@ -110,17 +110,5 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/clienteId")
-    public ResponseEntity<Cliente> obterCliente(HttpSession session) {
-        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
-        if (cliente != null) {
-            System.out.println(session.getId());
-            return new ResponseEntity<>(cliente, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-
 
 }

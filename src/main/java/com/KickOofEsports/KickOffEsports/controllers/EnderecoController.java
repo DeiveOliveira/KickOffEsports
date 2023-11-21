@@ -48,6 +48,14 @@ public class EnderecoController {
         mv.setViewName("Endereco");
         return mv;
     }
+    @GetMapping("EnderecoCompra/{id}")
+    public ModelAndView enderecoCompra(HttpSession session){
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("usuarioLogado", cliente);
+        mv.setViewName("EnderecoCompra");
+        return mv;
+    }
 
     @PostMapping("/cadastrarEndereco")
     public ResponseEntity<?> cadastrarProduto(@RequestBody Enderecos enderecos, HttpSession session) {
