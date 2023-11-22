@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+        <style>
+            .produto-imagem {
+                max-width: 150px;
+                height: auto;
+            }
+    
+            .produto-list-item {
+                margin-bottom: 20px;
+            }
+    
+            /* Estilos para destacar o total de produtos e total com frete */
+            #totalTodosProdutos,
+            #totalComFrete,
+            #RS,
+            #RS2 {
+                font-size: 25px;
+                font-weight: bold;
+                color: white;
+            }
+    
+            .quantidadeProduto {
+                color: white;
+            }
+    
+            .form-check {
+                margin-bottom: 100px;
+            }
+    
+            p,
+            h4,
+            h5,
+            h1,
+            label {
+                text-transform: uppercase;
+                color: #F0F8FF
+            }
+    
+    
+            body {
+                background-color: black;
+                /* Define uma cor de fundo */
+            }
+            
+        </style>
+    <title>Resumo do Pedido</title>
+</head>
+
+<body>
+    <h1 class="text-center">Meu Pedido</h1>
+
+    <div class="container">
+        <div class="row" id="carrinhoLista">
+            <!-- Itens do carrinho serão inseridos aqui -->
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <br>
+                <p>Total: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
+                <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
+
+                
+                <button type="button" class="btn btn-success finalizar-compra" id="finalizarCompra"
+                    onclick="finalizarCompra">Finalizar Compra</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+
+
+            // Obtenha a lista do armazenamento local
+            var carrinho = localStorage.getItem('carrinho');
+
+
+            // Verifique se a lista existe
+            if (carrinho) {
+                // Se a lista existir, converta-a de volta em um array
+                carrinho = JSON.parse(carrinho);
+            } else {
+                // Se a lista não existir, crie uma nova
+                alert('Carrinho vázio!');
+            }
+
+            // Variável para armazenar a quantidade atual
+            var quantidade = 1;
+
+
+            // Função para buscar produtos do banco de dados
+            function buscarProdutos() {
+                $.ajax({
+                    url: '/api/produtos',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (Array.isArray(data)) {
+                            // Filtrar produtos que estão no carrinho
+                            var produtosCarrinho = data.filter(function (produto) {
+                                return carrinho.includes(produto.id);
+                            });
+
+                            // Limpar a lista antes de adicionar novos itens
+                            $('#carrinhoLista').empty();
+
+                            // Adicionar produtos ao carrinho
+                            produtosCarrinho.forEach(function (produto) {
+                                if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('preco')) {
+                                    // Crie um elemento de lista para cada produto
+                                    var listItem = criarListItem(produto);
+                                    $('#carrinhoLista').append(listItem);
+                                }
+                            });
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Erro ao buscar produtos:', error);
+                    }
+                });
+            }
+
+            // Função para criar um elemento de lista para um produto
+            function criarListItem(produto) {
+
+                var listItem = $('<div>').addClass('col-md-6 mb-6 text-center').css('margin-top', '50px');
+                listItem.append(`<img src="/img/imagensDosProdutos/${produto.img[0].url}" class="produto-imagem">
+                    <h4>${produto.nome}</h4>
+                    <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
+                    <div>
+                    <p>QTD: <span class="quantidadeProduto">${quantidade}</span></p>
+        
+                    </div>
+                    <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>`);
+
+                return listItem;
+            }
+
+            buscarProdutos();
+
+            var valorTotal = localStorage.getItem('totalComFrete');
+            $('#totalComFrete').text(valorTotal);
+
+            var totalTodosProdutos = localStorage.getItem('totalTodosProdutos');
+            $('#totalTodosProdutos').text(totalTodosProdutos);
+
+            var idEndereco = localStorage.getItem('enderecoId');
+        });
+
+
+    </script>
+</body>
+
+</html>

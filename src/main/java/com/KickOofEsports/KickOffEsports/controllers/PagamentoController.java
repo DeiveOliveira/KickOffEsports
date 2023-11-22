@@ -13,4 +13,12 @@ public class PagamentoController {
         mv.setViewName("Pagamento");
         return mv;
     }
+
+    @GetMapping("/resumoPedido")
+    public ModelAndView pedido(){
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("ResumoPedido");
+        return mv;
+    }
+
 }

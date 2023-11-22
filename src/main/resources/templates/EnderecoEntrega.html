@@ -199,6 +199,8 @@
                 if ($(this).is(':checked')) {
                     // Se marcada, desmarque todas as outras caixas de seleção
                     $('.address-checkbox').not(this).prop('checked', false);
+                    var enderecoId = $(this).data('endereco-id');
+                    localStorage.setItem('enderecoId', enderecoId);
                 }
             });
 
@@ -237,9 +239,9 @@
 
         $('#btnNovoEndereco').click(function () {
 
-                var idCliente = obterProdutoIdDaUrl();
-               
-                window.location.href = '/EnderecoCompra/' + idCliente;
+            var idCliente = obterProdutoIdDaUrl();
+
+            window.location.href = '/EnderecoCompra/' + idCliente;
         })
     </script>
 </body>

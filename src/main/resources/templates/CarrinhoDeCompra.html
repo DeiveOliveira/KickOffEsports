@@ -170,7 +170,7 @@
     <div class="row">
       <div class="col text-center">
         <br>
-        <p>Total de Todos os Produtos: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
+        <p>Total: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
         <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
         <button type="button" class="btn btn-success finalizar-compra" id="finalizarCompra"
           onclick="finalizarCompra">Finalizar Compra</button>
@@ -433,13 +433,16 @@
 
     $('#continuar').click(function () {
 
-      console.log('ID do Cliente:', idCliente);
       var usuarioLogado = localStorage.getItem('usuarioLogado');
       if (usuarioLogado) {
         var idCliente = obterProdutoIdDaUrl();
 
+        var total = $('#totalTodosProdutos').text();
+        localStorage.setItem('totalTodosProdutos', total);
+
         var totalComFrete = $('#totalComFrete').text();
         localStorage.setItem('totalComFrete', totalComFrete);
+
         window.location.href = '/enderecoEntrega/' + idCliente;
       } else {
         alert('Por favor, faça login para finalizar a compra.');

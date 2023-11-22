@@ -65,29 +65,29 @@
                         required>
                 </div>
 
-            <div class="form-group">
-                <label for="cardName">Nome do cartão</label>
-                <input type="text" class="form-control" id="cardName" required pattern="[a-zA-Z\s]+">
+                <div class="form-group">
+                    <label for="cardName">Nome do cartão</label>
+                    <input type="text" class="form-control" id="cardName" required pattern="[a-zA-Z\s]+">
+                </div>
+                <div class="form-group">
+                    <label for="expiryDate">Data de vencimento</label>
+                    <input type="date" class="form-control" id="expiryDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">Código verificador</label>
+                    <input type="text" inputmode="numeric" pattern="[0-9]{2,5}" class="form-control" id="cvv" required>
+                </div>
+                <div class="form-group">
+                    <label for="installments">Quantidade de parcelas</label>
+                    <input type="number" class="form-control" id="installments" required min="1" max="12">
+                </div>
+                <div id="valorParcela">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="expiryDate">Data de vencimento</label>
-                <input type="date" class="form-control" id="expiryDate" required>
-            </div>
-            <div class="form-group">
-                <label for="cvv">Código verificador</label>
-                <input type="text" inputmode="numeric" pattern="[0-9]{2,5}" class="form-control" id="cvv" required>
-            </div>
-            <div class="form-group">
-                <label for="installments">Quantidade de parcelas</label>
-                <input type="number" class="form-control" id="installments" required min="1" max="12">
-            </div>
-            <div id="valorParcela">
-            </div>
-        </div>
 
 
-            <button type="submit" class="btn btn-primary mx-auto d-block" id="validateButton" disabled>Validar pedido
-                final</button>
+            <button type="submit" class="btn btn-primary mx-auto d-block" id="validateButton"
+                ondblclick="btnContinuarPagamento" disabled>Continuar</button>
         </form>
     </div>
 
@@ -161,6 +161,11 @@
                 });
                 $('#validateButton').prop('disabled', !isValid);
             });
+
+            $('#validateButton').on('click', function () {
+                window.location.href = '/resumoPedido'; // Substitua 'suaNovaPagina.html' pelo URL da sua nova página
+            });
+
         });
 
     </script>
