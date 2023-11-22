@@ -70,4 +70,7 @@ public class EnderecosServices {
         return cliente.getEnderecosList();
     }
 
+    public Enderecos procurarEnderecoPorId(String id) {
+        return enderecosRepository.getReferenceById(id);
+    }
 }
