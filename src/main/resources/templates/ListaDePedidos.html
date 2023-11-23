@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Pedidos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
+</head>
+<body>
+<div class="container mt-5 col-11">
+    <h1>Lista de Pedidos</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th><i class="fas fa-barcode"></i> ID</th>
+            <th><i class="fas fa-credit-card"></i> Forma de Pagamento</th>
+            <th><i class="fas fa-dollar-sign"></i> Valor da Parcela</th>
+            <th><i class="fas fa-dollar-sign"></i> Valor Total</th>
+            <th><i class="fas fa-dollar-sign"></i> Valor do Frete</th>
+            <th><i class="fas fa-list-ol"></i> Parcelas</th>
+            <th><i class="fas fa-user"></i> Cliente</th>
+            <th><i class="fas fa-shopping-basket"></i> Produtos</th>
+        </tr>
+        </thead>
+        <tbody id="pedidosList">
+        <tr th:each="pedido : ${pedidos}">
+            <td th:text="${pedido.id}"></td>
+            <td th:text="${pedido.formaDePagamento}"></td>
+            <td th:text="${pedido.valorParcela}"></td>
+            <td th:text="${pedido.valorTotal}"></td>
+            <td th:text="${pedido.valorFrete}"></td>
+            <td th:text="${pedido.parcelas}"></td>
+            <td th:text="${pedido.clientePedido.nomeCompleto}"></td>
+            <td>
+                <ul>
+                    <li th:each="produto : ${pedido.produtos}">
+                        <span th:text="${produto.produto.nome}"></span>
+                        <span th:text="${produto.quantidade}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

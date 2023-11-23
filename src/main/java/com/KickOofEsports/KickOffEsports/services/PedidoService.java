@@ -37,4 +37,8 @@ public class PedidoService {
         return pedido;
     }
 
+    public List<?> procurarTodosPedidos(){
+        return pedidosRepository.findAll();
+    }
+
 }
