@@ -10,50 +10,49 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
-        <style>
-            .produto-imagem {
-                max-width: 150px;
-                height: auto;
-            }
-    
-            .produto-list-item {
-                margin-bottom: 20px;
-            }
-    
-            /* Estilos para destacar o total de produtos e total com frete */
-            #totalTodosProdutos,
-            #totalComFrete,
-            #RS,
-            #RS2 {
-                font-size: 25px;
-                font-weight: bold;
-                color: white;
-            }
-    
-            .quantidadeProduto {
-                color: white;
-            }
-    
-            .form-check {
-                margin-bottom: 100px;
-            }
-    
-            p,
-            h4,
-            h5,
-            h1,
-            label {
-                text-transform: uppercase;
-                color: #F0F8FF
-            }
-    
-    
-            body {
-                background-color: black;
-                /* Define uma cor de fundo */
-            }
-            
-        </style>
+    <style>
+        .produto-imagem {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .produto-list-item {
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para destacar o total de produtos e total com frete */
+        #totalTodosProdutos,
+        #totalComFrete,
+        #RS,
+        #RS2 {
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .quantidadeProduto {
+            color: white;
+        }
+
+        .form-check {
+            margin-bottom: 100px;
+        }
+
+        p,
+        h4,
+        h5,
+        h1,
+        label {
+            text-transform: uppercase;
+            color: #F0F8FF
+        }
+
+
+        body {
+            background-color: black;
+            /* Define uma cor de fundo */
+        }
+    </style>
     <title>Resumo do Pedido</title>
 </head>
 
@@ -64,13 +63,17 @@
         <div class="row" id="carrinhoLista">
             <!-- Itens do carrinho serão inseridos aqui -->
         </div>
+
+        
+        
         <div class="row">
             <div class="col text-center">
                 <br>
-                <p>Total: <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
-                <p>Total com Frete: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
-
+                <p><strong>Endereço de entrega :</strong> <span id="endereco"></span></p>
+                <p>SubTotal : <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
+                <p>Total: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
                 
+
                 <button type="button" class="btn btn-success finalizar-compra" id="finalizarCompra"
                     onclick="finalizarCompra">Finalizar Compra</button>
             </div>
@@ -164,10 +167,30 @@
             var totalTodosProdutos = localStorage.getItem('totalTodosProdutos');
             $('#totalTodosProdutos').text(totalTodosProdutos);
 
-            var idEndereco = localStorage.getItem('enderecoId');
+            
         });
 
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var idEndereco = localStorage.getItem('enderecoId');
+
+            $.ajax({
+                url: `/procurarEnderecoPorId/${idEndereco}`,
+                type: 'GET',
+                success: function (data) {
+                const enderecoString = `${data.logradouro}, ${data.numero}, ${data.bairro}, ${data.cep}, 
+                ${data.cidade}`;
+                $('#endereco').append(enderecoString);
+            },
+                error: function (error) {
+                    console.error('Erro:', error);
+                }
+            });
+
+        });
     </script>
 </body>
 

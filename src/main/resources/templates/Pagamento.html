@@ -133,24 +133,30 @@
             $('#paymentForm').on('submit', function (e) {
                 e.preventDefault();
 
-                // Verificar se há somente números nos campos de número
-                var cardNumber = $('#cardNumber').val();
-                var cvv = $('#cvv').val();
-                if (!/^\d+$/.test(cardNumber) || !/^\d+$/.test(cvv)) {
-                    alert('Por favor, insira somente números nos campos de número do cartão e CVV.');
-                    return;
-                }
+                var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+
+                // Verifique se o método de pagamento é "creditCard"
+                if (paymentMethod === 'creditCard') {
+
+                    // Verificar se há somente números nos campos de número
+                    var cardNumber = $('#cardNumber').val();
+                    var cvv = $('#cvv').val();
+                    if (!/^\d+$/.test(cardNumber) || !/^\d+$/.test(cvv)) {
+                        alert('Por favor, insira somente números nos campos de número do cartão e CVV.');
+                        return;
+                    }
 
 
-                // Verificar se há somente letras nos campos de letras
-                var cardName = $('#cardName').val();
-                if (!/^[a-zA-Z\s]+$/.test(cardName)) {
-                    alert('Por favor, insira somente letras no campo de nome.');
-                    return;
+                    // Verificar se há somente letras nos campos de letras
+                    var cardName = $('#cardName').val();
+                    if (!/^[a-zA-Z\s]+$/.test(cardName)) {
+                        alert('Por favor, insira somente letras no campo de nome.');
+                        return;
+                    }
                 }
-                // lógica para validar e processar o formulário de pagamento
-                alert('Pedido final validado!');
-            });
+                    // lógica para validar e processar o formulário de pagamento
+                    alert('Pedido final validado!');
+                });
 
             $('#paymentForm input').on('change', function () {
                 var isValid = true;
@@ -168,6 +174,37 @@
 
         });
 
+    </script>
+
+    <script>
+        // Função para salvar os dados no localStorage
+        function saveFormData() {
+            const cvv = document.getElementById('cvv').value;
+            const installments = document.getElementById('installments').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+
+            if (paymentMethod && paymentMethod.value !== 'boleto') {
+                // Salvar no localStorage apenas se não for boleto
+                localStorage.setItem('cvv', cvv);
+                localStorage.setItem('installments', installments);
+                localStorage.setItem('paymentMethod', paymentMethod.value);
+
+                alert('Dados salvos com sucesso!');
+            } else {
+                alert('Por favor, selecione um método de pagamento (exceto boleto) antes de salvar.');
+            }
+        }
+
+        // Preencher os campos com os dados do localStorage, se existirem
+        document.addEventListener('DOMContentLoaded', function () {
+            const cvv = localStorage.getItem('cvv');
+            const installments = localStorage.getItem('installments');
+            const paymentMethod = localStorage.getItem('paymentMethod');
+
+            if (cvv) document.getElementById('cvv').value = cvv;
+            if (installments) document.getElementById('installments').value = installments;
+            if (paymentMethod && paymentMethod !== 'boleto') document.getElementById(paymentMethod).checked = true;
+        });
     </script>
 
 </body>

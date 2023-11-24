@@ -165,11 +165,7 @@ public class EnderecoController {
 
     @GetMapping(value = "/procurarEnderecoPorId/{id}")
     public ResponseEntity<?> procurarEnderecoPorId(@PathVariable String id){
-        try {
             Enderecos enderecos = service.procurarEnderecoPorId(id);
             return ResponseEntity.ok().body(enderecos);
-        } catch (RecursoNaoEncontradoException e){
-            throw new RecursoNaoEncontradoException(id);
-        }
     }
 }
