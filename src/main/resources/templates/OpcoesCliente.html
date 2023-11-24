@@ -17,9 +17,18 @@
         <div class="col-md-6">
             <div class="card card-transparent">
                 <div class="card-body text-center">
-                    <a th:if="${usuarioLogado != null}" th:href="@{'listaEnderecos/' + ${usuarioLogado.id}}" class="btn btn-secondary btn-lg mt-3">Lista de Endereço</a>
-                    <a th:if="${usuarioLogado != null}" th:href="@{'ediEndereco/' + ${usuarioLogado.idEnderecoCobranca}}" class="btn btn-secondary btn-lg mt-3">Endereco de Cobraça</a>
-                    <a th:if="${usuarioLogado != null}" th:href="@{'editarCli/' + ${usuarioLogado.id}}" class="btn btn-secondary btn-lg mt-3">Editar Cliente</a>
+                    <a th:if="${usuarioLogado != null}"
+                       th:href="@{'listaEnderecos/' + ${usuarioLogado.id}}"
+                       class="btn btn-secondary btn-lg mt-3">Lista de Endereço</a>
+                    <a th:if="${usuarioLogado != null}"
+                       th:href="@{'ediEndereco/' + ${usuarioLogado.idEnderecoCobranca}}"
+                       class="btn btn-secondary btn-lg mt-3">Endereco de Cobraça</a>
+                    <a th:if="${usuarioLogado != null}"
+                       th:href="@{'editarCli/' + ${usuarioLogado.id}}"
+                       class="btn btn-secondary btn-lg mt-3">Editar Cliente</a>
+                    <a th:if="${usuarioLogado != null}"
+                       th:href="@{'listaDePedidos'}"
+                       class="btn btn-secondary btn-lg mt-3">Lista de Pedidos</a>
                 </div>
             </div>
 

@@ -41,4 +41,9 @@ public class PedidoService {
         return pedidosRepository.findAll();
     }
 
+    public List<?> procurarPedidosPorUsuarioLogado(String id){
+        Cliente cliente = clienteRepository.getReferenceById(id);
+        return cliente.getPedidosList();
+    }
+
 }
