@@ -6,7 +6,6 @@
     <title>Lista de Pedidos</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
     <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
 </head>
 <body>
@@ -17,18 +16,21 @@
         <tr>
             <th><i class="fas fa-barcode"></i> ID</th>
             <th><i class="fas fa-credit-card"></i> Forma de Pagamento</th>
+            <th><i class="fas fa-credit-card"></i> Data</th>
             <th><i class="fas fa-dollar-sign"></i> Valor da Parcela</th>
             <th><i class="fas fa-dollar-sign"></i> Valor Total</th>
             <th><i class="fas fa-dollar-sign"></i> Valor do Frete</th>
             <th><i class="fas fa-list-ol"></i> Parcelas</th>
             <th><i class="fas fa-user"></i> Cliente</th>
             <th><i class="fas fa-shopping-basket"></i> Produtos</th>
+            <th><i class="fas fa-shopping-basket"></i> Status</th>
         </tr>
         </thead>
         <tbody id="pedidosList">
-        <tr th:each="pedido : ${pedidos}">
+        <tr th:each="pedido : ${pedidos}" data-id="${pedido.id}">
             <td th:text="${pedido.id}"></td>
             <td th:text="${pedido.formaDePagamento}"></td>
+            <td th:text="${pedido.data}"></td>
             <td th:text="${pedido.valorParcela}"></td>
             <td th:text="${pedido.valorTotal}"></td>
             <td th:text="${pedido.valorFrete}"></td>
@@ -42,11 +44,32 @@
                     </li>
                 </ul>
             </td>
+            <td th:text="${pedido.status}"></td>
         </tr>
         </tbody>
     </table>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".statusSelect").change(function(){
+            var id = $(this).closest('tr').data('id');  // Recupera o ID do pedido
+            var status = $(this).val();
+            $.ajax({
+                url: '/atualizarStatusPedido/' + id,
+                type: 'PUT',
+                data: JSON.stringify({status: status}),
+                contentType: 'application/json; charset=utf-8',
+                success: function(response){
+                    alert('Status atualizado com sucesso!');
+                },
+                error: function(error){
+                    alert('Erro ao atualizar o status!');
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

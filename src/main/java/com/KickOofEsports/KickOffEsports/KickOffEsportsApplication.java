@@ -10,4 +10,3 @@ public class KickOffEsportsApplication {
 		SpringApplication.run(KickOffEsportsApplication.class, args);
 	}
 }
-

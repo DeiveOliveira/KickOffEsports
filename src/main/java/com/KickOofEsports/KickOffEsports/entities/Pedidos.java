@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "pedidos")
@@ -25,6 +26,10 @@ public class Pedidos {
     private Double valorTotal;
     private Double valorFrete;
     private Integer parcelas;
+    private String status;
+    @Temporal(TemporalType.DATE)
+    private Date data;
+
 
     @JsonIgnore
     @ManyToOne
@@ -40,6 +45,8 @@ public class Pedidos {
         this.valorFrete = valorFrete;
         this.parcelas = parcelas;
         this.clientePedido = clientePedido;
+        this.status = "Aguardando Pagamento";
+        this.data = new Date();
     }
 
     public void adicionarProduto(Produto produto, Integer quantidade) {

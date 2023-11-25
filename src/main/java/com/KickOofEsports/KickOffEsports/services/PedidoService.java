@@ -46,4 +46,13 @@ public class PedidoService {
         return cliente.getPedidosList();
     }
 
+    public Pedidos atualizarPedidos(Long id, String atualizacaoStatus){
+        Pedidos pedidos = pedidosRepository.getReferenceById(id);
+        atualizarStatus(pedidos, atualizacaoStatus);
+        return pedidosRepository.save(pedidos);
+    }
+
+    public void atualizarStatus(Pedidos pedidos ,String atualizacaoStatus){
+        pedidos.setStatus(atualizacaoStatus);
+    }
 }

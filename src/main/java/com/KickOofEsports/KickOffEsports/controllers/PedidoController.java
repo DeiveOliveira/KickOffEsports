@@ -1,7 +1,10 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
+import com.KickOofEsports.KickOffEsports.entities.AtualizacaoStatusDto;
 import com.KickOofEsports.KickOffEsports.entities.Cliente;
+import com.KickOofEsports.KickOffEsports.entities.Pedidos;
 import com.KickOofEsports.KickOffEsports.entities.Usuario;
+import com.KickOofEsports.KickOffEsports.entities.enums.UserRole;
 import com.KickOofEsports.KickOffEsports.repositories.PedidosRepository;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.ClienteService;
@@ -11,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -30,7 +36,7 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @GetMapping(value = "listaDePedidos" )
+    @GetMapping(value = "listaDePedidos")
     public ModelAndView procurarTodosOsPedidos(HttpSession session){
         ModelAndView mv = new ModelAndView();
         Object usuarioLogado = session.getAttribute("usuarioLogado");
@@ -42,11 +48,25 @@ public class PedidoController {
             return mv;
         }else if(usuarioLogado instanceof Usuario){
             Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
-            List<?> listaDePedidos = pedidoService.procurarTodosPedidos();
-            mv.addObject("pedidos", listaDePedidos);
-            return mv;
+            if(usuario.getRole() == UserRole.ESTOQUISTA){
+                List<?> listaDePedidos = pedidoService.procurarTodosPedidos();
+                mv.addObject("pedidos", listaDePedidos);
+                return mv;
+            } else{
+                mv.setViewName("TelaPrincipal");
+                return mv;
+            }
         }else
         mv.setViewName("Home");
         return mv;
     }
+
+    @PutMapping (value = "atualizarStatusPedido/{id}")
+    public ResponseEntity<?> atualizarStatusPedido(@PathVariable String id, @RequestBody AtualizacaoStatusDto atualizacaoStatusDto){
+        Long idLong = Long.parseLong(id);
+        Pedidos pedidos = pedidosRepository.getReferenceById(idLong);
+        pedidoService.atualizarPedidos(idLong, atualizacaoStatusDto.getStatus());
+        return ResponseEntity.ok().body(pedidos);
+    }
+
 }
