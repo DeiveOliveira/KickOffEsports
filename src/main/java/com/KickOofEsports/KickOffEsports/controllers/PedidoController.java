@@ -61,6 +61,31 @@ public class PedidoController {
         return mv;
     }
 
+    @GetMapping(value = "listaDePedidosCliente")
+    public ModelAndView procurarTodosOsPedidosCliente(HttpSession session){
+        ModelAndView mv = new ModelAndView();
+        Object usuarioLogado = session.getAttribute("usuarioLogado");
+        mv.setViewName("ListaDePedidosCliente");
+        if(usuarioLogado instanceof Cliente){
+            Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
+            List<?> listaDePedidos = pedidoService.procurarPedidosPorUsuarioLogado(cliente.getId());
+            mv.addObject("pedidos", listaDePedidos);
+            return mv;
+        }else if(usuarioLogado instanceof Usuario){
+            Usuario usuario = (Usuario) session.getAttribute("usuarioLogado");
+            if(usuario.getRole() == UserRole.ESTOQUISTA){
+                List<?> listaDePedidos = pedidoService.procurarTodosPedidos();
+                mv.addObject("pedidos", listaDePedidos);
+                return mv;
+            } else{
+                mv.setViewName("TelaPrincipal");
+                return mv;
+            }
+        }else
+            mv.setViewName("Home");
+        return mv;
+    }
+
     @PutMapping (value = "atualizarStatusPedido/{id}")
     public ResponseEntity<?> atualizarStatusPedido(@PathVariable String id, @RequestBody AtualizacaoStatusDto atualizacaoStatusDto){
         Long idLong = Long.parseLong(id);
