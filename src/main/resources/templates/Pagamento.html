@@ -95,6 +95,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function () {
+
             $('input[type=radio][name=paymentMethod]').change(function () {
                 // Usei a função toggle para alternar a visibilidade do contêiner do cartão
                 $('#creditCardInfo').toggle(this.value === 'creditCard');
@@ -154,9 +155,9 @@
                         return;
                     }
                 }
-                    // lógica para validar e processar o formulário de pagamento
-                    alert('Pedido final validado!');
-                });
+                // lógica para validar e processar o formulário de pagamento
+                alert('Pedido final validado!');
+            });
 
             $('#paymentForm input').on('change', function () {
                 var isValid = true;
@@ -166,6 +167,10 @@
                     }
                 });
                 $('#validateButton').prop('disabled', !isValid);
+            });
+
+            $('input[type=radio][name=paymentMethod]').change(function () {
+                $('#creditCardInfo').toggle(this.value === 'creditCard');
             });
 
             $('#validateButton').on('click', function () {
@@ -178,32 +183,26 @@
 
     <script>
         // Função para salvar os dados no localStorage
-        function saveFormData() {
-            const cvv = document.getElementById('cvv').value;
-            const installments = document.getElementById('installments').value;
-            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
 
-            if (paymentMethod && paymentMethod.value !== 'boleto') {
-                // Salvar no localStorage apenas se não for boleto
-                localStorage.setItem('cvv', cvv);
-                localStorage.setItem('installments', installments);
-                localStorage.setItem('paymentMethod', paymentMethod.value);
 
-                alert('Dados salvos com sucesso!');
-            } else {
-                alert('Por favor, selecione um método de pagamento (exceto boleto) antes de salvar.');
+    </script>
+    <script>
+        var boleto = document.getElementById('boleto');
+        var creditCard = document.getElementById('creditCard');
+
+        // Adiciona um ouvinte de evento 'change' para cada opção de pagamento
+        boleto.addEventListener('change', function () {
+            if (this.checked) {
+                // Salva a opção escolhida no localStorage como uma string
+                localStorage.setItem('paymentMethod', 'Boleto');
             }
-        }
+        });
 
-        // Preencher os campos com os dados do localStorage, se existirem
-        document.addEventListener('DOMContentLoaded', function () {
-            const cvv = localStorage.getItem('cvv');
-            const installments = localStorage.getItem('installments');
-            const paymentMethod = localStorage.getItem('paymentMethod');
-
-            if (cvv) document.getElementById('cvv').value = cvv;
-            if (installments) document.getElementById('installments').value = installments;
-            if (paymentMethod && paymentMethod !== 'boleto') document.getElementById(paymentMethod).checked = true;
+        creditCard.addEventListener('change', function () {
+            if (this.checked) {
+                // Salva a opção escolhida no localStorage como uma string
+                localStorage.setItem('paymentMethod', 'Cartão de Crédito');
+            }
         });
     </script>
 

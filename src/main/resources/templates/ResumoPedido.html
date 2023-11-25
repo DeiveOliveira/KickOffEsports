@@ -64,15 +64,17 @@
             <!-- Itens do carrinho serão inseridos aqui -->
         </div>
 
-        
-        
+
+
         <div class="row">
             <div class="col text-center">
                 <br>
                 <p><strong>Endereço de entrega :</strong> <span id="endereco"></span></p>
+                <p><strong>Forma de pagamento :</strong> <span id="formaDePagamento"></span></p>
+
                 <p>SubTotal : <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
                 <p>Total: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
-                
+
 
                 <button type="button" class="btn btn-success finalizar-compra" id="finalizarCompra"
                     onclick="finalizarCompra">Finalizar Compra</button>
@@ -92,7 +94,6 @@
         crossorigin="anonymous"></script>
     <script>
         $(document).ready(function () {
-
 
             // Obtenha a lista do armazenamento local
             var carrinho = localStorage.getItem('carrinho');
@@ -167,7 +168,7 @@
             var totalTodosProdutos = localStorage.getItem('totalTodosProdutos');
             $('#totalTodosProdutos').text(totalTodosProdutos);
 
-            
+
         });
 
 
@@ -181,14 +182,28 @@
                 url: `/procurarEnderecoPorId/${idEndereco}`,
                 type: 'GET',
                 success: function (data) {
-                const enderecoString = `${data.logradouro}, ${data.numero}, ${data.bairro}, ${data.cep}, 
+                    const enderecoString = `${data.logradouro}, ${data.numero}, ${data.bairro}, ${data.cep}, 
                 ${data.cidade}`;
-                $('#endereco').append(enderecoString);
-            },
+                    $('#endereco').append(enderecoString);
+                },
                 error: function (error) {
                     console.error('Erro:', error);
                 }
             });
+            // Pega o elemento da página
+            var formaDePagamento = document.getElementById('formaDePagamento');
+
+            // Recupera a opção de pagamento do localStorage
+            var paymentMethod = localStorage.getItem('paymentMethod');
+
+            // Verifica se a opção de pagamento existe
+            if (paymentMethod) {
+                // Insere a opção de pagamento no elemento
+                formaDePagamento.textContent = paymentMethod;
+            } else {
+                // Insere um texto padrão se a opção de pagamento não existir
+                formaDePagamento.textContent = 'Nenhuma forma de pagamento selecionada';
+            }
 
         });
     </script>
