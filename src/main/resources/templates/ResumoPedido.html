@@ -73,6 +73,7 @@
                 <p><strong>Forma de pagamento :</strong> <span id="formaDePagamento"></span></p>
 
                 <p>SubTotal : <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
+                <p id="frete">Frete: <span id="valorFrete"> 0.00</span></p>
                 <p>Total: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
 
 
@@ -168,6 +169,12 @@
             var totalTodosProdutos = localStorage.getItem('totalTodosProdutos');
             $('#totalTodosProdutos').text(totalTodosProdutos);
 
+            function calcularFrete() {
+                var totalComFrete = parseFloat(document.getElementById("totalComFrete").textContent);
+                var totalTodosProdutos = parseFloat(document.getElementById("totalTodosProdutos").textContent);
+                var frete = totalComFrete - totalTodosProdutos;
+                document.getElementById("valorFrete").textContent = frete.toFixed(2);
+            }
 
         });
 
@@ -206,6 +213,8 @@
             }
 
         });
+    </script>
+    <script>
     </script>
 </body>
 

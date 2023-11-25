@@ -97,7 +97,6 @@
         $(document).ready(function () {
 
             $('input[type=radio][name=paymentMethod]').change(function () {
-                // Usei a função toggle para alternar a visibilidade do contêiner do cartão
                 $('#creditCardInfo').toggle(this.value === 'creditCard');
             });
             $('input[type=radio][name=paymentMethod]').change(function () {
@@ -111,70 +110,37 @@
             var valorTotal = localStorage.getItem('totalComFrete');
             console.log(localStorage.getItem('totalComFrete'));
 
-            // Pega a quantidade de parcelas do input
             var parcelasInput = document.getElementById('installments');
-
-            // Pega o elemento para exibir o valor da parcela
             var valorParcelaDisplay = document.getElementById('valorParcela');
 
-            // Função para calcular e exibir o valor da parcela
             function calcularParcela() {
                 var parcelas = parcelasInput.value;
                 var valorParcela = valorTotal / parcelas;
                 valorParcelaDisplay.innerHTML = '<h5 class="text-dark">O valor de cada parcela: R$ ' + valorParcela.toFixed(2) + '</h5>';
-
             }
 
-            // Adiciona um ouvinte de evento para atualizar o valor da parcela sempre que o número de parcelas mudar
             parcelasInput.addEventListener('input', calcularParcela);
-
-            // Calcula e exibe o valor da parcela inicial
             calcularParcela();
-
-            $('#paymentForm').on('submit', function (e) {
-                e.preventDefault();
-
-                var paymentMethod = $('input[name="paymentMethod"]:checked').val();
-
-                // Verifique se o método de pagamento é "creditCard"
-                if (paymentMethod === 'creditCard') {
-
-                    // Verificar se há somente números nos campos de número
-                    var cardNumber = $('#cardNumber').val();
-                    var cvv = $('#cvv').val();
-                    if (!/^\d+$/.test(cardNumber) || !/^\d+$/.test(cvv)) {
-                        alert('Por favor, insira somente números nos campos de número do cartão e CVV.');
-                        return;
-                    }
-
-
-                    // Verificar se há somente letras nos campos de letras
-                    var cardName = $('#cardName').val();
-                    if (!/^[a-zA-Z\s]+$/.test(cardName)) {
-                        alert('Por favor, insira somente letras no campo de nome.');
-                        return;
-                    }
-                }
-                // lógica para validar e processar o formulário de pagamento
-                alert('Pedido final validado!');
-            });
 
             $('#paymentForm input').on('change', function () {
                 var isValid = true;
+                var paymentMethod = $('input[name="paymentMethod"]:checked').val();
                 $('#paymentForm input').each(function () {
-                    if ($(this).val() === '') {
+                    if (paymentMethod === 'creditCard' && $(this).val() === '') {
                         isValid = false;
                     }
                 });
                 $('#validateButton').prop('disabled', !isValid);
             });
 
-            $('input[type=radio][name=paymentMethod]').change(function () {
-                $('#creditCardInfo').toggle(this.value === 'creditCard');
+            $('#paymentForm').on('submit', function (e) {
+                e.preventDefault();
+                var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+                alert('Pedido final validado!');
             });
 
             $('#validateButton').on('click', function () {
-                window.location.href = '/resumoPedido'; // Substitua 'suaNovaPagina.html' pelo URL da sua nova página
+                window.location.href = '/resumoPedido';
             });
 
         });

@@ -1,28 +1,28 @@
 package com.KickOofEsports.KickOffEsports.controllers;
 
-import com.KickOofEsports.KickOffEsports.entities.AtualizacaoStatusDto;
-import com.KickOofEsports.KickOffEsports.entities.Cliente;
-import com.KickOofEsports.KickOffEsports.entities.Pedidos;
-import com.KickOofEsports.KickOffEsports.entities.Usuario;
+import com.KickOofEsports.KickOffEsports.entities.*;
 import com.KickOofEsports.KickOffEsports.entities.enums.UserRole;
 import com.KickOofEsports.KickOffEsports.repositories.PedidosRepository;
+import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
 import com.KickOofEsports.KickOffEsports.services.ClienteService;
 import com.KickOofEsports.KickOffEsports.services.PedidoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class PedidoController {
+
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
     @Autowired
     private ClienteService clienteService;
@@ -92,6 +92,18 @@ public class PedidoController {
         Pedidos pedidos = pedidosRepository.getReferenceById(idLong);
         pedidoService.atualizarPedidos(idLong, atualizacaoStatusDto.getStatus());
         return ResponseEntity.ok().body(pedidos);
+    }
+
+    @PostMapping (value = "/salvarPedido")
+    public ResponseEntity<?> salvarPedido(Double valorFrete, Integer parcelas, @RequestBody List<Produto> produto, @PathVariable String idCliente){
+        List<Produto> produtos = new ArrayList<>();
+        for (Produto p : produto) {
+            Produto prod = produtoRepository.getReferenceById(p.getId());
+            produtos.add(prod);
+        }
+        Pedidos pedido = pedidoService.cadastrarPedidos(valorFrete, parcelas, produtos, idCliente);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+
     }
 
 }

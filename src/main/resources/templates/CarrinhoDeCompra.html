@@ -123,11 +123,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="text-center">Calcular Frete</h5>
+          <div style="width: 100%; text-align: center;">
+            <h5>Frete</h5>
+          </div>
           <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
             <span aria-hidden="true">×</span>
           </button>
         </div>
+
         <div class="modal-body">
           <div class="row">
             <div class="col">
@@ -153,7 +156,7 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer d-flex justify-content-center">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
           <button type="button" class="btn btn-primary" id="continuar">Continuar</button>
         </div>
@@ -302,8 +305,10 @@
 
         // Recalcule o total de todos os produtos
         calcularTotalTodosProdutos();
-      });
 
+        // Atualize a página
+        location.reload();
+      });
       var valorTotal = calcularTotalTodosProdutos();
 
       // Função para atualizar o preço total de um produto
@@ -374,6 +379,24 @@
         // Verifique se o usuário está logado
 
       }
+      var usuarioLogado = localStorage.getItem('usuarioLogado');
+      if (usuarioLogado) {
+        // Se o usuário estiver logado, mostre as opções de frete imediatamente
+        document.getElementById('freightOptions').style.display = 'block';
+        $('#inputCep').parent().parent().hide();
+      } else {
+        // Se o usuário não estiver logado, adicione o evento de clique ao botão
+        document.getElementById('calculateFreight').addEventListener('click', function () {
+          var cep = document.getElementById('inputCep').value;
+
+          if (cep.length === 8) {
+            document.getElementById('freightOptions').style.display = 'block';
+          } else {
+            alert('Por favor, insira um CEP válido com 8 dígitos.');
+          }
+        });
+      }
+
 
       // Pega o modal
       var modal = document.getElementById("myModal");
