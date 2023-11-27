@@ -24,7 +24,9 @@
         #totalTodosProdutos,
         #totalComFrete,
         #RS,
-        #RS2 {
+        #RS2,
+        #valorFrete, 
+        #frete{
             font-size: 25px;
             font-weight: bold;
             color: white;
@@ -69,12 +71,12 @@
                 <p><strong>Forma de pagamento :</strong> <span id="formaDePagamento"></span></p>
 
                 <p>SubTotal : <span id="RS2">R$</span> <span id="totalTodosProdutos"> 0.00</span></p>
-                <p id="frete">Frete: <span id="valorFrete"> 0.00</span></p>
+                <p>Frete: <span id="frete">R$</span><span id="valorFrete"> 0.00</span></p>
                 <p>Total: <span id="RS">R$</span> <span id="totalComFrete"> 0.00</span></p>
 
 
-                <button type="button" class="btn btn-success finalizar-compra"
-                        id="finalizarCompra" onclick="finalizarCompra()">Finalizar Compra</button>
+                <button type="button" class="btn btn-success finalizar-compra" id="finalizarCompra"
+                    onclick="finalizarCompra()">Finalizar Compra</button>
 
             </div>
         </div>
@@ -93,42 +95,42 @@
     <script>
 
         function finalizarCompra() {
-        var confirmacao = confirm("Deseja realmente finalizar o pedido?");
-        if (confirmacao) {
-        // Obtenha os dados necessários do HTML
-        var endereco = $('#endereco').text();
-        var formaDePagamento = $('#formaDePagamento').text();
-        var totalComFrete = parseFloat($('#totalComFrete').text());
+            var confirmacao = confirm("Deseja realmente finalizar o pedido?");
+            if (confirmacao) {
+                // Obtenha os dados necessários do HTML
+                var endereco = $('#endereco').text();
+                var formaDePagamento = $('#formaDePagamento').text();
+                var totalComFrete = parseFloat($('#totalComFrete').text());
 
-        // Obtenha a lista de produtos do carrinho
-        var carrinho = localStorage.getItem('carrinho');
-        var produtosNoCarrinho = carrinho ? JSON.parse(carrinho) : [];
+                // Obtenha a lista de produtos do carrinho
+                var carrinho = localStorage.getItem('carrinho');
+                var produtosNoCarrinho = carrinho ? JSON.parse(carrinho) : [];
 
-        // Construa o objeto com os dados do pedido
-        var pedido = {
-            formaDePagamento: formaDePagamento,
-            valorFrete: totalComFrete,
-            produto: produtosNoCarrinho,
-            // Outros campos do pedido, se necessário
-        };
+                // Construa o objeto com os dados do pedido
+                var pedido = {
+                    formaDePagamento: formaDePagamento,
+                    valorFrete: totalComFrete,
+                    produto: produtosNoCarrinho,
+                    // Outros campos do pedido, se necessário
+                };
 
-        // Faça a chamada AJAX para o endpoint "/salvarPedido"
-        $.ajax({
-            url: '/salvarPedido',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(pedido),
-            success: function (response) {
-                // Manipule a resposta do servidor, se necessário
-                alert("Pedido finalizado com sucesso!");
-            },
-            error: function (error) {
-                console.error('Erro ao finalizar o pedido:', error);
-                alert('Erro ao finalizar o pedido. Por favor, tente novamente.');
+                // Faça a chamada AJAX para o endpoint "/salvarPedido"
+                $.ajax({
+                    url: '/salvarPedido',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(pedido),
+                    success: function (response) {
+                        // Manipule a resposta do servidor, se necessário
+                        alert("Pedido finalizado com sucesso!");
+                    },
+                    error: function (error) {
+                        console.error('Erro ao finalizar o pedido:', error);
+                        alert('Erro ao finalizar o pedido. Por favor, tente novamente.');
+                    }
+                });
             }
-        });
-    }
-}
+        }
 
 
 
@@ -207,12 +209,10 @@
             var totalTodosProdutos = localStorage.getItem('totalTodosProdutos');
             $('#totalTodosProdutos').text(totalTodosProdutos);
 
-            function calcularFrete() {
-                var totalComFrete = parseFloat(document.getElementById("totalComFrete").textContent);
-                var totalTodosProdutos = parseFloat(document.getElementById("totalTodosProdutos").textContent);
-                var frete = totalComFrete - totalTodosProdutos;
-                document.getElementById("valorFrete").textContent = frete.toFixed(2);
-            }
+            var valorFrete = valorTotal - totalTodosProdutos;
+
+            // Insere o valor do frete na tag span com o id "valorFrete"
+            $('#valorFrete').text(valorFrete.toFixed(2));
 
         });
 

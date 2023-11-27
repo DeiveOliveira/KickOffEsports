@@ -58,20 +58,33 @@ public class TestConfig implements CommandLineRunner {
         Produto p2 = new Produto("Camisa Retro do Barcelona", 3.50, "Camisa do Barcelona de 2016", 160.00, 1);
         Produto p3 = new Produto("Camisa da Alemanha", 1.00, "Camisa da Juventus do CR7", 400.00, 1);
         Produto p4 = new Produto("Camisa do Japão", 3.00, "Camisa do Japão, edição limitada", 400.00, 1);
+        Produto p5 = new Produto("Camisa do Ajax", 3.00, "Camisa do Ajax, edição limitada", 400.00, 1);
+        Produto p6 = new Produto("Camisa do Napoli", 3.00, "Camisa do Napoli, edição limitada", 400.00, 1);
+        Produto p7 = new Produto("Camisa da Espanha", 3.00, "Camisa do Espanha, edição limitada", 400.00, 1);
+        Produto p8 = new Produto("Camisa do Borussia Dortmund", 3.00, "Camisa do Borussia Dortmund, edição limitada", 400.00, 1);
 
-        produtoRepository.saveAll(Arrays.asList(p1,p2,p3, p4));
+
+
+        produtoRepository.saveAll(Arrays.asList(p1,p2,p3, p4,p5,p6,p7,p8));
 
         Imagens l1 = new Imagens(p1, "RealMadrir.jpg");
         Imagens l2 = new Imagens(p1, "RealMadrirCosta.jpg");
         Imagens l3 = new Imagens(p2, "BarçaFrente.jpg");
         Imagens l4 = new Imagens(p2, "BarçaCostas.jpg");
-        Imagens l5 = new Imagens(p2, "Barça.jpg");
+        Imagens l5 = new Imagens(p2, "barca.jpg");
         Imagens l6 = new Imagens(p3, "AlemanhaFrente.jpg");
         Imagens l7 = new Imagens(p3, "AlemanhaCostas.jpg");
-        Imagens l8 = new Imagens(p4, "JapaoFrente.jpg");
-        Imagens l9 = new Imagens(p4, "JapaoCostas.jpg");
+        Imagens l8 = new Imagens(p5, "Ajax-1.jpg");
+        Imagens l9 = new Imagens(p5, "Ajax-2.jpg");
+        Imagens l10 = new Imagens(p6, "Napoli-Frente.jpg");
+        Imagens l11 = new Imagens(p6, "Napoli-Cosatas.jpg");
+        Imagens l12 = new Imagens(p7, "ESPANHa-Frente1.jpg");
+        Imagens l13 = new Imagens(p7, "Espanha-Frente2.jpg");
+        Imagens l14 = new Imagens(p8, "BorussiaFrente.jpg");
+        Imagens l15 = new Imagens(p8, "Borussia.jpg");
+        Imagens l16 = new Imagens(p4, "JapaoCostas.jpg");
 
-        listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9));
+        listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9,l10,l11,l12,l13,l14,l15,l16));
 
         Cliente c1 = new Cliente("AugustoCliente", "augustoCliente@gmail.com", "12345", "66803699080", "2002-08-21\t", "Masculino");
         Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "2002-08-20\t", "Masculino");

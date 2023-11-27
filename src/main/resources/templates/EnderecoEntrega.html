@@ -80,6 +80,7 @@
     <script>
 
         function minhaFuncao(checkbox) {
+
             const produtosId = checkbox.dataset.enderecoId;
 
             console.log("Produtos ID:", produtosId);
@@ -137,7 +138,7 @@
             if (isChecked) {
                 window.location.href = '/pagamento';
             } else {
-                alert('Por favor, marque pelo menos um checkbox para continuar.');
+                alert('Por favor, selecione o endereço de entrega');
             }
         });
 
@@ -193,14 +194,20 @@
         }
 
         $(document).ready(function () {
+            $('.address-checkbox').each(function () {
+                // Verifica se este checkbox está marcado
+                if ($(this).is(':checked')) {
+                    // Se marcado, salva o id do endereço no localStorage
+                    var enderecoId = $(this).data('endereco-id');
+                    localStorage.setItem('enderecoId', enderecoId);
+                }
+            });
             // Lidar com cliques na caixa de seleção
             $('.address-checkbox').on('change', function () {
                 // Verifique se esta caixa de seleção está sendo marcada
                 if ($(this).is(':checked')) {
                     // Se marcada, desmarque todas as outras caixas de seleção
                     $('.address-checkbox').not(this).prop('checked', false);
-                    var enderecoId = $(this).data('endereco-id');
-                    localStorage.setItem('enderecoId', enderecoId);
                 }
             });
 
