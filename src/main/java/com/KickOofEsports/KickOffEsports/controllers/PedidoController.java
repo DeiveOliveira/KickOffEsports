@@ -104,7 +104,9 @@ public class PedidoController {
         }
 
         System.out.println("forma de pagamento é: " + pedidoRequestDTO.getFormaDePagamento() );
-
+        for (Produto produto : pedidoRequestDTO.getProduto()){
+            System.out.println("nome dos produtos: " + produto.getNome());
+        }
         Pedidos pedido = pedidoService.cadastrarPedidos(
                 pedidoRequestDTO.getFormaDePagamento(),
                 pedidoRequestDTO.getValorFrete(),
@@ -114,7 +116,7 @@ public class PedidoController {
                 cliente.getId()
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
+        return ResponseEntity.ok().body(pedido);
     }
 
 

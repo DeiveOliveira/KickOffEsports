@@ -111,7 +111,8 @@
                     formaDePagamento: formaDePagamento,
                     valorFrete: totalComFrete,
                     produto: produtosNoCarrinho,
-                    // Outros campos do pedido, se necessário
+                    parcelas: parseInt(localStorage.getItem('installments')),
+                    idEndereco: localStorage.getItem('enderecoId'),
                 };
 
                 // Faça a chamada AJAX para o endpoint "/salvarPedido"

@@ -72,6 +72,9 @@
 
                 if (confirmacao) {
                     localStorage.removeItem('usuarioLogado');
+                    localStorage.removeItem('carrinho');
+                    localStorage.removeItem('enderecoId');
+
                     // O usuário clicou em "Sim", continue com a lógica de atualização
                     $.ajax({
                         type: 'POST',

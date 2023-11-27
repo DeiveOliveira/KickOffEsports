@@ -30,6 +30,7 @@ public class PedidoService {
     public Pedidos cadastrarPedidos(String formaDePagamento, Double valorFrete, Integer parcelas, String idEndereco, List<Produto> produtos,  String id) {
         List<Produto> produtos1 = converterDTOsParaEntidades(produtos);
         Cliente cliente = clienteRepository.getReferenceById(id);
+        parcelas = 1;
         double valorTotal = 0;
         for (Produto produto : produtos1) {
             valorTotal += produto.getPreco() * produto.getQuantidade();
