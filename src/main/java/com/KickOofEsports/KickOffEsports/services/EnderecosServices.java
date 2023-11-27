@@ -22,21 +22,42 @@ public class EnderecosServices {
     @Autowired
     ClienteRepository clienteRepository;
 
+    @Autowired
+    ClienteService clienteService;
+
     @Transactional
-    public Enderecos cadastrar(Enderecos enderecos, String idUsuario){
+    public Enderecos cadastrar(Enderecos enderecos, String idUsuario) {
         Cliente cliente = clienteRepository.getReferenceById(idUsuario);
-        Enderecos enderecos1 = new Enderecos(enderecos.getCep(), enderecos.getLogradouro(), enderecos.getNumero(), enderecos.getComplemento(), enderecos.getBairro(), enderecos.getCidade(), enderecos.getUf(), cliente);
-        if(cliente.enderecosList.isEmpty()){
-            cliente.enderecosList.add(enderecos1);
-            enderecosRepository.save(enderecos1);
-            cliente.setIdEnderecoCobranca(enderecos1.getId());
-            clienteRepository.save(cliente);
-            return enderecos1;
+
+        Enderecos enderecos1 = new Enderecos(enderecos.getCep(), enderecos.getLogradouro(), enderecos.getNumero(),
+                enderecos.getComplemento(), enderecos.getBairro(), enderecos.getCidade(), enderecos.getUf(), cliente);
+
+        if (cliente.getEnderecosList().isEmpty()) {
+            // Se a lista de endereços do cliente estiver vazia, marca o novo endereço como padrão
+            enderecos1.setEnderecoPadrao(true);
+        } else {
+            // Se já existem endereços, mantenha o novo endereço como não padrão
+            enderecos1.setEnderecoPadrao(false);
         }
-        cliente.enderecosList.add(enderecos1);
+
+        // Salva o endereço
+        enderecosRepository.save(enderecos1);
+
+        // Atualiza a lista de endereços do cliente
+        cliente.getEnderecosList().add(enderecos1);
+
+        // Atualiza o ID de endereço de cobrança se necessário
+        if (cliente.getIdEnderecoCobranca() == null) {
+            cliente.setIdEnderecoCobranca(enderecos1.getId());
+        }
+
+        // Salva as alterações no cliente
         clienteRepository.save(cliente);
-        return enderecosRepository.save(enderecos1);
+
+        return enderecos1;
     }
+
+
 
     public Enderecos atualizar(String id, Enderecos enderecoAtualizado) {
         try {

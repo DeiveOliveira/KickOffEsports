@@ -98,13 +98,13 @@ public class TestConfig implements CommandLineRunner {
         pC1.add(p2);
 
         pC2.add(p1);
-//
-//        pC3.add(p3);
-//        pC3.add(p4);
 
-        pedidoService.cadastrarPedidos(20.0, 5, pC1, c1.getId());
-        pedidoService.cadastrarPedidos(20.0, 3, pC2, c2.getId());
-//        pedidoService.cadastrarPedidos(20.0, 10, pC2, c3.getId());
+        pC3.add(p3);
+        pC3.add(p4);
+
+        pedidoService.cadastrarPedidos("Cartão de credito" ,20.0, 5, e1.getId(), pC1, c1.getId());
+        pedidoService.cadastrarPedidos( "Cartão de credito",20.0, 3, e2.getId(), pC2, c2.getId());
+        pedidoService.cadastrarPedidos("Cartão de credito", 20.0, 10, e3.getId(), pC2, c3.getId());
 
 
 

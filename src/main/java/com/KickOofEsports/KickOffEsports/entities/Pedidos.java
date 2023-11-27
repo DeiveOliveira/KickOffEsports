@@ -27,6 +27,7 @@ public class Pedidos {
     private Double valorFrete;
     private Integer parcelas;
     private String status;
+    private String idEndereco;
     @Temporal(TemporalType.DATE)
     private Date data;
 
@@ -39,11 +40,13 @@ public class Pedidos {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PedidoProduto> produtos = new ArrayList<>();
 
-    public Pedidos(Double valorParcela, Double valorTotal, Double valorFrete, Integer parcelas, Cliente clientePedido) {
+    public Pedidos(String formaDePagamento ,Double valorParcela, Double valorTotal, Double valorFrete, Integer parcelas, String idEndereco, Cliente clientePedido) {
+        this.formaDePagamento = formaDePagamento;
         this.valorParcela = valorParcela;
         this.valorTotal = valorTotal;
         this.valorFrete = valorFrete;
         this.parcelas = parcelas;
+        this.idEndereco = idEndereco;
         this.clientePedido = clientePedido;
         this.status = "Aguardando Pagamento";
         this.data = new Date();

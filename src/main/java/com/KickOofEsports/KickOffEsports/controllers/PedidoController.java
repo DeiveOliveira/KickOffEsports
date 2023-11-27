@@ -94,16 +94,28 @@ public class PedidoController {
         return ResponseEntity.ok().body(pedidos);
     }
 
-    @PostMapping (value = "/salvarPedido")
-    public ResponseEntity<?> salvarPedido(Double valorFrete, Integer parcelas, @RequestBody List<Produto> produto, @PathVariable String idCliente){
+    @PostMapping(value = "/salvarPedido")
+    public ResponseEntity<?> salvarPedido(@RequestBody PedidoRequestDTO pedidoRequestDTO, HttpSession session) {
+        Cliente cliente = (Cliente) session.getAttribute("usuarioLogado");
         List<Produto> produtos = new ArrayList<>();
-        for (Produto p : produto) {
+        for (Produto p : pedidoRequestDTO.getProduto()) {
             Produto prod = produtoRepository.getReferenceById(p.getId());
             produtos.add(prod);
         }
-        Pedidos pedido = pedidoService.cadastrarPedidos(valorFrete, parcelas, produtos, idCliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
 
+        System.out.println("forma de pagamento é: " + pedidoRequestDTO.getFormaDePagamento() );
+
+        Pedidos pedido = pedidoService.cadastrarPedidos(
+                pedidoRequestDTO.getFormaDePagamento(),
+                pedidoRequestDTO.getValorFrete(),
+                pedidoRequestDTO.getParcelas(),
+                pedidoRequestDTO.getIdEndereco(),
+                produtos,
+                cliente.getId()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedido);
     }
+
 
 }

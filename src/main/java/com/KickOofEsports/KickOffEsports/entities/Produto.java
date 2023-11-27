@@ -46,6 +46,10 @@ public class Produto implements Serializable {
         this.status = true;
     }
 
+    public Produto(String id) {
+        this.id = id;
+    }
+
     public void setImagens(List<Imagens> ListaImagens){
         for(Imagens mg: ListaImagens){
             mg.setProduto(this);

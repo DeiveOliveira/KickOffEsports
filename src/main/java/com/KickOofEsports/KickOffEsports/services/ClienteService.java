@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -97,16 +98,15 @@ public class ClienteService {
     public Enderecos atualizarEnderecoPadrao(String id) {
         try{
             Enderecos enderecos = enderecosRepository.getReferenceById(id);
-            alterarEnderecoPadrao(enderecos);
-            return enderecosRepository.save(enderecos);
+            return alterarEnderecoPadrao(enderecos);
         }catch (EntityNotFoundException e){
             throw new RecursoNaoEncontradoException(id);
         }
     }
 
-    private void alterarEnderecoPadrao(Enderecos enderecos){
+    public Enderecos alterarEnderecoPadrao(Enderecos enderecos){
 
-        if (enderecos.isEnderecoPadrao() == true){
+        if (enderecos.isEnderecoPadrao()){
             enderecos.setEnderecoPadrao(false);
         }else{
             Cliente cliente = repository.getReferenceById(enderecos.getCliente().getId());
@@ -121,5 +121,6 @@ public class ClienteService {
             }
             enderecos.setEnderecoPadrao(true);
         }
+        return enderecosRepository.save(enderecos);
     }
 }
