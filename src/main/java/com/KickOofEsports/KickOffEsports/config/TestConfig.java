@@ -55,7 +55,7 @@ public class TestConfig implements CommandLineRunner {
         cadastrar.cadastrar(u3);
 
         Produto p1 = new Produto("Camisa do Real Madrid", 5.00, "Camisa do Real Madrid de 2023", 350.00, 1);
-        Produto p2 = new Produto("Camisa Retro do Barcelona", 3.50, "Camisa do Barcelona de 2016", 160.00, 1);
+//        Produto p2 = new Produto("Camisa Retro do Barcelona", 3.50, "Camisa do Barcelona de 2016", 160.00, 1);
         Produto p3 = new Produto("Camisa da Alemanha", 1.00, "Camisa da Juventus do CR7", 400.00, 1);
         Produto p4 = new Produto("Camisa do Japão", 3.00, "Camisa do Japão, edição limitada", 400.00, 1);
         Produto p5 = new Produto("Camisa do Ajax", 3.00, "Camisa do Ajax, edição limitada", 400.00, 1);
@@ -65,13 +65,13 @@ public class TestConfig implements CommandLineRunner {
 
 
 
-        produtoRepository.saveAll(Arrays.asList(p1,p2,p3, p4,p5,p6,p7,p8));
+        produtoRepository.saveAll(Arrays.asList(p1,p3, p4,p5,p6,p7,p8));
 
         Imagens l1 = new Imagens(p1, "RealMadrir.jpg");
         Imagens l2 = new Imagens(p1, "RealMadrirCosta.jpg");
-        Imagens l3 = new Imagens(p2, "BarçaFrente.jpg");
-        Imagens l4 = new Imagens(p2, "BarçaCostas.jpg");
-        Imagens l5 = new Imagens(p2, "barca.jpg");
+//        Imagens l3 = new Imagens(p2, "BarçaFrente.jpg");
+//        Imagens l4 = new Imagens(p2, "BarçaCostas.jpg");
+//        Imagens l5 = new Imagens(p2, "barca.jpg");
         Imagens l6 = new Imagens(p3, "AlemanhaFrente.jpg");
         Imagens l7 = new Imagens(p3, "AlemanhaCostas.jpg");
         Imagens l8 = new Imagens(p5, "Ajax-1.jpg");
@@ -84,7 +84,7 @@ public class TestConfig implements CommandLineRunner {
         Imagens l15 = new Imagens(p8, "Borussia.jpg");
         Imagens l16 = new Imagens(p4, "JapaoCostas.jpg");
 
-        listaDeImagens.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9,l10,l11,l12,l13,l14,l15,l16));
+        listaDeImagens.saveAll(Arrays.asList(l1, l2, l6, l7, l8, l9,l10,l11,l12,l13,l14,l15,l16));
 
         Cliente c1 = new Cliente("AugustoCliente", "augustoCliente@gmail.com", "12345", "66803699080", "2002-08-21\t", "Masculino");
         Cliente c2 = new Cliente("BrennoCliente", "brennoCliente@gmail.com", "12345", "19256439050", "2002-08-20\t", "Masculino");
@@ -108,7 +108,7 @@ public class TestConfig implements CommandLineRunner {
 
 
         pC1.add(p1);
-        pC1.add(p2);
+        pC1.add(p3);
 
         pC2.add(p1);
 

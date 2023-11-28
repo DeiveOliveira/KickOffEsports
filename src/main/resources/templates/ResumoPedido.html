@@ -109,7 +109,7 @@
                 // Construa o objeto com os dados do pedido
                 var pedido = {
                     formaDePagamento: formaDePagamento,
-                    valorFrete: totalComFrete,
+                    valorFrete: 0.0,
                     produto: produtosNoCarrinho,
                     parcelas: parseInt(localStorage.getItem('installments')),
                     idEndereco: localStorage.getItem('enderecoId'),
@@ -122,8 +122,8 @@
                     contentType: 'application/json',
                     data: JSON.stringify(pedido),
                     success: function (response) {
-                        // Manipule a resposta do servidor, se necessário
                         alert("Pedido finalizado com sucesso!");
+                        window.location.href = '/listaDePedidosCliente' ;
                     },
                     error: function (error) {
                         console.error('Erro ao finalizar o pedido:', error);
