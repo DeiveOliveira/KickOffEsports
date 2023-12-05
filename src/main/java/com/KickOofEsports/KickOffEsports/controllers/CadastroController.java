@@ -8,14 +8,14 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 
 @Controller
 @RequestMapping
@@ -64,5 +64,17 @@ public class CadastroController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(usuario1.getId()).toUri();
         return ResponseEntity.created(uri).body(usuario1);
+    }
+
+    @GetMapping("/exibirImagens/{imagens}")
+    @ResponseBody
+    public byte[] retornarImagem(@PathVariable("imagens") String nomeImagem) throws IOException {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+nomeImagem);
+        File imagem = new File("src/main/resources/static/img/imagensDosProdutos/" +
+                nomeImagem);
+        if (nomeImagem != null || nomeImagem.trim().length() > 0){
+            return Files.readAllBytes(imagem.toPath());
+        }
+        return null;
     }
 }

@@ -8,15 +8,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,8 +32,8 @@ public class CadastroProdutoService {
         pro = produtoRepository.save(pro);
 
         // Caminho do diretório de destino
+        //String uploadDir = "C:\\Users\\deive\\OneDrive\\Área de Trabalho\\ImagensPI\\";
         String uploadDir = "src/main/resources/static/img/imagensDosProdutos";
-
         // Cria o diretório se ele não existir
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
@@ -53,11 +50,17 @@ public class CadastroProdutoService {
                 String originalName = StringUtils.cleanPath(imagem.getOriginalFilename());
                 String fileName = UUID.randomUUID().toString() +".jpg" ; // Nome do arquivo com extensão .jpg
 
+                byte [] bytes = imagem.getBytes();
+                Path caminho = Paths.get(uploadDir,fileName);
+                Files.write(caminho,bytes);
+
+
+
                 // Caminho completo para o arquivo
-                String filePath = Paths.get(uploadDir, fileName).toString();
+              //  String filePath = Paths.get(uploadDir, fileName).toString();
 
                 // Salva a imagem no sistema de arquivos
-                Files.copy(imagem.getInputStream(), Paths.get(filePath));
+               // Files.copy(imagem.getInputStream(), Paths.get(filePath));
 
                 // Salva a informação da imagem no banco de dados
                 // Adiciona a string ao nome do arquivo ao salvar no banco de dados
@@ -71,6 +74,5 @@ public class CadastroProdutoService {
             }
         }
     }
-
 
 }
