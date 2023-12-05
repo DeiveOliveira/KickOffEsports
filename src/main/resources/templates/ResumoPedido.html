@@ -190,7 +190,7 @@
             function criarListItem(produto) {
 
                 var listItem = $('<div>').addClass('col-md-6 mb-6 text-center').css('margin-top', '50px');
-                listItem.append(`<img src="/img/imagensDosProdutos/${produto.img[0].url}" class="produto-imagem">
+                listItem.append(`<img src="/exibirImagens/${produto.img[0].url}" class="produto-imagem">
                     <h4>${produto.nome}</h4>
                     <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
                     <div>
