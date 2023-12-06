@@ -1,0 +1,41 @@
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+            background-image: url(../img/fundo.jpg);
+
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        h1, h2, p {
+            color: #343a40;
+        }
+
+        .carousel-item img {
+            max-width: 20%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }

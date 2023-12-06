@@ -20,7 +20,6 @@
             <th><i class="fas fa-dollar-sign"></i> Valor Total</th>
             <th><i class="fas fa-dollar-sign"></i> Valor do Frete</th>
             <th><i class="fas fa-list-ol"></i> Parcelas</th>
-            <th><i class="fas fa-user"></i> Cliente</th>
             <th><i class="fas fa-user"></i> Detalhes</th>
             <th>Status</th>
         </tr>
@@ -33,7 +32,6 @@
             <td th:text="${pedido.valorTotal}"></td>
             <td th:text="${pedido.valorFrete}"></td>
             <td th:text="${pedido.parcelas}"></td>
-            <td th:text="${pedido.clientePedido.nomeCompleto}"></td>
             <td>
                 <a th:href="@{'/meuPedido/' + ${pedido.id}}" class="btn btn-primary">Visualizar</a>
             </td>

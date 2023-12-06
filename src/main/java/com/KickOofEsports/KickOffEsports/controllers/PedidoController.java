@@ -92,10 +92,9 @@ public class PedidoController {
     }
 
     @PutMapping (value = "atualizarStatusPedido/{id}")
-    public ResponseEntity<?> atualizarStatusPedido(@PathVariable String id, @RequestBody AtualizacaoStatusDto atualizacaoStatusDto){
-        Long idLong = Long.parseLong(id);
-        Pedidos pedidos = pedidosRepository.getReferenceById(idLong);
-        pedidoService.atualizarPedidos(idLong, atualizacaoStatusDto.getStatus());
+    public ResponseEntity<?> atualizarStatusPedido(@PathVariable Long id, @RequestBody AtualizacaoStatusDto atualizacaoStatusDto){
+        Pedidos pedidos = pedidosRepository.getReferenceById(id);
+        pedidoService.atualizarPedidos(id, atualizacaoStatusDto.getStatus());
         return ResponseEntity.ok().body(pedidos);
     }
 

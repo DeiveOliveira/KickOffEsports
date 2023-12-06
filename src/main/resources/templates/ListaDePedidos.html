@@ -21,12 +21,12 @@
             <th><i class="fas fa-dollar-sign"></i> Valor do Frete</th>
             <th><i class="fas fa-list-ol"></i> Parcelas</th>
             <th><i class="fas fa-user"></i> Cliente</th>
-            <th><i class="fas fa-shopping-basket"></i> Produtos</th>
+            <th><i class="fas fa-user"></i> Detalhes</th>
             <th>Status</th>
         </tr>
         </thead>
         <tbody id="pedidosList">
-        <tr th:each="pedido : ${pedidos}">
+        <tr th:each="pedido : ${pedidos}" th:attr="data-id=${pedido.id}">
             <td th:text="${pedido.id}"></td>
             <td th:text="${pedido.formaDePagamento}"></td>
             <td th:text="${pedido.valorParcela}"></td>
@@ -35,12 +35,7 @@
             <td th:text="${pedido.parcelas}"></td>
             <td th:text="${pedido.clientePedido.nomeCompleto}"></td>
             <td>
-                <ul>
-                    <li th:each="produto : ${pedido.produtos}">
-                        <span th:text="${produto.produto.nome}"></span>
-                        <span th:text="${produto.quantidade}"></span>
-                    </li>
-                </ul>
+                <a th:href="@{'/meuPedido/' + ${pedido.id}}" class="btn btn-primary">Visualizar</a>
             </td>
             <td>
                 <span th:text="${pedido.status}" id="statusText"></span>
@@ -65,11 +60,11 @@
             </div>
             <div class="modal-body">
                 <select class="form-control" id="statusSelect">
-                    <option value="pagamento rejeitado">Pagamento Rejeitado</option>
-                    <option value="pagamento com sucesso">Pagamento com Sucesso</option>
-                    <option value="aguardando retirada">Aguardando Retirada</option>
-                    <option value="em transito">Em Trânsito</option>
-                    <option value="entregue">Entregue</option>
+                    <option value="Pagamento rejeitado">Pagamento Rejeitado</option>
+                    <option value="Pagamento com sucesso">Pagamento com Sucesso</option>
+                    <option value="Aguardando retirada">Aguardando Retirada</option>
+                    <option value="Em transito">Em Trânsito</option>
+                    <option value="Entregue">Entregue</option>
                 </select>
             </div>
             <div class="modal-footer">
@@ -84,10 +79,37 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     function atualizarStatus() {
-        var novoStatus = document.getElementById("statusSelect").value;
-        document.getElementById("statusText").innerText = novoStatus;
-        $('#statusModal').modal('hide');
-    }
+    var novoStatus = document.getElementById("statusSelect").value;
+    document.getElementById("statusText").innerText = novoStatus;
+    $('#statusModal').modal('hide');
+    alert(novoStatus);
+
+    var idPedido = $('#pedidosList tr').data('id');
+
+
+    var atualizacaoStatusDto = {
+        status: novoStatus
+    };
+
+    $.ajax({
+        url: '/atualizarStatusPedido/' + idPedido,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify(atualizacaoStatusDto),
+        success: function (data) {
+            alert('Atualizado com sucesso');
+            window.location.href = "/listaDePedidos";
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 400) {
+                alert('Erro');
+            } else {
+                alert('Erro');
+            }
+            console.error('Erro:', error);
+        }
+    });
+}
 </script>
 </body>
 </html>
