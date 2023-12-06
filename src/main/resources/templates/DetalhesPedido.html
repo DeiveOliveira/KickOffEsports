@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        h1, h2, p {
+            color: #343a40;
+        }
+
+        .carousel-item img {
+            max-width: 20%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+    </style>
+    <title>Detalhes do Pedido</title>
+</head>
+
+<body>
+<h1 class="text-center">Detalhes do Pedido</h1>
+
+<div class="container">
+    <!-- Exemplo: exibindo dados do pedido -->
+    <p><strong>Forma de Pagamento:</strong> <span th:text="${pedido.formaDePagamento}"></span></p>
+    <p><strong>Valor Total:</strong> <span th:text="${pedido.valorTotal}"></span></p>
+
+    <!-- Exemplo: exibindo dados do endereço -->
+    <p><strong>Endereço de Entrega:</strong> <span th:text="${endereco.logradouro + ', ' + endereco.numero + ', ' + endereco.bairro + ', ' + endereco.cep + ', ' + endereco.cidade}"></span></p>
+
+    <!-- Exibindo carrossel para cada produto -->
+    <div th:each="produto, produtoStat : ${pedido.produtos}" class="mb-5">
+        <h2>Produto: <span th:text="${produto.produto.nome}"></span></h2>
+        <div th:id="'carouselImagensProduto' + ${produtoStat.index}" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div th:each="imagem, imagemIndex : ${produto.produto.img}" class="carousel-item"
+                     th:classappend="${imagemIndex.index} == 0 ? 'active' : ''">
+                    <!-- Exibindo imagens do produto -->
+                    <img th:src="@{'/exibirImagens/' + ${imagem.url}}" alt="Imagem do Produto">
+                </div>
+            </div>
+            <a class="carousel-control-prev" th:href="'#carouselImagensProduto' + ${produtoStat.index}" role="button"
+               data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+            </a>
+            <a class="carousel-control-next" th:href="'#carouselImagensProduto' + ${produtoStat.index}" role="button"
+               data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Próximo</span>
+            </a>
+        </div>
+        <p><strong>Preço:</strong> <span th:text="${produto.produto.preco}"></span></p>
+        <p><strong>Quantidade:</strong> <span th:text="${produto.quantidade}"></span></p>
+    </div>
+
+    <!-- Adicione mais campos conforme necessário -->
+
+    <div class="row">
+        <div class="col text-center">
+            <!-- Adicione seu botão ou ação aqui -->
+        </div>
+    </div>
+</div>
+
+<!-- Adicione seus scripts e bibliotecas JavaScript aqui -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-mCBqzfoefLT00Hj4ymBWT6L4HlE9bPWlNqk/D61ezQ2Z11bvwcvu4ScewyZ+pJcY"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.6.0/js/bootstrap.min.js"
+        integrity="sha384-LCdCGdKEjNL8A9ZXFMe6ZCDLXH9/8eSpfQTdEYD8hTB9gA2jM6vAjCb74R2CxF5f"
+        crossorigin="anonymous"></script>
+</div>
+</body>
+
+</html>

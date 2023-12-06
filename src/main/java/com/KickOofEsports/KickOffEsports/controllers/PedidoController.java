@@ -2,6 +2,7 @@ package com.KickOofEsports.KickOffEsports.controllers;
 
 import com.KickOofEsports.KickOffEsports.entities.*;
 import com.KickOofEsports.KickOffEsports.entities.enums.UserRole;
+import com.KickOofEsports.KickOffEsports.repositories.EnderecosRepository;
 import com.KickOofEsports.KickOffEsports.repositories.PedidosRepository;
 import com.KickOofEsports.KickOffEsports.repositories.ProdutoRepository;
 import com.KickOofEsports.KickOffEsports.repositories.UsuariosRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class PedidoController {
@@ -35,6 +37,9 @@ public class PedidoController {
     
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private EnderecosRepository enderecosRepository;
 
     @GetMapping(value = "listaDePedidos")
     public ModelAndView procurarTodosOsPedidos(HttpSession session){
@@ -118,6 +123,21 @@ public class PedidoController {
 
         return ResponseEntity.ok().body(pedido);
     }
+
+    @GetMapping(value = "/meuPedido/{id}")
+    public ModelAndView procuraPedido(@PathVariable Long id) {
+        ModelAndView mv = new ModelAndView();
+        Optional<Pedidos> objPedidos = pedidosRepository.findById(id);
+        Pedidos objPedido = pedidosRepository.getReferenceById(id);
+        Optional<Enderecos> objEndereco = enderecosRepository.findById(objPedido.getIdEndereco());
+        Pedidos pedidos = objPedidos.get();
+        Enderecos endereco = objEndereco.get();
+        mv.addObject("pedido", pedidos);
+        mv.addObject("endereco", endereco);
+        mv.setViewName("DetalhesPedido");
+        return mv;
+    }
+
 
 
 }
