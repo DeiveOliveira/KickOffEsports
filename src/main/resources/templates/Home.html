@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/Home.css}">
     <link rel="stylesheet" href="../static/css/Home.css">
     <title>Home</title>
+
 </head>
 
 <body>
@@ -41,7 +42,7 @@
             </div>
             <div class="col-md-2 text-end d-flex align-items-center">
                 <a th:if="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra/{id}(id=${usuarioLogado.id})}"
-                   class="text-white">
+                    class="text-white">
                     <i class="fas fa-shopping-cart fa-2x"></i>
                 </a>
 
@@ -50,68 +51,78 @@
                 </a>
 
                 <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}"
-                        onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
+                    onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
             </div>
 
         </nav>
-        <div class="container">
-            <div class="row" id="productCards">
+    </header>
 
-            </div>
+
+    <div class="container col-md-10">
+
+        <img src="../static/img/publi_internacionais.jpg" th:src="@{/img/publi_internacionais.jpg}"
+            class="d-block w-100" alt="Promoção 1">
+
+    </div>
+
+    <div class="container">
+        <div class="row" id="productCards">
+
         </div>
+    </div>
 
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script>
-            function redirecionarParaLogin() {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        function redirecionarParaLogin() {
 
-                let confirmMessage = 'Tem certeza de que deseja sair da conta ?';
+            let confirmMessage = 'Tem certeza de que deseja sair da conta ?';
 
-                const confirmacao = confirm(confirmMessage);
+            const confirmacao = confirm(confirmMessage);
 
-                if (confirmacao) {
-                    localStorage.removeItem('usuarioLogado');
-                    localStorage.removeItem('carrinho');
-                    localStorage.removeItem('enderecoId');
+            if (confirmacao) {
+                localStorage.removeItem('usuarioLogado');
+                localStorage.removeItem('carrinho');
+                localStorage.removeItem('enderecoId');
 
-                    // O usuário clicou em "Sim", continue com a lógica de atualização
-                    $.ajax({
-                        type: 'POST',
-                        url: '/logout',
-                        contentType: 'application/json',
-                        data: JSON.stringify({}),
-                        success: function (data) {
-                            alert('Atualizado com sucesso');
-                            console.log('Atualizado com sucesso:', data);
-                            window.location.href = '/loginCliente';
-                        },
-                        error: function (xhr, status, error) {
-                            if (xhr.status === 400) {
-                                var errorMessage = xhr.responseText;
-                                alert('Erro ao atualizar: ' + errorMessage);
-                            } else {
-                                alert('Erro ao atualizar: ' + error);
-                            }
-                            console.error('Erro ao atualizar:', error);
-                        }
-                    });
-                } else {
-                    alert('Operação cancelada');
-                }
-            }
-        </script>
-        <script>
-            $(document).ready(function () {
+                // O usuário clicou em "Sim", continue com a lógica de atualização
                 $.ajax({
-                    url: '/api/produtos',
-                    method: 'GET',
-                    dataType: 'json',
+                    type: 'POST',
+                    url: '/logout',
+                    contentType: 'application/json',
+                    data: JSON.stringify({}),
                     success: function (data) {
-                        if (Array.isArray(data)) {
-                            data.forEach(function (produto) {
-                                if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('descricao') && produto.hasOwnProperty('preco')) {
-                                    var cardHtml = `
+                        alert('Atualizado com sucesso');
+                        console.log('Atualizado com sucesso:', data);
+                        window.location.href = '/loginCliente';
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.status === 400) {
+                            var errorMessage = xhr.responseText;
+                            alert('Erro ao atualizar: ' + errorMessage);
+                        } else {
+                            alert('Erro ao atualizar: ' + error);
+                        }
+                        console.error('Erro ao atualizar:', error);
+                    }
+                });
+            } else {
+                alert('Operação cancelada');
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/api/produtos',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (Array.isArray(data)) {
+                        data.forEach(function (produto) {
+                            if (produto.hasOwnProperty('img') && produto.hasOwnProperty('nome') && produto.hasOwnProperty('descricao') && produto.hasOwnProperty('preco')) {
+                                var cardHtml = `
     <div class="col-md-4 meu-card">
         <div class="card">
             <img src="/exibirImagens/${produto.img[0].url}" class="card-img-top" alt="Imagem do Produto">
@@ -123,29 +134,28 @@
         </div>
     </div>
 `;
-                                    $('#productCards').append(cardHtml);
+                                $('#productCards').append(cardHtml);
 
-                                    $('.comprar-btn').on('click', function () {
-                                        var produtoId = $(this).data('produto-id');
-                                        window.location.href = '/possivelCompra/' + produtoId;
-                                    });
-                                } else {
-                                    console.error('Produto com dados faltando:', produto);
-                                }
-                            });
-                        } else {
-                            console.error('Dados inválidos do servidor:', data);
-                        }
-                    },
-                    error: function (error) {
-                        console.error('Erro ao buscar produtos:', error);
+                                $('.comprar-btn').on('click', function () {
+                                    var produtoId = $(this).data('produto-id');
+                                    window.location.href = '/possivelCompra/' + produtoId;
+                                });
+                            } else {
+                                console.error('Produto com dados faltando:', produto);
+                            }
+                        });
+                    } else {
+                        console.error('Dados inválidos do servidor:', data);
                     }
-                });
+                },
+                error: function (error) {
+                    console.error('Erro ao buscar produtos:', error);
+                }
             });
+        });
 
 
-        </script>
-    </header>
+    </script>
 
 </body>
 

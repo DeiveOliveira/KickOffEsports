@@ -25,8 +25,8 @@
         #totalComFrete,
         #RS,
         #RS2,
-        #valorFrete, 
-        #frete{
+        #valorFrete,
+        #frete {
             font-size: 25px;
             font-weight: bold;
             color: white;
@@ -95,6 +95,7 @@
     <script>
 
         function finalizarCompra() {
+
             var confirmacao = confirm("Deseja realmente finalizar o pedido?");
             if (confirmacao) {
                 // Obtenha os dados necessários do HTML
@@ -105,15 +106,25 @@
                 // Obtenha a lista de produtos do carrinho
                 var carrinho = localStorage.getItem('carrinho');
                 var produtosNoCarrinho = carrinho ? JSON.parse(carrinho) : [];
+                var frete = $('#valorFrete').text();
 
                 // Construa o objeto com os dados do pedido
                 var pedido = {
                     formaDePagamento: formaDePagamento,
-                    valorFrete: 0.0,
-                    produto: produtosNoCarrinho,
-                    parcelas: parseInt(localStorage.getItem('installments')),
+                    valorFrete: frete,
+                    produto: [],  // Array para armazenar os produtos com a quantidade
+                    parcelas: localStorage.getItem('parcelas'),
                     idEndereco: localStorage.getItem('enderecoId'),
                 };
+
+                // Iterar sobre os produtos no carrinho e adicionar ao pedido
+                produtosNoCarrinho.forEach(function (produtoId) {
+                    var quantidade = obterQuantidadeProduto(produtoId); // Função para obter a quantidade do produto
+                    pedido.produto.push({
+                        id: produtoId,
+                        quantidade: quantidade
+                    });
+                });
 
                 // Faça a chamada AJAX para o endpoint "/salvarPedido"
                 $.ajax({
@@ -122,8 +133,11 @@
                     contentType: 'application/json',
                     data: JSON.stringify(pedido),
                     success: function (response) {
-                        alert("Pedido finalizado com sucesso!");
-                        window.location.href = '/listaDePedidosCliente' ;
+                        alert("Pedido realizado com sucesso!");
+                        var usuario = localStorage.getItem('usuarioLogado');
+                        localStorage.clear();
+                        localStorage.setItem('usuarioLogado', usuario);
+                        window.location.href = '/listaDePedidosCliente';
                     },
                     error: function (error) {
                         console.error('Erro ao finalizar o pedido:', error);
@@ -188,21 +202,24 @@
 
             // Função para criar um elemento de lista para um produto
             function criarListItem(produto) {
-
                 var listItem = $('<div>').addClass('col-md-6 mb-6 text-center').css('margin-top', '50px');
                 listItem.append(`<img src="/exibirImagens/${produto.img[0].url}" class="produto-imagem">
-                    <h4>${produto.nome}</h4>
-                    <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
-                    <div>
-                    <p>QTD: <span class="quantidadeProduto">${quantidade}</span></p>
-        
-                    </div>
-                    <p>Total: R$ <span class="totalProduto">${(produto.preco * quantidade).toFixed(2)}</span></p>`);
-
+        <h4>${produto.nome}</h4>
+        <p>R$ <span class="precoProduto">${produto.preco.toFixed(2)}</span></p>
+        <div>
+            <p>QTD: <span class="quantidadeProduto">${obterQuantidadeProduto(produto.id)}</span></p>
+        </div>
+        <p>Total: R$ <span class="totalProduto">${(produto.preco * obterQuantidadeProduto(produto.id)).toFixed(2)}</span></p>`);
                 return listItem;
             }
 
             buscarProdutos();
+
+            function obterQuantidadeProduto(produtoId) {
+                // Obtenha a lista de quantidades do carrinho
+                var quantidades = JSON.parse(localStorage.getItem('quantidades')) || {};
+                return quantidades[produtoId] || 0;
+            }
 
             var valorTotal = localStorage.getItem('totalComFrete');
             $('#totalComFrete').text(valorTotal);

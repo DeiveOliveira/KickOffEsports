@@ -66,4 +66,6 @@ p {
     color: #474747;
 }
 
-
+.logo {
+    max-width: 150px;
+}

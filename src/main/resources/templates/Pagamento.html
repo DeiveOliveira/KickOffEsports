@@ -115,8 +115,10 @@
 
             function calcularParcela() {
                 var parcelas = parcelasInput.value;
+                localStorage.setItem('parcelas', this.value);
                 var valorParcela = valorTotal / parcelas;
                 valorParcelaDisplay.innerHTML = '<h5 class="text-dark">O valor de cada parcela: R$ ' + valorParcela.toFixed(2) + '</h5>';
+
             }
 
             parcelasInput.addEventListener('input', calcularParcela);
@@ -125,6 +127,7 @@
             $('#paymentForm input').on('change', function () {
                 var isValid = true;
                 var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+          
                 $('#paymentForm input').each(function () {
                     if (paymentMethod === 'creditCard' && $(this).val() === '') {
                         isValid = false;
@@ -136,19 +139,17 @@
             $('#paymentForm').on('submit', function (e) {
                 e.preventDefault();
                 var paymentMethod = $('input[name="paymentMethod"]:checked').val();
-                alert('Pedido final validado!');
             });
 
             $('#validateButton').on('click', function () {
                 window.location.href = '/resumoPedido';
             });
-            localStorage.setItem('installments', this.value);
         });
 
     </script>
 
     <script>
-        // Função para salvar os dados no localStorage
+
 
 
     </script>
@@ -161,6 +162,8 @@
             if (this.checked) {
                 // Salva a opção escolhida no localStorage como uma string
                 localStorage.setItem('paymentMethod', 'Boleto');
+                localStorage.setItem('parcelas', 1);
+
             }
         });
 

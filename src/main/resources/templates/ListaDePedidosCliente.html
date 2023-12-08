@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,44 +8,95 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
+    <style>
+        .logo {
+            max-width: 150px;
+        }
+    </style>
+
 </head>
+
 <body>
-<div class="container mt-5 col-11">
-    <h1>Lista de Pedidos</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th><i class="fas fa-barcode"></i> ID</th>
-            <th><i class="fas fa-credit-card"></i> Forma de Pagamento</th>
-            <th><i class="fas fa-dollar-sign"></i> Valor da Parcela</th>
-            <th><i class="fas fa-dollar-sign"></i> Valor Total</th>
-            <th><i class="fas fa-dollar-sign"></i> Valor do Frete</th>
-            <th><i class="fas fa-list-ol"></i> Parcelas</th>
-            <th><i class="fas fa-user"></i> Detalhes</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody id="pedidosList">
-        <tr th:each="pedido : ${pedidos}">
-            <td th:text="${pedido.id}"></td>
-            <td th:text="${pedido.formaDePagamento}"></td>
-            <td th:text="${pedido.valorParcela}"></td>
-            <td th:text="${pedido.valorTotal}"></td>
-            <td th:text="${pedido.valorFrete}"></td>
-            <td th:text="${pedido.parcelas}"></td>
-            <td>
-                <a th:href="@{'/meuPedido/' + ${pedido.id}}" class="btn btn-primary">Visualizar</a>
-            </td>
-            <td>
-                <span th:text="${pedido.status}" id="statusText"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+            <div class="col-md-2">
+                <img src="../static/img/logoTipo.jpeg" th:src="@{/img/logoTipo.jpeg}" class="img-fluid logo" alt="Logo">
+            </div>
+            <form class="form-inline my-2 my-lg-0 col-md-6">
+                <input class="form-control mr-sm-2 w-75" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+            </form>
+            <div class="col-md-2 text-end">
+                <th:block th:if="${usuarioLogado != null}">
+                    <a th:href="@{'opcoesCliente'}" class="text-white fa-lg">
+                        <i class="fas fa-user"></i>
+                        <span th:text="${usuarioLogado.nomeCompleto}"></span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${usuarioLogado != null}">
+                    <a href="loginCliente" class="text-white fa-lg">
+                        <i class="fas fa-user"></i>
+                        Login
+                    </a>
+                </th:block>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-2 text-end d-flex align-items-center">
+                <a th:if="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra/{id}(id=${usuarioLogado.id})}"
+                    class="text-white">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </a>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <a th:unless="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra}" class="text-white">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </a>
 
-</body>
+                <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}"
+                    onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
+            </div>
+
+        </nav>
+    </header>
+
+    <body>
+        <div class="container mt-5 col-11">
+            <h1>Lista de Pedidos</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-barcode"></i> ID</th>
+                        <th><i class="fas fa-credit-card"></i> Forma de Pagamento</th>
+                        <th><i class="fas fa-dollar-sign"></i> Valor da Parcela</th>
+                        <th><i class="fas fa-dollar-sign"></i> Valor Total</th>
+                        <th><i class="fas fa-dollar-sign"></i> Valor do Frete</th>
+                        <th><i class="fas fa-list-ol"></i> Parcelas</th>
+                        <th><i class="fas fa-user"></i> Detalhes</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="pedidosList">
+                    <tr th:each="pedido : ${pedidos}">
+                        <td th:text="${pedido.id}"></td>
+                        <td th:text="${pedido.formaDePagamento}"></td>
+                        <td th:text="${pedido.valorParcela}"></td>
+                        <td th:text="${pedido.valorTotal}"></td>
+                        <td th:text="${pedido.valorFrete}"></td>
+                        <td th:text="${pedido.parcelas}"></td>
+                        <td>
+                            <a th:href="@{'/meuPedido/' + ${pedido.id}}" class="btn btn-primary">Visualizar</a>
+                        </td>
+                        <td>
+                            <span th:text="${pedido.status}" id="statusText"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    </body>
+
 </html>

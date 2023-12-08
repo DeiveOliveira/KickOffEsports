@@ -7,12 +7,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/ListaProduto.css}">
+    <style>
+        .logo {
+    max-width: 150px;
+}
+    </style>
+    
+
 </head>
+
 <body>
-<div class="container mt-5 col-11">
-    <h1>Lista de Endereços</h1>
-    <nav class="navbar navbar-light bg-light my-2">
-        <form class="input-group mr-2">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary justify-content-center">
+            <div class="col-md-2">
+              <a href="/home">
+                <img src="../static/img/logoTipo.jpeg" th:src="@{/img/logoTipo.jpeg}" class="img-fluid logo" alt="Logo">
+            </a>
+            </div>
+             <form class="input-group mr-2">
             <input class="form-control m-2" type="search" id="inputPesquisa" placeholder="Pesquisar" aria-label="Pesquisar">
             <button
                     class="btn btn-outline-secondary m-2 btn-pesquisar"
@@ -24,7 +36,41 @@
                 <i class="fas fa-plus"></i>Adicionar endereço
             </a>
         </form>
-    </nav>
+            <div class=" form-inline col-md-2 text-end">
+                <th:block th:if="${usuarioLogado != null}">
+                    <a th:href="@{'opcoesCliente'}" class="text-white fa-lg">
+                        <i class="fas fa-user"></i>
+                        <span th:text="${usuarioLogado.nomeCompleto}"></span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${usuarioLogado != null}">
+                    <a href="loginCliente" class="text-white fa-lg">
+                        <i class="fas fa-user"></i>
+                        Login
+                    </a>
+                </th:block>
+            </div>
+            </div>
+            </div>
+            <div class="col-md-2 text-end d-flex align-items-center">
+                <a th:if="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra/{id}(id=${usuarioLogado.id})}"
+                   class="text-white">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </a>
+    
+                <a th:unless="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra}" class="text-white">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                </a>
+    
+                <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}"
+                        onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
+            </div>
+    
+        </nav>
+    </header>
+   <div class="container mt-5 col-11">
+    <h1>Lista de Endereços</h1>
+   
     <table class="table">
         <thead>
         <tr>

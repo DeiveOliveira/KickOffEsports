@@ -9,9 +9,13 @@
   <!-- Bootstrap CSS -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
     crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/cabecalho.css}">
+
   <link rel="stylesheet" href="../static/css/CarrinhoDeCompra.css">
   <style>
     .produto-imagem {
@@ -115,7 +119,48 @@
 </head>
 
 <body>
-  <h1 class="text-center">Carrinho de Compra</h1>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary justify-content-center">
+        <div class="col-md-2">
+          <a href="/home">
+            <img src="../static/img/logoTipo.jpeg" th:src="@{/img/logoTipo.jpeg}" class="img-fluid logo" alt="Logo">
+        </a>
+        </div>
+        <form class="form-inline my-2 my-lg-0 col-md-4 col-lg-4">
+          <h1 class="text-center">Carrinho de Compra</h1>
+        </form>
+        <div class="col-md-2 text-end">
+            <th:block th:if="${usuarioLogado != null}">
+                <a th:href="@{'opcoesCliente'}" class="text-white fa-lg">
+                    <i class="fas fa-user"></i>
+                    <span th:text="${usuarioLogado.nomeCompleto}"></span>
+                </a>
+            </th:block>
+            <th:block th:unless="${usuarioLogado != null}">
+                <a href="loginCliente" class="text-white fa-lg">
+                    <i class="fas fa-user"></i>
+                    Login
+                </a>
+            </th:block>
+        </div>
+        </div>
+        </div>
+        <div class="col-md-2 text-end d-flex align-items-center">
+            <a th:if="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra/{id}(id=${usuarioLogado.id})}"
+               class="text-white">
+                <i class="fas fa-shopping-cart fa-2x"></i>
+            </a>
+
+            <a th:unless="${usuarioLogado != null}" th:href="@{/CarrinhoDeCompra}" class="text-white">
+                <i class="fas fa-shopping-cart fa-2x"></i>
+            </a>
+
+            <button class="btn btn-danger btn-lg ml-2" th:if="${usuarioLogado != null}"
+                    onclick="redirecionarParaLogin()" type="button" id="btnLogout">Sair</button>
+        </div>
+
+    </nav>
+</header>
 
   <br>
 
@@ -314,6 +359,20 @@
       // Função para atualizar o preço total de um produto
       function atualizarPrecoTotal(item) {
         var precoProduto = parseFloat(item.find('.precoProduto').text());
+
+        var produtoId = item.find('.remover-btn').data('produto-id');
+        var quantidade = parseInt(item.find('.quantidadeProduto').text());
+
+        // Recuperar a lista de quantidades do localStorage
+        var quantidades = JSON.parse(localStorage.getItem('quantidades')) || {};
+
+        // Salvar a quantidade para o produto
+        quantidades[produtoId] = quantidade;
+
+        // Salvar a lista de quantidades de volta no localStorage
+        localStorage.setItem('quantidades', JSON.stringify(quantidades));
+
+
         item.find('.totalProduto').text((precoProduto * quantidade).toFixed(2));
         calcularTotalTodosProdutos();
       }
